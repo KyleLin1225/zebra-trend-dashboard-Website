@@ -1,0 +1,364 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Trend Dashboard · V3</title><style>
+:root{--bg:#070909;--panel:#111515;--panel2:#15191a;--line:#2a3030;--ink:#f5f6f1;--muted:#abb2af;--accent:#b9ff43;--sbw:280px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.58 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+.app{display:flex;min-height:100vh}
+
+/* ---------- sidebar ---------- */
+.sidebar{width:var(--sbw);flex:0 0 var(--sbw);background:#0a0d0d;border-right:1px solid var(--line);height:100vh;position:sticky;top:0;overflow-y:auto;transition:width .35s cubic-bezier(.4,0,.2,1),flex-basis .35s cubic-bezier(.4,0,.2,1),opacity .25s;padding:16px 14px}
+.sidebar.collapsed{width:0;flex-basis:0;padding:16px 0;opacity:0;overflow:hidden;border-right-color:transparent}
+.sb-section{margin-bottom:22px}
+.sb-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:800;padding:0 8px;margin-bottom:8px}
+.tree-row{display:flex;align-items:center;gap:6px;padding:9px 8px;border-radius:9px;cursor:pointer;font-size:14px;transition:background .15s}
+.tree-row:hover{background:var(--panel)}
+.tree-row.year{font-weight:760}
+.tree-row .chev{font-size:10px;color:var(--muted);transition:transform .25s;width:14px;text-align:center}
+.tree-row .chev.open{transform:rotate(90deg)}
+.tree-children{margin-left:18px;overflow:hidden;max-height:0;transition:max-height .3s ease}
+.tree-children.open{max-height:600px}
+.week-row{display:flex;align-items:center;justify-content:space-between;padding:8px 8px;border-radius:8px;cursor:pointer;font-size:13.5px;color:#dfe3e1;transition:background .15s}
+.week-row:hover{background:var(--panel)}
+.week-sub{margin-left:14px;overflow:hidden;max-height:0;transition:max-height .3s ease}
+.week-sub.open{max-height:400px}
+.rep-mini{display:block;padding:6px 8px 6px 8px;font-size:12.5px;color:var(--muted);border-left:4px solid var(--line);margin-left:4px;transition:color .15s,border-color .15s}
+.rep-mini:hover{color:var(--ink);border-color:var(--accent)}
+.single-item{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:8px;font-size:13px;color:#dfe3e1;transition:background .15s}
+.single-item:hover{background:var(--panel)}
+.dot{width:7px;height:7px;border-radius:50%;flex:0 0 auto}
+.single-item span.t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.more-link{display:block;text-align:center;font-size:12px;color:var(--accent);padding:7px;margin-top:4px;border:2px solid var(--line);border-radius:8px;transition:border-color .15s}
+.more-link:hover{border-color:var(--accent)}
+
+/* ---------- main ---------- */
+.main{flex:1;min-width:0}
+.topbar{position:sticky;top:0;z-index:20;background:#070909ee;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar-inner{display:flex;align-items:center;gap:14px;padding:14px 24px;flex-wrap:wrap;transition:padding-left .35s cubic-bezier(.4,0,.2,1)}
+.hbtn{width:38px;height:38px;border-radius:10px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:border-color .15s,transform .15s;flex:0 0 auto}
+.hbtn:hover{border-color:var(--accent);transform:scale(1.04)}
+.fixed-toggle{display:none;position:fixed;top:16px;left:16px;z-index:60}
+body.sidebar-collapsed .fixed-toggle{display:flex}
+body.sidebar-collapsed .topbar-inner{padding-left:66px}
+.sb-top{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.sb-brand-mini{font-weight:760;font-size:14px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.brand{font-weight:800;letter-spacing:-.02em;font-size:16px;display:flex;align-items:center;gap:8px}
+.livedot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(185,255,67,.55)}70%{box-shadow:0 0 0 7px transparent}100%{box-shadow:0 0 0 0 transparent}}
+
+.search-wrap{margin-left:auto;position:relative;min-width:260px;flex:0 1 420px}
+.search-box{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:9px 8px 9px 14px;transition:border-color .2s}
+.search-box:focus-within{border-color:var(--accent)}
+.search-box input{background:none;border:none;outline:none;color:var(--ink);font-size:13px;width:100%}
+.search-box button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s}
+.search-box button:hover{background:var(--line);color:var(--ink)}
+.search-box .sx{display:none}
+.search-box .sx.show{display:flex}
+.results{position:absolute;top:calc(100% + 8px);left:0;right:0;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 20px 50px -20px #000;display:none;z-index:30;max-height:70vh;overflow-y:auto}
+.results.show{display:block;animation:dropin .2s ease}
+@keyframes dropin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.results .rlabel{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:800;margin:0 0 8px}
+.kwchips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.kwchips span{font-size:11px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:5px 10px;color:#dfe3e1}
+.rresult{display:flex;gap:12px;padding:9px 6px;border-radius:10px;transition:background .15s}
+.rresult:hover{background:var(--bg)}
+.rresult img{width:64px;height:40px;object-fit:contain;background:#030505;border-radius:6px;border:1px solid var(--line);flex:0 0 auto}
+.rresult .rt{font-size:13.5px;font-weight:700}
+.rresult .rd{font-size:11px;color:var(--muted)}
+.seeall{display:block;text-align:center;margin-top:8px;font-size:12px;color:var(--accent);padding:8px;border-top:1px solid var(--line)}
+.noresult{color:var(--muted);font-size:13px;padding:10px 6px}
+
+main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
+.reveal-init{opacity:0;transform:translateY(22px)}
+.reveal-in{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+
+.hero h1{font-size:clamp(46px,6.4vw,78px);font-weight:760;line-height:.94;letter-spacing:-.04em;margin:14px 0 16px}
+.hero .lead{font-size:17px;color:#d8dcda;max-width:780px;margin:0 0 34px}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--accent)}
+
+.stat-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:44px}
+.stat{background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:19px;transition:transform .25s,border-color .25s}
+.stat:hover{transform:translateY(-3px);border-color:var(--accent)}
+.stat b{display:block;font-size:clamp(26px,3.6vw,36px);font-weight:760;letter-spacing:-.03em;color:var(--accent)}
+.stat span{color:var(--muted);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase}
+
+.section-label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:800;margin:0 0 16px;display:flex;justify-content:space-between;align-items:center}
+.section-label a{color:var(--accent);font-size:12px;letter-spacing:.04em;text-transform:none;font-weight:700}
+
+.signals{display:flex;flex-direction:column;gap:16px;margin-bottom:54px}
+.signal{background:linear-gradient(135deg,var(--panel),#0c0f0f);border:2px solid var(--line);border-radius:20px;padding:29px 31px;position:relative;transition:border-color .25s}
+.signal:hover{border-color:var(--accent)}
+.signal .eyebrow{display:flex;align-items:center;gap:8px}
+.signal h2{font-size:clamp(26px,3.6vw,38px);line-height:1.12;letter-spacing:-.025em;margin:12px 0 14px;max-width:860px;font-weight:720}
+.signal h2 strong{color:var(--accent);font-weight:780}
+.signal p.detail{color:#cbd0ce;max-width:860px;margin:0;font-size:15px;line-height:1.7;padding-right:50px}
+.expander{position:absolute;right:20px;bottom:20px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .2s,color .2s}
+.expander:hover{border-color:var(--accent);color:var(--accent)}
+.expander .tri{display:inline-flex;align-items:center;justify-content:center;font-size:30px;line-height:1;transition:transform .3s}
+.expander.open .tri{transform:rotate(180deg)}
+.evidence{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.evidence.open{max-height:300px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.ev-row{display:flex;gap:14px;flex-wrap:wrap}
+.ev-card{display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);flex:1 1 220px;max-width:280px}
+.ev-card img{width:52px;height:34px;object-fit:contain;background:#030505;border-radius:6px;border:1px solid var(--line);flex:0 0 auto}
+.ev-card .et{font-size:12.5px;font-weight:700}
+.ev-card .ed{font-size:10.5px;color:var(--muted)}
+
+.chip-cloud{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:44px}
+.chip{background:var(--panel);border:2px solid var(--line);border-radius:999px;padding:8px 13px;font-size:13px;color:#dfe3e1;cursor:pointer;transition:border-color .15s,color .15s}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+
+.cat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:54px}
+.cat-tile{display:block;background:var(--panel);border:2px solid var(--line);border-radius:18px;padding:21px;cursor:pointer;transition:border-color .15s,transform .15s}
+.cat-tile:hover{transform:translateY(-2px);border-color:var(--accent)}
+.cat-tile .bar{height:4px;border-radius:4px;width:40px;margin-bottom:16px}
+.cat-tile h3{font-size:22px;letter-spacing:-.02em;margin:0 0 8px;font-weight:730}
+.cat-tile p{color:var(--muted);font-size:13px;margin:0 0 14px;line-height:1.55}
+.cat-tile .meta-row{display:flex;gap:14px;font-size:11px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.cat-tile .meta-row b{color:var(--ink)}
+
+.feed{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:10px}
+.fcard{display:block;background:var(--panel);border:2px solid var(--line);border-radius:16px;overflow:hidden;transition:border-color .25s,transform .25s}
+.fcard:hover{border-color:var(--accent);transform:translateY(-3px)}
+.fcard img{display:block;width:100%;aspect-ratio:16/10;object-fit:contain;background:#030505;border-bottom:1px solid var(--line)}
+.fcard .fc{padding:14px}
+.fcard .fmeta{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.fcard h4{font-size:15.5px;margin:0 0 6px;font-weight:720}
+.fcard p{color:var(--muted);font-size:12.5px;margin:0;line-height:1.45}
+
+@media(max-width:1000px){.sidebar{position:fixed;z-index:40;height:100vh;box-shadow:0 0 60px #000}.stat-row,.feed,.cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.stat-row,.feed,.cat-grid{grid-template-columns:1fr}.search-wrap{flex:1 1 auto;width:100%;order:3}.topbar-inner{gap:10px}.signal p.detail{padding-right:0}}
+</style></head>
+<body>
+<button class="hbtn fixed-toggle" id="fixedToggle" title="Open sidebar">☰</button>
+<div class="app">
+  <nav class="sidebar" id="sidebar">
+    <div class="sb-top">
+      <button class="hbtn" id="sbToggleIn" title="Collapse sidebar">☰</button>
+      <span class="sb-brand-mini">Trend Dashboard</span>
+    </div>
+    <div class="sb-section">
+      <div class="tree-row year" id="yearRow"><span class="chev open" id="yearChev">▸</span>2026</div>
+      <div class="tree-children open" id="yearChildren"></div>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">Reports</div>
+      <div id="singleList"></div>
+      <a class="more-link" href="reports-overview.html">More reports →</a>
+    </div>
+  </nav>
+
+  <div class="main">
+    <div class="topbar"><div class="topbar-inner">
+      <div class="brand"><span class="livedot"></span>Trend Dashboard</div>
+      <div class="search-wrap">
+        <div class="search-box">
+          <span>⌕</span>
+          <input id="q" type="text" placeholder="Search e.g. &quot;rugged device&quot;, &quot;ai device&quot;…">
+          <button class="sx" id="clearx" title="Clear">✕</button>
+          <button id="runSearch" title="Search">→</button>
+        </div>
+        <div class="results" id="results"></div>
+      </div>
+    </div></div>
+
+    <main class="content">
+      <section class="hero reveal-init" id="heroBlock">
+        <div class="kicker" id="genLabel"></div>
+        <h1>A trend site that keeps updating.</h1>
+        <p class="lead">Every weekly release and standalone report rolls straight into this dashboard. Browse the sidebar by year and week, search by idea, or drop into any report one by one.</p>
+      </section>
+
+      <div class="stat-row" id="statRow"></div>
+
+      <div class="section-label">Top signals this period</div>
+      <div class="signals" id="signalsGrid"></div>
+
+      <div class="section-label">Trending keywords — click to jump into a domain</div>
+      <div class="chip-cloud" id="chipCloud"></div>
+
+      <div class="section-label">Domains this period</div>
+      <div class="cat-grid" id="catGrid"></div>
+
+      <div class="section-label">Latest reports <a href="reports-overview.html">Browse all →</a></div>
+      <div class="feed" id="feedGrid"></div>
+    </main>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+const $=(s,el=document)=>el.querySelector(s);
+const $$=(s,el=document)=>Array.from(el.querySelectorAll(s));
+
+function domainName(id){ const d=DOMAINS.find(x=>x.id===id); return d?d.name:id; }
+function domainAccent(id){ const d=DOMAINS.find(x=>x.id===id); return d?d.accent:"#b9ff43"; }
+
+/* ---------- sidebar toggle ---------- */
+function setSidebar(collapsed){
+  $("#sidebar").classList.toggle("collapsed", collapsed);
+  document.body.classList.toggle("sidebar-collapsed", collapsed);
+}
+$("#sbToggleIn").addEventListener("click", ()=> setSidebar(true));
+$("#fixedToggle").addEventListener("click", ()=> setSidebar(false));
+
+/* ---------- sidebar tree ---------- */
+$("#yearRow").addEventListener("click", ()=>{
+  $("#yearChev").classList.toggle("open");
+  $("#yearChildren").classList.toggle("open");
+});
+$("#yearChildren").innerHTML = WEEKS.map(w => `
+  <div class="week-block">
+    <div class="week-row" data-week="${w.id}">
+      <a href="${w.indexFile}" style="flex:1">${w.label} <span style="color:var(--muted);font-size:11px">· ${w.dateRange}</span></a>
+      <span class="chev" data-toggle="${w.id}">▸</span>
+    </div>
+    <div class="week-sub" id="sub-${w.id}">
+      ${w.reports.map(r=>`<a class="rep-mini" href="report-viewer.html?src=${encodeURIComponent(r.file)}&amp;title=${encodeURIComponent(r.title)}&amp;back=${encodeURIComponent(w.indexFile)}">${r.title}</a>`).join("")}
+    </div>
+  </div>
+`).join("");
+$$(".chev[data-toggle]").forEach(chev => chev.addEventListener("click", (e)=>{
+  e.preventDefault(); e.stopPropagation();
+  chev.classList.toggle("open");
+  $("#sub-"+chev.dataset.toggle).classList.toggle("open");
+}));
+
+/* ---------- sidebar single reports (latest 8 across all reports) ---------- */
+const latest8 = ALL_REPORTS.slice(0,8);
+$("#singleList").innerHTML = latest8.map(r => `
+  <a class="single-item" href="report-viewer.html?src=${encodeURIComponent(r.file)}&amp;title=${encodeURIComponent(r.title)}&amp;back=index.html">
+    <span class="t">${r.title}</span>
+  </a>`).join("");
+
+/* ---------- stats ---------- */
+const totalReports = ALL_REPORTS.length;
+const weekCount = WEEKS.length;
+const latestDate = ALL_REPORTS[0].date;
+$("#genLabel").textContent = `Generated from ${totalReports} reports · latest ${latestDate}`;
+$("#statRow").innerHTML = `
+  <div class="stat"><b>${totalReports}</b><span>Total reports</span></div>
+  <div class="stat"><b>${weekCount}</b><span>Weekly releases</span></div>
+  <div class="stat"><b>${SINGLE_REPORTS.length}</b><span>Standalone reports</span></div>
+  <div class="stat"><b>${latestDate}</b><span>Latest report</span></div>
+`;
+
+/* ---------- top signals (3, horizontal, expandable) ---------- */
+$("#signalsGrid").innerHTML = TOP_SIGNALS.map((s,i) => `
+  <div class="signal reveal-init" data-i="${i}">
+    <div class="eyebrow kicker">Top Signal</div>
+    <h2><strong>${s.keyword}.</strong> ${s.statement}</h2>
+    <p class="detail">${s.detail}</p>
+    <button class="expander" data-i="${i}" title="See the reports behind this signal"><span class="tri">▾</span></button>
+    <div class="evidence" id="ev-${i}">
+      <div class="ev-row">
+      ${s.evidence.map(title=>{
+        const r = ALL_REPORTS.find(x=>x.title===title);
+        if(!r) return "";
+        return `<a class="ev-card" href="report-viewer.html?src=${encodeURIComponent(r.file)}&amp;title=${encodeURIComponent(r.title)}&amp;back=index.html" style="text-decoration:none;color:inherit">
+          <img src="${r.hero}" alt="${r.title}"><div><div class="et">${r.title}</div><div class="ed">${domainName(r.domain)} · ${r.date}</div></div>
+        </a>`;
+      }).join("")}
+      </div>
+    </div>
+  </div>
+`).join("");
+$$(".expander").forEach(btn => btn.addEventListener("click", ()=>{
+  btn.classList.toggle("open");
+  $("#ev-"+btn.dataset.i).classList.toggle("open");
+}));
+
+/* ---------- trending keywords + domains (restored from v2, matched to new domain structure) ---------- */
+const allKeywordEntries = [];
+Object.keys(DOMAIN_TRENDS).forEach(domId => DOMAIN_TRENDS[domId].forEach(t => allKeywordEntries.push({ ...t, domain: domId })));
+$("#chipCloud").innerHTML = allKeywordEntries.map(k =>
+  `<span class="chip" data-domain="${k.domain}" style="--accent:${domainAccent(k.domain)}">${k.keyword}</span>`
+).join("");
+const DOMAIN_PAGE = { automotive:"Automotive", ai:"AI_Devices", wearables:"Wearable_Devices", robotics:"Robotics", industrial:"Industrial_Devices", sports:"Sports_Industry", mobile:"Mobile_Devices" };
+$$(".chip").forEach(el => el.addEventListener("click", ()=> location.href = "domains/" + DOMAIN_PAGE[el.dataset.domain] + ".html"));
+
+$("#catGrid").innerHTML = DOMAINS.map(d => {
+  const reportCount = ALL_REPORTS.filter(r=>r.domain===d.id).length;
+  const trendCount = (DOMAIN_TRENDS[d.id]||[]).length;
+  return `<a class="cat-tile" href="domains/${DOMAIN_PAGE[d.id]}.html" style="--accent:${d.accent}">
+    <div class="bar" style="background:${d.accent}"></div>
+    <h3>${d.name}</h3>
+    <p>${d.blurb}</p>
+    <div class="meta-row"><span><b>${reportCount}</b> reports</span><span><b>${trendCount}</b> trends</span></div>
+  </a>`;
+}).join("");
+
+/* ---------- latest reports feed ---------- */
+$("#feedGrid").innerHTML = ALL_REPORTS.slice(0,6).map(r => `
+  <a class="fcard reveal-init" href="report-viewer.html?src=${encodeURIComponent(r.file)}&amp;title=${encodeURIComponent(r.title)}&amp;back=index.html">
+    <img src="${r.hero}" alt="${r.title}">
+    <div class="fc"><div class="fmeta"><span>${domainName(r.domain)}</span><span>${r.date}</span></div><h4>${r.title}</h4><p>${r.blurb}</p></div>
+  </a>
+`).join("");
+
+/* ---------- scroll reveal (Apple-style) ---------- */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("reveal-in"); io.unobserve(e.target); } });
+},{threshold:.12});
+$$(".reveal-init").forEach(el=>io.observe(el));
+requestAnimationFrame(()=> $("#heroBlock").classList.add("reveal-in"));
+
+/* ---------- fuzzy search ---------- */
+function levenshtein(a,b){
+  const m=a.length,n=b.length; if(!m) return n; if(!n) return m;
+  const dp=Array.from({length:m+1},(_,i)=>[i,...Array(n).fill(0)]);
+  for(let j=0;j<=n;j++) dp[0][j]=j;
+  for(let i=1;i<=m;i++) for(let j=1;j<=n;j++)
+    dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+  return dp[m][n];
+}
+function norm(s){ return (s||"").toLowerCase().replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ").trim(); }
+function scoreReport(r, tokens){
+  const hay = norm([r.title, r.blurb, domainName(r.domain), ...(r.tags||[])].join(" "));
+  const words = hay.split(" ");
+  let score = 0;
+  tokens.forEach(tok=>{
+    if(!tok) return;
+    if(words.some(w=>w===tok || (tok.length>2 && w.startsWith(tok)))){ score += 3; return; }
+    let best = Infinity;
+    words.forEach(w=>{ const d=levenshtein(tok,w); if(d<best) best=d; });
+    if(tok.length>3 && best<=1) score+=2;
+    else if(tok.length>5 && best<=2) score+=1;
+  });
+  return score;
+}
+function runSearch(){
+  const q = $("#q").value.trim();
+  const box = $("#results");
+  if(!q){ box.classList.remove("show"); return; }
+  const tokens = norm(q).split(" ").filter(Boolean);
+  let scored = ALL_REPORTS.map(r=>({r,s:scoreReport(r,tokens)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s);
+  if(scored.length){ const top=scored[0].s; scored = scored.filter(x=>x.s >= Math.max(top*0.6, 3)); }
+  if(!scored.length){
+    box.innerHTML = `<div class="noresult">No matches for "${q}". Try a broader term — e.g. "rugged device", "ai device", "ev car".</div>`;
+    box.classList.add("show");
+    return;
+  }
+  const top = scored.slice(0,6).map(x=>x.r);
+  const kws = Array.from(new Set(top.flatMap(r=>r.tags||[]))).slice(0,10);
+  box.innerHTML = `
+    <div class="rlabel">Related keywords</div>
+    <div class="kwchips">${kws.map(k=>`<span>${k}</span>`).join("")}</div>
+    <div class="rlabel">Matching reports</div>
+    ${top.map(r=>`<a class="rresult" href="report-viewer.html?src=${encodeURIComponent(r.file)}&amp;title=${encodeURIComponent(r.title)}&amp;back=index.html">
+      <img src="${r.hero}" alt="${r.title}"><div><div class="rt">${r.title}</div><div class="rd">${domainName(r.domain)} · ${r.date}</div></div>
+    </a>`).join("")}
+    <a class="seeall" href="reports-overview.html?q=${encodeURIComponent(q)}">See all ${scored.length} results →</a>
+  `;
+  box.classList.add("show");
+}
+$("#q").addEventListener("input", ()=>{
+  $("#clearx").classList.toggle("show", $("#q").value.length>0);
+  if(!$("#q").value.trim()) $("#results").classList.remove("show");
+});
+$("#q").addEventListener("keydown", e=>{ if(e.key==="Enter") runSearch(); });
+$("#runSearch").addEventListener("click", runSearch);
+$("#clearx").addEventListener("click", ()=>{ $("#q").value=""; $("#clearx").classList.remove("show"); $("#results").classList.remove("show"); });
+document.addEventListener("click", (e)=>{ if(!e.target.closest(".search-wrap")) $("#results").classList.remove("show"); });
+</script>
+</body></html>

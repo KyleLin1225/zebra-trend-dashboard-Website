@@ -1,0 +1,52 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Report Viewer</title><style>
+:root{--bg:#070909;--panel:#111515;--line:#2a3030;--ink:#f5f6f1;--muted:#abb2af;--accent:#b9ff43}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;height:100vh;overflow:hidden}
+.bar{height:56px;border-bottom:1px solid var(--line);background:#070909;position:relative;z-index:2}
+.barWrap{width:min(1180px,calc(100% - 32px));margin:auto;height:100%;display:flex;align-items:center;gap:14px}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:2px solid var(--line);border-radius:999px;padding:6px 12px;transition:border-color .15s,color .15s}
+.back:hover{color:var(--ink);border-color:var(--accent)}
+.vtitle{font-weight:720;font-size:15px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.dl{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#000;border:none;border-radius:999px;padding:9px 16px;font-size:13px;font-weight:760;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.dl:hover{transform:translateY(-1px);box-shadow:0 6px 18px -6px var(--accent)}
+.dl:active{transform:translateY(0)}
+iframe{display:block;width:100%;height:calc(100vh - 56px);border:none;background:#030505}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:13px;color:var(--muted);opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;pointer-events:none}
+.toast.show{opacity:1;transform:none}
+</style></head><body>
+<div class="bar"><div class="barWrap">
+  <a class="back" id="backLink" href="reports-overview.html">← Back</a>
+  <div class="vtitle" id="vTitle">Report</div>
+  <button class="dl" id="dlBtn">⬇ Download</button>
+</div></div>
+<iframe id="frame" src=""></iframe>
+<div class="toast" id="toast"></div>
+<script>
+const params = new URLSearchParams(location.search);
+const src = params.get("src") || "";
+const title = params.get("title") || src.split("/").pop();
+const back = params.get("back");
+document.getElementById("vTitle").textContent = title;
+document.getElementById("frame").src = src;
+if (back) document.getElementById("backLink").href = back;
+
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"), 2600);
+}
+
+document.getElementById("dlBtn").addEventListener("click", async () => {
+  try {
+    const res = await fetch(src);
+    if (!res.ok) throw new Error("fetch failed");
+    const blob = await res.blob();
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = src.split("/").pop();
+    document.body.appendChild(a); a.click(); a.remove();
+  } catch (e) {
+    toast("Direct download needs the site to be served over http(s) — right-click the report in the iframe and choose \"Save as\" instead.");
+  }
+});
+</script>
+</body></html>

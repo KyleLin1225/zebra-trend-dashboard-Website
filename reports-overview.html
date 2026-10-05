@@ -1,0 +1,186 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>All Reports · Trend Dashboard</title><style>
+:root{--bg:#070909;--panel:#111515;--line:#2a3030;--ink:#f5f6f1;--muted:#abb2af;--accent:#b9ff43;--max:1240px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.58 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+a{color:inherit}
+.wrap{width:min(var(--max),calc(100% - 32px));margin:auto}
+.topbar{position:sticky;top:0;z-index:20;background:#070909ee;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:16px;padding:16px 0;flex-wrap:wrap}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:2px solid var(--line);border-radius:999px;padding:7px 13px;transition:border-color .15s,color .15s}
+.back:hover{color:var(--ink);border-color:var(--accent)}
+.brand{font-weight:800;letter-spacing:-.02em;font-size:16px}
+main{padding:40px 0 100px}
+h1{font-size:clamp(36px,5vw,54px);font-weight:760;letter-spacing:-.035em;margin:0 0 10px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 30px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;align-items:center}
+.search-box{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:10px 14px;flex:1;min-width:220px}
+.search-box input{background:none;border:none;outline:none;color:var(--ink);font-size:14px;width:100%}
+.search-box .clearx{cursor:pointer;color:var(--muted);display:none;font-size:14px}
+.search-box .clearx.show{display:block}
+.chip-filter{display:flex;gap:7px;flex-wrap:wrap}
+.chip-filter button{background:var(--panel);border:2px solid var(--line);border-radius:999px;padding:7px 13px;font-size:12px;color:var(--muted);cursor:pointer;transition:all .15s}
+.chip-filter button.active{color:#b9ff43;border-color:#b9ff43;background:var(--panel)}
+.bulkbar{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(16px);z-index:50;background:var(--panel);border:1px solid var(--accent);border-radius:999px;padding:12px 18px;display:flex;align-items:center;gap:12px;font-size:13px;box-shadow:0 20px 50px -15px #000;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+.bulkbar.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.bulkbar button{background:var(--accent);color:#000;border:none;border-radius:999px;padding:8px 16px;font-weight:760;font-size:12px;cursor:pointer}
+.bulkbar .clearsel{background:none;color:var(--muted);text-decoration:underline;cursor:pointer;border:none;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{position:relative;display:block;background:var(--panel);border:2px solid var(--line);border-radius:16px;overflow:hidden;transition:border-color .2s,transform .2s;opacity:0;transform:translateY(16px)}
+.card.reveal{opacity:1;transform:none;transition:opacity .5s ease,transform .5s ease}
+.card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.card img{display:block;width:100%;aspect-ratio:16/10;object-fit:contain;background:#030505;border-bottom:1px solid var(--line)}
+.card .cc{padding:16px}
+.card .ccmeta{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.card h3{font-size:17px;margin:0 0 7px;font-weight:720}
+.card p{color:var(--muted);font-size:13px;margin:0;line-height:1.5}
+.card .cbwrap{position:absolute;top:10px;left:10px;z-index:3}
+.card .cbwrap input{appearance:none;width:20px;height:20px;border-radius:6px;border:2px solid var(--line);background:#030505cc;cursor:pointer;position:relative}
+.card .cbwrap input:checked{background:var(--accent);border-color:var(--accent)}
+.card .cbwrap input:checked::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#000;font-weight:800}
+.empty{color:var(--muted);text-align:center;padding:60px 0}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<div class="topbar"><div class="wrap">
+  <a class="back" href="index.html">← Dashboard</a>
+  <div class="brand">All Reports</div>
+</div></div>
+<main class="wrap">
+  <h1>Every report, one place.</h1>
+  <p class="sub" id="countLabel"></p>
+  <div class="controls">
+    <div class="search-box">
+      <span>⌕</span>
+      <input id="q" type="text" placeholder="Search by name, domain, or idea (e.g. &quot;rugged device&quot;, &quot;ai device&quot;)…">
+      <span class="clearx" id="clearx">✕</span>
+    </div>
+  </div>
+  <div class="chip-filter" id="domainFilter"></div>
+  <br>
+  <div class="bulkbar" id="bulkbar">
+    <span id="selCount">0 selected</span>
+    <button id="dlSelected">⬇ Download selected as .zip</button>
+    <button class="clearsel" id="clearSel">Clear selection</button>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="emptyMsg" style="display:none">No reports match that search.</div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="data.js"></script>
+<script>
+const $=(s,el=document)=>el.querySelector(s);
+const $$=(s,el=document)=>Array.from(el.querySelectorAll(s));
+let activeDomain = "all";
+const selected = new Set();
+
+function domainName(id){ const d=DOMAINS.find(x=>x.id===id); return d?d.name:id; }
+function domainAccent(id){ const d=DOMAINS.find(x=>x.id===id); return d?d.accent:"#b9ff43"; }
+
+function levenshtein(a,b){
+  const m=a.length,n=b.length; if(!m) return n; if(!n) return m;
+  const dp=Array.from({length:m+1},(_,i)=>[i,...Array(n).fill(0)]);
+  for(let j=0;j<=n;j++) dp[0][j]=j;
+  for(let i=1;i<=m;i++) for(let j=1;j<=n;j++)
+    dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+  return dp[m][n];
+}
+function norm(s){ return (s||"").toLowerCase().replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ").trim(); }
+function scoreReport(r, tokens){
+  const hay = norm([r.title, r.blurb, domainName(r.domain), ...(r.tags||[])].join(" "));
+  const words = hay.split(" ");
+  let score = 0;
+  tokens.forEach(tok=>{
+    if(!tok) return;
+    if(words.some(w=>w===tok || (tok.length>2 && w.startsWith(tok)))){ score += 3; return; }
+    let best = Infinity;
+    words.forEach(w=>{ const d=levenshtein(tok,w); if(d<best) best=d; });
+    if(tok.length>3 && best<=1) score+=2;
+    else if(tok.length>5 && best<=2) score+=1;
+  });
+  return score;
+}
+
+function render(){
+  const q = $("#q").value.trim();
+  const tokens = norm(q).split(" ").filter(Boolean);
+  let list = ALL_REPORTS.filter(r => activeDomain==="all" || r.domain===activeDomain);
+  if(tokens.length){
+    let scored = list.map(r=>({r, s:scoreReport(r,tokens)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s);
+    if(scored.length){ const top=scored[0].s; scored = scored.filter(x=>x.s >= Math.max(top*0.6, 3)); }
+    list = scored.map(x=>x.r);
+  }
+  $("#countLabel").textContent = `${list.length} of ${ALL_REPORTS.length} reports`;
+  $("#emptyMsg").style.display = list.length? "none":"block";
+  $("#grid").innerHTML = list.map(r=>{
+    const viewerUrl = `report-viewer.html?src=${encodeURIComponent(r.file)}&amp;title=${encodeURIComponent(r.title)}&amp;back=reports-overview.html`;
+    return `<div class="card" data-file="${r.file}" style="--accent:${domainAccent(r.domain)}">
+      <div class="cbwrap"><input type="checkbox" class="selbox" data-file="${r.file}" data-title="${r.title}" ${selected.has(r.file)?"checked":""}></div>
+      <a href="${viewerUrl}" style="text-decoration:none;color:inherit">
+        <img src="${r.hero}" alt="${r.title}">
+        <div class="cc"><div class="ccmeta"><span>${domainName(r.domain)}</span><span>${r.date}</span></div><h3>${r.title}</h3><p>${r.blurb}</p></div>
+      </a>
+    </div>`;
+  }).join("");
+  $$(".card").forEach((el,i)=> setTimeout(()=>el.classList.add("reveal"), i*35));
+  $$(".selbox").forEach(cb => cb.addEventListener("click", e=>e.stopPropagation()));
+  $$(".selbox").forEach(cb => cb.addEventListener("change", onSelectChange));
+}
+
+function onSelectChange(e){
+  const file = e.target.dataset.file;
+  if(e.target.checked) selected.add(file); else selected.delete(file);
+  updateBulkBar();
+}
+function updateBulkBar(){
+  $("#bulkbar").classList.toggle("show", selected.size>0);
+  $("#selCount").textContent = `${selected.size} selected`;
+}
+
+$("#domainFilter").innerHTML = `<button data-d="all" class="active">All domains</button>` +
+  DOMAINS.map(d=>`<button data-d="${d.id}">${d.name}</button>`).join("");
+$$("#domainFilter button").forEach(btn=>{
+  btn.style.setProperty("--accent", btn.dataset.d==="all" ? "#b9ff43" : domainAccent(btn.dataset.d));
+  btn.addEventListener("click", ()=>{
+    activeDomain = btn.dataset.d;
+    $$("#domainFilter button").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    render();
+  });
+});
+
+$("#q").addEventListener("input", ()=>{ $("#clearx").classList.toggle("show", $("#q").value.length>0); render(); });
+$("#clearx").addEventListener("click", ()=>{ $("#q").value=""; $("#clearx").classList.remove("show"); render(); });
+$("#q").addEventListener("keydown", e=>{ if(e.key==="Enter") render(); });
+
+$("#clearSel").addEventListener("click", ()=>{ selected.clear(); render(); updateBulkBar(); });
+
+$("#dlSelected").addEventListener("click", async ()=>{
+  try{
+    const zip = new JSZip();
+    for(const file of selected){
+      const res = await fetch(file);
+      if(!res.ok) throw new Error("fetch failed: "+file);
+      const blob = await res.blob();
+      zip.file(file.split("/").pop(), blob);
+    }
+    const content = await zip.generateAsync({type:"blob"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(content);
+    a.download = "trend_reports_selection.zip";
+    document.body.appendChild(a); a.click(); a.remove();
+  }catch(e){
+    alert("Zip download needs this site to be served over http(s) (e.g. GitHub Pages) — it can't read sibling files when opened directly from disk.");
+  }
+});
+
+const urlParams = new URLSearchParams(location.search);
+const prefillQ = urlParams.get("q");
+if (prefillQ) { $("#q").value = prefillQ; $("#clearx").classList.add("show"); }
+const prefillDomain = urlParams.get("domain");
+if (prefillDomain && DOMAINS.some(d=>d.id===prefillDomain)) {
+  activeDomain = prefillDomain;
+  $$("#domainFilter button").forEach(b=>b.classList.toggle("active", b.dataset.d===prefillDomain));
+}
+render();
+</script>
+</body></html>
