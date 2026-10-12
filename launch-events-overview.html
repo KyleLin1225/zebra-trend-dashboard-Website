@@ -1,0 +1,60 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Launch Events · Trend Dashboard</title><style>
+:root{--bg:#070909;--panel:#111515;--line:#2a3030;--ink:#f5f6f1;--muted:#abb2af;--accent:#b9ff43;--max:1240px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.58 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+a{color:inherit}
+.wrap{width:min(var(--max),calc(100% - 32px));margin:auto}
+.topbar{position:sticky;top:0;z-index:20;background:#070909ee;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:16px;padding:16px 0;flex-wrap:wrap}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:2px solid var(--line);border-radius:999px;padding:7px 13px;transition:border-color .15s,color .15s}
+.back:hover{color:var(--ink);border-color:var(--accent)}
+.brand{font-weight:800;letter-spacing:-.02em;font-size:16px}
+main{padding:40px 0 100px}
+h1{font-size:clamp(36px,5vw,54px);font-weight:760;letter-spacing:-.035em;margin:0 0 10px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 30px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.card{position:relative;display:block;background:var(--panel);border:2px solid var(--line);border-radius:18px;overflow:hidden;transition:border-color .2s,transform .2s;opacity:0;transform:translateY(16px)}
+.card.reveal{opacity:1;transform:none;transition:opacity .5s ease,transform .5s ease}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#030505;border-bottom:1px solid var(--line)}
+.card .cc{padding:20px 22px 22px}
+.card .ccmeta{font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;font-weight:800;margin-bottom:8px}
+.card h3{font-size:24px;margin:0 0 10px;font-weight:730;letter-spacing:-.02em}
+.card p{color:var(--muted);font-size:13.5px;margin:0 0 14px;line-height:1.5}
+.card .meta-row{display:flex;gap:14px;font-size:11px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.card .meta-row b{color:var(--ink)}
+.empty{color:var(--muted);text-align:center;padding:60px 0}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<div class="topbar"><div class="wrap">
+  <a class="back" href="index.html">← Dashboard</a>
+  <div class="brand">Launch Events</div>
+</div></div>
+<main class="wrap">
+  <h1>Every launch event, one place.</h1>
+  <p class="sub" id="countLabel"></p>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="emptyMsg" style="display:none">No launch events yet.</div>
+</main>
+<script src="data.js"></script>
+<script>
+const $=(s,el=document)=>el.querySelector(s);
+const $$=(s,el=document)=>Array.from(el.querySelectorAll(s));
+
+$("#countLabel").textContent = `${LAUNCH_EVENTS.length} launch event${LAUNCH_EVENTS.length===1?"":"s"}`;
+$("#emptyMsg").style.display = LAUNCH_EVENTS.length ? "none" : "block";
+$("#grid").innerHTML = LAUNCH_EVENTS.map(ev => {
+  const hero = (ev.reports[0]||{}).hero || "";
+  return `<a class="card" href="${ev.indexFile}">
+    <img src="${hero}" alt="${ev.name}">
+    <div class="cc">
+      <div class="ccmeta">${ev.dateRange}</div>
+      <h3>${ev.shortName || ev.name}</h3>
+      <p>${ev.name}</p>
+      <div class="meta-row"><span><b>${ev.reports.length}</b> reports</span></div>
+    </div>
+  </a>`;
+}).join("");
+$$(".card").forEach((el,i)=> setTimeout(()=>el.classList.add("reveal"), i*60));
+</script>
+</body></html>

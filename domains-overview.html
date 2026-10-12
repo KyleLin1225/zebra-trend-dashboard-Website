@@ -1,0 +1,65 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Domains · Trend Dashboard</title><style>
+:root{--bg:#070909;--panel:#111515;--line:#2a3030;--ink:#f5f6f1;--muted:#abb2af;--accent:#b9ff43;--max:1240px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.58 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(var(--max),calc(100% - 32px));margin:auto}
+.topbar{position:sticky;top:0;z-index:20;background:#070909ee;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:16px;padding:16px 0;flex-wrap:wrap}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:2px solid var(--line);border-radius:999px;padding:7px 13px;transition:border-color .15s,color .15s}
+.back:hover{color:var(--ink);border-color:var(--accent)}
+.brand{font-weight:800;letter-spacing:-.02em;font-size:16px}
+main{padding:40px 0 100px}
+h1{font-size:clamp(36px,5vw,54px);font-weight:760;letter-spacing:-.035em;margin:0 0 10px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 30px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card{position:relative;display:block;background:var(--panel);border:2px solid var(--line);border-radius:18px;overflow:hidden;transition:border-color .2s,transform .2s;opacity:0;transform:translateY(16px)}
+.card.reveal{opacity:1;transform:none;transition:opacity .5s ease,transform .5s ease}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:center 22%;background:#030505;border-bottom:1px solid var(--line)}
+.card .cc{padding:20px 22px 22px}
+.card .bar{height:4px;border-radius:4px;width:44px;margin-bottom:12px}
+.card h3{font-size:21px;margin:0 0 8px;font-weight:730;letter-spacing:-.02em}
+.card p{color:var(--muted);font-size:13px;margin:0 0 14px;line-height:1.55}
+.card .meta-row{display:flex;gap:14px;font-size:11px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.card .meta-row b{color:var(--ink)}
+.card .overlay{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:26px;opacity:0;transition:opacity .25s;pointer-events:none}
+.card:hover .overlay{opacity:.85}
+.card .overlay span{color:#fff;font-weight:730;font-size:14px;letter-spacing:-.02em;text-shadow:0 2px 10px rgba(0,0,0,.55)}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<div class="topbar"><div class="wrap">
+  <a class="back" href="index.html">← Dashboard</a>
+  <div class="brand">Domains</div>
+</div></div>
+<main class="wrap">
+  <h1>Every domain, one place.</h1>
+  <p class="sub" id="countLabel"></p>
+  <div class="grid" id="grid"></div>
+</main>
+<script src="data.js"></script>
+<script>
+const $=(s,el=document)=>el.querySelector(s);
+const $$=(s,el=document)=>Array.from(el.querySelectorAll(s));
+const DOMAIN_PAGE = { automotive:"Automotive", ai:"AI_Devices", wearables:"Wearable_Devices", robotics:"Robotics", industrial:"Industrial_Devices", sports:"Sports_Industry", mobile:"Mobile_Devices", consumer:"Consumer_Electronics" };
+
+$("#countLabel").textContent = `${DOMAINS.length} domains this period`;
+$("#grid").innerHTML = DOMAINS.map(d => {
+  const reportCount = ALL_REPORTS.filter(r=>r.domain===d.id).length;
+  const trendCount = Math.min((DOMAIN_TRENDS[d.id]||[]).length, 3);
+  const repHero = d.cardImage || (ALL_REPORTS.find(r=>r.domain===d.id)||{}).hero || "";
+  return `<a class="card" href="domains/${DOMAIN_PAGE[d.id]}.html" style="--accent:${d.accent}">
+    <img src="${repHero}" alt="${d.name}">
+    <div class="cc">
+      <div class="bar" style="background:${d.accent}"></div>
+      <h3>${d.name}</h3>
+      <p>${d.blurb}</p>
+      <div class="meta-row"><span><b>${reportCount}</b> reports</span><span><b>${trendCount}</b> trends</span></div>
+    </div>
+    <div class="overlay" style="background:linear-gradient(to top, ${d.accent} 0%, transparent 65%)"><span>Go to domain dashboard →</span></div>
+  </a>`;
+}).join("");
+$$(".card").forEach((el,i)=> setTimeout(()=>el.classList.add("reveal"), i*60));
+</script>
+</body></html>

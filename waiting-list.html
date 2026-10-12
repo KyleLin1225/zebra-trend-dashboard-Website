@@ -1,0 +1,108 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Waiting List · Trend Dashboard</title><style>
+:root{--bg:#070909;--panel:#111515;--line:#2a3030;--ink:#f5f6f1;--muted:#abb2af;--accent:#b9ff43;--max:860px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.58 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+a{color:inherit}
+.wrap{width:min(var(--max),calc(100% - 32px));margin:auto}
+.topbar{position:sticky;top:0;z-index:20;background:#070909ee;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:16px;padding:16px 0;flex-wrap:wrap;max-width:1240px}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:2px solid var(--line);border-radius:999px;padding:7px 13px;transition:border-color .15s,color .15s}
+.back:hover{color:var(--ink);border-color:var(--accent)}
+.brand{font-weight:800;letter-spacing:-.02em;font-size:16px}
+main{padding:40px 0 140px}
+h1{font-size:clamp(32px,4.4vw,46px);font-weight:760;letter-spacing:-.03em;margin:0 0 10px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 8px}
+.hint{color:var(--muted);font-size:12.5px;margin:0 0 30px}
+.bulkbar{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(16px);z-index:50;background:var(--panel);border:1px solid var(--accent);border-radius:999px;padding:12px 18px;display:flex;align-items:center;gap:12px;font-size:13px;box-shadow:0 20px 50px -15px #000;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+.bulkbar.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.bulkbar button{background:var(--accent);color:#000;border:none;border-radius:999px;padding:8px 16px;font-weight:760;font-size:12px;cursor:pointer}
+.bulkbar .clearsel{background:none;color:var(--muted);text-decoration:underline;cursor:pointer;border:none;font-size:12px}
+.selectall{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.selectall button{background:var(--panel);border:2px solid var(--line);border-radius:999px;color:var(--ink);font-size:12px;font-weight:700;padding:7px 14px;cursor:pointer;transition:border-color .15s}
+.selectall button:hover{border-color:var(--accent)}
+.list{display:flex;flex-direction:column;gap:10px}
+.item{display:flex;align-items:center;gap:14px;background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:14px 16px;transition:border-color .2s}
+.item.selected{border-color:var(--accent)}
+.item input[type=checkbox]{appearance:none;width:20px;height:20px;border-radius:6px;border:2px solid var(--line);background:#030505cc;cursor:pointer;position:relative;flex:0 0 auto}
+.item input:checked{background:var(--accent);border-color:var(--accent)}
+.item input:checked::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#000;font-weight:800}
+.item .txt{flex:1;min-width:0}
+.item .txt .title{font-size:15px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .txt .date{font-size:11px;color:var(--muted);margin-top:3px}
+.item .del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;flex:0 0 auto;transition:color .15s;padding:4px}
+.item .del:hover{color:#ff5c5c}
+.empty{color:var(--muted);text-align:center;padding:60px 0}
+</style></head><body>
+<div class="topbar"><div class="wrap">
+  <a class="back" href="index.html">← Dashboard</a>
+  <div class="brand">Waiting List</div>
+</div></div>
+<main class="wrap">
+  <h1>Suggested topics, waiting to be covered.</h1>
+  <p class="sub" id="countLabel"></p>
+  <p class="hint">Saved on this browser only — suggestions aren't shared across devices.</p>
+  <div class="selectall">
+    <button id="selectAllBtn">Select all</button>
+  </div>
+  <div class="list" id="list"></div>
+  <div class="empty" id="emptyMsg" style="display:none">No suggestions yet — add one from the dashboard sidebar.</div>
+</main>
+<div class="bulkbar" id="bulkbar">
+  <span id="selCount">0 selected</span>
+  <button id="deleteSelected">🗑 Delete selected</button>
+  <button class="clearsel" id="clearSel">Clear selection</button>
+</div>
+<script>
+const $=(s,el=document)=>el.querySelector(s);
+const $$=(s,el=document)=>Array.from(el.querySelectorAll(s));
+function loadSuggestions(){ try{ return JSON.parse(localStorage.getItem("trendSuggestions")||"[]"); }catch(e){ return []; } }
+function saveSuggestions(list){ localStorage.setItem("trendSuggestions", JSON.stringify(list)); }
+function escapeHtml(s){ return s.replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function fmtTs(ts){ return new Date(ts).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"}); }
+
+const selected = new Set();
+
+function render(){
+  const list = loadSuggestions();
+  $("#countLabel").textContent = `${list.length} suggested topic${list.length===1?"":"s"}`;
+  $("#emptyMsg").style.display = list.length ? "none" : "block";
+  $("#list").innerHTML = list.map(s => `
+    <div class="item ${selected.has(s.ts)?"selected":""}" data-ts="${s.ts}">
+      <input type="checkbox" class="selbox" data-ts="${s.ts}" ${selected.has(s.ts)?"checked":""}>
+      <div class="txt"><div class="title">${escapeHtml(s.text)}</div><div class="date">${fmtTs(s.ts)}</div></div>
+      <button class="del" data-ts="${s.ts}" title="Delete">✕</button>
+    </div>
+  `).join("");
+  $$(".selbox").forEach(cb => cb.addEventListener("change", e=>{
+    const ts = e.target.dataset.ts;
+    if (e.target.checked) selected.add(ts); else selected.delete(ts);
+    e.target.closest(".item").classList.toggle("selected", e.target.checked);
+    updateBulkBar();
+  }));
+  $$(".del").forEach(btn => btn.addEventListener("click", ()=>{
+    const ts = btn.dataset.ts;
+    saveSuggestions(loadSuggestions().filter(s => String(s.ts) !== ts));
+    selected.delete(ts);
+    render(); updateBulkBar();
+  }));
+}
+function updateBulkBar(){
+  $("#bulkbar").classList.toggle("show", selected.size > 0);
+  $("#selCount").textContent = `${selected.size} selected`;
+}
+$("#selectAllBtn").addEventListener("click", ()=>{
+  const list = loadSuggestions();
+  if (selected.size === list.length) { selected.clear(); }
+  else { list.forEach(s => selected.add(String(s.ts))); }
+  render(); updateBulkBar();
+});
+$("#clearSel").addEventListener("click", ()=>{ selected.clear(); render(); updateBulkBar(); });
+$("#deleteSelected").addEventListener("click", ()=>{
+  saveSuggestions(loadSuggestions().filter(s => !selected.has(String(s.ts))));
+  selected.clear();
+  render(); updateBulkBar();
+});
+
+render();
+</script>
+</body></html>
