@@ -70,4 +70,4 @@ main.content{padding:16px 0 90px}
 .sources-section code{color:#dfe3e1}
 
 @media(max-width:900px){.report-grid,.stat-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){.report-grid,.stat-row{grid-template-columns:1fr}.signal p.detail{padding-right:0}.signal-bg{height:300px}.signal-body{height:300px;padding:22px 20px 20px}.expander{top:236px}}
+@media(max-width:600px){.report-grid,.stat-row{grid-template-columns:1fr}.signal p.detail{padding-right:44px}.signal-bg{height:300px}.signal-body{height:300px;padding:22px 20px 20px}.expander{top:236px}.rep-arrow{width:40px;height:40px;font-size:16px}}
