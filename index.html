@@ -59,7 +59,7 @@ body:not(.sidebar-collapsed) .sb-backdrop{opacity:1;pointer-events:auto}
 /* ---------- main ---------- */
 .main{flex:1;min-width:0}
 .topbar{position:sticky;top:0;z-index:20;background:#070909ee;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.topbar-inner{display:flex;align-items:center;gap:14px;padding:14px 24px;flex-wrap:wrap;transition:padding-left .35s cubic-bezier(.4,0,.2,1)}
+.topbar-inner{position:relative;display:flex;align-items:center;gap:14px;padding:14px 24px;flex-wrap:wrap;transition:padding-left .35s cubic-bezier(.4,0,.2,1)}
 .hbtn{width:38px;height:38px;border-radius:10px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:border-color .15s,transform .15s;flex:0 0 auto}
 .hbtn:hover{border-color:var(--accent);transform:scale(1.04)}
 .fixed-toggle{display:none;position:fixed;top:16px;left:16px;z-index:60}
@@ -79,6 +79,8 @@ body.sidebar-collapsed .topbar-inner{padding-left:66px}
 .search-box button:hover{background:var(--line);color:var(--ink)}
 .search-box .sx{display:none}
 .search-box .sx.show{display:flex}
+.search-icon-btn{display:none;width:38px;height:38px;border-radius:50%;border:2px solid var(--line);background:var(--panel);align-items:center;justify-content:center;color:var(--ink);cursor:pointer;font-size:16px;flex:0 0 auto;margin-left:auto;transition:border-color .15s}
+.search-icon-btn:hover{border-color:var(--accent)}
 .results{position:absolute;top:calc(100% + 8px);left:0;right:0;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 20px 50px -20px #000;display:none;z-index:30;max-height:70vh;overflow-y:auto}
 .results.show{display:block;animation:dropin .2s ease}
 @keyframes dropin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
@@ -148,7 +150,7 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
    bounding box, so the highest-heat keywords sit in the middle and the whole cluster reads as
    a landscape rectangle rather than a circular blob. */
 .chip-cloud{position:relative;height:560px;margin-bottom:44px}
-.chip{position:absolute;top:50%;left:50%;background:var(--panel);border:2px solid var(--line);border-radius:999px;color:#dfe3e1;cursor:pointer;font-weight:600;white-space:nowrap;transform:translate(-50%,-50%) translate(var(--tx,0px),var(--ty,0px)) scale(1);transition:border-color .15s,color .15s}
+.chip{position:absolute;top:50%;left:50%;background:var(--panel);border:2px solid var(--line);border-radius:999px;color:#dfe3e1;cursor:pointer;font-weight:600;white-space:nowrap;transform:translate(-50%,-50%) translate(var(--tx,0px),var(--ty,0px)) scale(var(--mag,1));transition:border-color .15s,color .15s}
 .chip:hover{border-color:var(--accent);color:var(--accent);transform:translate(-50%,-50%) translate(var(--tx,0px),var(--ty,0px)) scale(1.1);z-index:10}
 .chip.kw-1{font-size:19px;padding:15px 23px;opacity:1}
 .chip.kw-2{font-size:17px;padding:13px 20px;opacity:.9}
@@ -158,7 +160,19 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 .chip.kw-6{font-size:11px;padding:7px 11px;opacity:.44}
 .chip.kw-7{font-size:10px;padding:6px 9px;opacity:.36}
 .chip.kw-8{font-size:9.5px;padding:5px 8px;opacity:.28}
-@media(max-width:700px){.chip-cloud{position:static;display:flex;flex-wrap:wrap;gap:8px;height:auto}.chip{position:static;transform:none!important}.chip:hover{transform:scale(1.1)!important}}
+/* Mobile: the flat scrolling pill list read as an unreadable wall of text, so instead the
+   full desktop spiral layout is kept (same algorithm, bigger canvas) behind a fixed-size
+   "porthole" — drag to pan around it, Apple Watch app-grid style, with items nearest the
+   viewport's center growing slightly (see initMobileChipPan in the script below). */
+@media(max-width:700px){
+  .chip-cloud-viewport{position:relative;height:380px;overflow:hidden;border-radius:16px;border:2px solid var(--line);margin-bottom:16px;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+  .chip-cloud-viewport.dragging{cursor:grabbing}
+  .chip-cloud-viewport::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 40px 10px var(--bg)}
+  .chip-cloud{position:absolute;top:0;left:0;height:520px;width:1100px;margin-bottom:0}
+  .chip-cloud .chip{transition:none}
+}
+.chip-drag-hint{display:none;text-align:center;font-size:11px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin:-8px 0 16px}
+@media(max-width:700px){.chip-drag-hint{display:block}}
 
 .cat-section-label{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 16px}
 .cat-controls{display:flex;gap:8px;align-items:center}
@@ -197,7 +211,15 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 
 .sidebar{box-shadow:0 0 60px #000}
 @media(max-width:1000px){.stat-row,.feed,.cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:620px){.stat-row,.feed{grid-template-columns:1fr}.search-wrap{flex:1 1 auto;width:100%;order:3}.topbar-inner{gap:10px}.signal p.detail{padding-right:44px}.signal-bg{height:300px}.signal-body{height:300px;padding:22px 20px 20px}.expander{top:236px}.cat-tile{height:300px}.cat-tile .cat-img{height:224px}.cat-tile .cat-body{gap:4px}}
+@media(max-width:620px){.stat-row,.feed{grid-template-columns:1fr}.topbar-inner{gap:10px}.signal p.detail{padding-right:44px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.signal p.detail.expanded{display:block;overflow:visible}.signal-bg{height:300px}.signal-body{height:300px;padding:22px 20px 20px}.signal.detail-open .signal-body{height:auto;min-height:300px}.expander{top:236px}.cat-tile{height:300px}.cat-tile .cat-img{height:224px}.cat-tile .cat-body{gap:4px}
+  /* The full search bar no longer fits beside the brand on one row at phone widths — collapse
+     it to an icon aligned with the hamburger/brand row, expanding into a dropdown on tap
+     instead of permanently claiming its own full-width row below the header. */
+  .search-icon-btn{display:flex}
+  .search-wrap{position:absolute;right:16px;top:100%;margin-top:8px;width:min(340px,calc(100vw - 32px));min-width:0;flex:0 0 auto;max-width:none;z-index:30;opacity:0;pointer-events:none;transform:translateY(-6px);transition:opacity .15s,transform .15s}
+  .search-wrap.open{opacity:1;pointer-events:auto;transform:translateY(0)}
+  .search-box{box-shadow:0 12px 30px rgba(0,0,0,.5)}
+}
 /* iPhone-Pro-Max-class phones (~415-480px): .cat-tile's width is derived from its height via
    aspect-ratio, so the 620px breakpoint's height (tuned for narrower phones) renders a card
    noticeably wider than these screens — cut off mid-card in the slider instead of fitting one
@@ -245,7 +267,8 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
   <div class="main">
     <div class="topbar"><div class="topbar-inner">
       <div class="brand"><span class="livedot"></span>Trend Dashboard</div>
-      <div class="search-wrap">
+      <button class="search-icon-btn" id="searchToggle" title="Search">⌕</button>
+      <div class="search-wrap" id="searchWrap">
         <div class="search-box">
           <span>⌕</span>
           <input id="q" type="text" placeholder="Search e.g. &quot;rugged device&quot;, &quot;ai device&quot;…">
@@ -269,7 +292,10 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
       <div class="signals" id="signalsGrid"></div>
 
       <div class="section-label">Trending keywords — click to jump to related reports</div>
-      <div class="chip-cloud" id="chipCloud"></div>
+      <div class="chip-cloud-viewport" id="chipCloudViewport">
+        <div class="chip-cloud" id="chipCloud"></div>
+      </div>
+      <div class="chip-drag-hint">↔ Drag to explore</div>
 
       <div class="section-label cat-section-label">
         <span>Domains this period</span>
@@ -483,6 +509,15 @@ $("#signalsGrid").innerHTML = TOP_SIGNALS.map((s,i) => {
 $$(".expander").forEach(btn => btn.addEventListener("click", ()=>{
   btn.classList.toggle("open");
   $("#ev-"+btn.dataset.i).classList.toggle("open");
+  // On mobile the detail paragraph is itself clamped to 2 lines (see CSS) — the same tap that
+  // reveals the evidence cards also unclamps it, rather than adding a second "more" control.
+  // The card also gets a "detail-open" class so .signal-body can grow past its normal fixed
+  // height to fit the now-unclamped text instead of clipping it against the hero image.
+  const signal = btn.closest(".signal");
+  const detail = signal.querySelector("p.detail");
+  const isOpen = btn.classList.contains("open");
+  if (detail) detail.classList.toggle("expanded", isOpen);
+  signal.classList.toggle("detail-open", isOpen);
 }));
 
 /* ---------- trending keywords (heat-sized pills, spiral-packed into a rectangular cluster) ---------- */
@@ -540,7 +575,9 @@ $$("#chipCloud .chip").forEach(el => el.addEventListener("click", ()=>
 // items get first pick near the center.
 function layoutKeywordCloud(){
   const cloud = $("#chipCloud");
-  if (window.innerWidth < 700) return; // mobile falls back to plain flex-wrap flow (see CSS)
+  // Runs on mobile too now — the canvas is just a different fixed size there (set via CSS),
+  // panned through a fixed "porthole" instead of reflowed into a scrolling list (see CSS and
+  // initMobileChipPan below).
   const chips = $$("#chipCloud .chip");
   // .chip has no transition on `transform` — pills are placed directly at their final spot,
   // every time (initial load, resize, restored scroll position), with no slide/reveal motion.
@@ -575,7 +612,7 @@ function layoutKeywordCloud(){
     const spreadWeight = rankPct*rankPct*2.4;
     let best = null, bestScore = Infinity;
     let fallback = null, fallbackOverlap = Infinity;
-    const gridStep = 8;
+    const gridStep = 6;
     for (let y = hh; y <= h-hh; y += gridStep) {
       for (let x = hw; x <= w-hw; x += gridStep) {
         let overlapArea = 0, alignPenalty = 0, minDistNormSq = Infinity;
@@ -606,9 +643,69 @@ function layoutKeywordCloud(){
     el.style.setProperty("--ty", (best.y-cy).toFixed(1) + "px");
   });
 }
+// Mobile: the spiral layout above still runs (against the fixed canvas size set in CSS), but
+// the canvas is bigger than the visible "porthole" — drag to pan it, Apple Watch app-grid
+// style. Chips nearer the porthole's center are scaled up a touch so the drag itself feels
+// alive, echoing that same lens effect, without animating anything on a timer.
+function initMobileChipPan(){
+  const viewport = $("#chipCloudViewport");
+  const cloud = $("#chipCloud");
+  if (!viewport || !cloud || window.innerWidth >= 700) { if (cloud) cloud.style.transform = ""; return; }
+  const vw = viewport.clientWidth, vh = viewport.clientHeight;
+  const cw = cloud.offsetWidth, ch = cloud.offsetHeight;
+  const clampX = x => Math.min(0, Math.max(vw - cw, x));
+  const clampY = y => Math.min(0, Math.max(vh - ch, y));
+  let panX = clampX(-(cw/2 - vw/2));
+  let panY = clampY(-(ch/2 - vh/2));
+  const chips = $$("#chipCloud .chip");
+  function render(){
+    cloud.style.transform = `translate(${panX}px, ${panY}px)`;
+    const radius = Math.max(vw, vh) * 0.45;
+    chips.forEach(chip => {
+      const tx = parseFloat(chip.style.getPropertyValue("--tx")) || 0;
+      const ty = parseFloat(chip.style.getPropertyValue("--ty")) || 0;
+      const screenX = cw/2 + tx + panX, screenY = ch/2 + ty + panY;
+      const dist = Math.hypot(screenX - vw/2, screenY - vh/2);
+      const t = Math.max(0, 1 - dist/radius);
+      chip.style.setProperty("--mag", (1 + t*0.16).toFixed(2));
+    });
+  }
+  render();
+  if (viewport.dataset.panBound) return; // listeners only need attaching once per page load
+  viewport.dataset.panBound = "1";
+  let didDrag = false, startX = 0, startY = 0, baseX = 0, baseY = 0, raf = null;
+  // Deliberately NOT using setPointerCapture: capturing the pointer on the viewport also
+  // redirects the synthesized "click" event's target to the viewport itself in this browser,
+  // which silently broke every chip's tap-to-navigate — not just during an actual drag, ALL
+  // the time. Tracking move/up on window while a gesture is active gets the same "keep
+  // following the finger past the box edge" behavior without hijacking click dispatch.
+  function onMove(e){
+    const dx = e.clientX - startX, dy = e.clientY - startY;
+    if (Math.hypot(dx, dy) > 6) didDrag = true;
+    panX = clampX(baseX + dx);
+    panY = clampY(baseY + dy);
+    if (!raf) raf = requestAnimationFrame(() => { render(); raf = null; });
+  }
+  function onUp(){
+    viewport.classList.remove("dragging");
+    window.removeEventListener("pointermove", onMove);
+    window.removeEventListener("pointerup", onUp);
+  }
+  viewport.addEventListener("pointerdown", e => {
+    didDrag = false; startX = e.clientX; startY = e.clientY; baseX = panX; baseY = panY;
+    viewport.classList.add("dragging");
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+  });
+  // A drag that passed over a chip would otherwise still fire that chip's own click handler
+  // (and navigate away) the moment the finger lifts — swallow the click only when this
+  // gesture actually moved, so a real tap still navigates normally.
+  viewport.addEventListener("click", e => { if (didDrag) { e.stopPropagation(); e.preventDefault(); } }, true);
+}
 layoutKeywordCloud();
+initMobileChipPan();
 let kwResizeT;
-window.addEventListener("resize", ()=>{ clearTimeout(kwResizeT); kwResizeT = setTimeout(layoutKeywordCloud, 150); });
+window.addEventListener("resize", ()=>{ clearTimeout(kwResizeT); kwResizeT = setTimeout(()=>{ layoutKeywordCloud(); initMobileChipPan(); }, 150); });
 
 /* ---------- domains this period (slider by default, "show all" switches to full grid) ---------- */
 $("#catGrid").innerHTML = DOMAINS.map(d => {
@@ -743,5 +840,16 @@ $("#q").addEventListener("keydown", e=>{ if(e.key==="Enter") runSearch(); });
 $("#runSearch").addEventListener("click", runSearch);
 $("#clearx").addEventListener("click", ()=>{ $("#q").value=""; $("#clearx").classList.remove("show"); $("#results").classList.remove("show"); });
 document.addEventListener("click", (e)=>{ if(!e.target.closest(".search-wrap")) $("#results").classList.remove("show"); });
+
+/* ---------- mobile search: collapses to an icon beside the brand, expands as a dropdown ---------- */
+$("#searchToggle").addEventListener("click", (e)=>{
+  e.stopPropagation();
+  $("#searchWrap").classList.toggle("open");
+  if ($("#searchWrap").classList.contains("open")) $("#q").focus();
+});
+document.addEventListener("click", (e)=>{
+  if (!e.target.closest(".search-wrap") && !e.target.closest("#searchToggle")) $("#searchWrap").classList.remove("open");
+});
+document.addEventListener("keydown", (e)=>{ if (e.key==="Escape") $("#searchWrap").classList.remove("open"); });
 </script>
 </body></html>

@@ -141,6 +141,15 @@
   document.querySelectorAll(".expander").forEach(btn => btn.addEventListener("click", ()=>{
     btn.classList.toggle("open");
     document.getElementById("dev-"+btn.dataset.i).classList.toggle("open");
+    // On mobile the detail paragraph is itself clamped to 2 lines (see CSS) — the same tap
+    // that reveals the evidence cards also unclamps it, rather than a second "more" control.
+    // The card also gets "detail-open" so .signal-body can grow past its fixed height to fit
+    // the now-unclamped text instead of clipping it against the hero image.
+    const signal = btn.closest(".signal");
+    const detail = signal.querySelector("p.detail");
+    const isOpen = btn.classList.contains("open");
+    if (detail) detail.classList.toggle("expanded", isOpen);
+    signal.classList.toggle("detail-open", isOpen);
   }));
 
   // Reports are paginated 6-at-a-time instead of all shown at once, with left/right arrows —
