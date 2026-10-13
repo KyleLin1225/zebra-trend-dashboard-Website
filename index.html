@@ -211,7 +211,7 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 
 .sidebar{box-shadow:0 0 60px #000}
 @media(max-width:1000px){.stat-row,.feed,.cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:620px){.stat-row,.feed{grid-template-columns:1fr}.topbar-inner{gap:10px}.signal p.detail{padding-right:44px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.signal p.detail.expanded{display:block;overflow:visible}.signal-bg{height:300px}.signal-body{height:300px;padding:22px 20px 20px}.signal.detail-open .signal-body{height:auto;min-height:300px}.expander{top:236px}.cat-tile{height:300px}.cat-tile .cat-img{height:224px}.cat-tile .cat-body{gap:4px}
+@media(max-width:620px){.stat-row,.feed{grid-template-columns:1fr}.topbar-inner{gap:10px}.signal p.detail{padding-right:44px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.signal p.detail.expanded{display:block;overflow:visible}.signal-bg{height:300px}.signal-body{height:300px;padding:22px 20px 20px}.signal.detail-open .signal-body{height:auto;min-height:300px}.expander{top:236px}.cat-tile{height:300px}.cat-tile .cat-img{height:210px}.cat-tile .cat-body{gap:4px}
   /* The full search bar no longer fits beside the brand on one row at phone widths — collapse
      it to an icon aligned with the hamburger/brand row, expanding into a dropdown on tap
      instead of permanently claiming its own full-width row below the header. */
@@ -224,7 +224,13 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
    aspect-ratio, so the 620px breakpoint's height (tuned for narrower phones) renders a card
    noticeably wider than these screens — cut off mid-card in the slider instead of fitting one
    card per swipe. Re-derive height so width lands at the actual content column width here. */
-@media(max-width:480px){.cat-tile{height:265px}.cat-tile .cat-img{height:195px}}
+/* Fitting the card's width to the actual screen at this breakpoint by shrinking HEIGHT (since
+   width derives from height via the 6:4 aspect-ratio) squeezed the title/stats zone down to
+   just 70px — tighter than the breakpoint above it, which is backwards: this is the breakpoint
+   that needs MORE room, not less, since it targets the narrowest phones. Using a taller aspect
+   ratio here instead keeps the same target width while giving the body noticeably more height
+   to work with, independent of exactly how tall any given browser renders the title text. */
+@media(max-width:480px){.cat-tile{height:328px;aspect-ratio:4/3.3}.cat-tile .cat-img{height:210px}}
 /* Touch targets under ~40px are hard to tap reliably — the circular nav arrows were sized for
    mouse-pointer precision (30px) and need to grow on touch devices. */
 @media(max-width:620px){.cat-arrow{width:40px;height:40px;font-size:16px}}
