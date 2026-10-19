@@ -2,16 +2,16 @@
 // Folder convention: weeks/<W##>/... for weekly-bundled reports, singles/... for standalone reports.
 // report.file is ROOT-RELATIVE (resolved against the site root, used by report-viewer.html as an iframe src).
 
-const PERIOD_LABEL = "2026-09-21 – 2026-10-12";
+const PERIOD_LABEL = "2026-09-21 – 2026-10-18";
 
 const DOMAINS = [
   { id: "automotive", name: "Automotive & Mobility", accent: "#D40000", // Ferrari red
-    blurb: "Eleven 2026 launches — from Ferrari's first EV to six Stellantis concept cars at Mondial de l'Auto — converge on keeping tactile, locatable controls inside increasingly digital, automated cabins.",
-    application: "Physical controls survive even as automotive cabins go fully digital. Ferrari, Tesla and six Stellantis concepts all keep real buttons and dials for the actions that matter most. Zebra can apply the same discipline to vehicle-mounted computers, giving every automated mount an explicit locked and failed state.",
+    blurb: "Fourteen 2026 launches — from Ferrari's first EV to six Stellantis concept cars and Renault, Alpine and Tesla's Paris Motor Show reveals — converge on keeping tactile, locatable controls and legible system state inside increasingly digital, automated cabins.",
+    application: "Physical controls survive even as automotive cabins go fully digital. Ferrari, Tesla and six Stellantis concepts all keep real buttons and dials for the actions that matter most, while Renault, Alpine and the Roadster extend the same discipline to cabin layout, repeated identity cues and concealed active systems. Zebra can apply the same discipline to vehicle-mounted computers, giving every automated mount an explicit locked and failed state.",
     cardImage: "https://vrrb-prod-s3.s3.us-west-1.amazonaws.com/strapi/Screenshot_2026_04_01_165401_7665b911db.jpg" },
   { id: "ai",         name: "Sensing & Capture Devices", accent: "#81D8D0", // Tiffany blue
-    blurb: "Ray-Ban's audio and capture-enabled glasses, Meta's VR headset and Ring's camera family all treat sensing state and fit as explicit design problems.",
-    application: "Sensing state has to be unmistakable to the wearer and everyone nearby. Ray-Ban Meta's camera lines and Ring's camera family pair a physical capture cue with swappable fit parts. Zebra can apply the same unmistakable sensing indicator and tactile fallback to its worker-worn hardware.",
+    blurb: "Ray-Ban's audio and capture-enabled glasses, Meta's VR headset, Ring's camera family, XREAL's spatial display and Sony's wireless mic kit all treat sensing state, fit and point-of-use confirmation as explicit design problems.",
+    application: "Sensing state has to be unmistakable to the wearer and everyone nearby. Ray-Ban Meta's camera lines and Ring's camera family pair a physical capture cue with swappable fit parts, while XREAL and Sony show that fit calibration and point-of-use state confirmation matter just as much. Zebra can apply the same unmistakable sensing indicator, tactile fallback and visible state confirmation to its worker-worn hardware.",
     cardImage: "https://images.ctfassets.net/a3peezndovsu/54lfzLXdIk48j3MEALH8Vy/50d100a828eef652c87f8cf33c49f360/ring_pan-tilt_indoor_cam_2K_lifestyle_atf_1500x1500_03.jpg?w=1100&q=80" },
   { id: "wearables",  name: "Wearable Devices",       accent: "#8B5CF6", // purple
     blurb: "Amazfit's dual-solar watch and Logitech's Zone Vibe Pro headset both treat power recovery and serviceable wear parts as visible product features.",
@@ -33,13 +33,50 @@ const DOMAINS = [
     blurb: "Samsung's Galaxy Tab, Amazon's Kindle and Alexa Tablets, and Apple's foldable iPhone Duo, all treat attachment, hinge and control placement as explicit, testable decisions on a familiar handheld device.",
     application: "Attachments and controls deserve their own tested state, not an assumption. Galaxy Tab, Kindle and the Alexa Tablets all treat a keyboard attachment or control placement as a deliberate design decision. Zebra can validate the same attachment stability and glove-tested control layout before freezing a handheld's design.",
     cardImage: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/P1011550.jpg?w=800" },
-  { id: "consumer",   name: "Enterprise Video Conferencing Systems", accent: "#14B8A6", // teal
-    blurb: "Logitech's Rally Bar 2 and Rally System 2 Pro turn enterprise room hardware into serviceable, centrally managed modules rather than sealed appliances.",
-    application: "Enterprise hardware should be serviceable without a full teardown. Rally Bar 2's pivoting mount and Rally System 2 Pro's modular components both expose service access and central management. Zebra can apply the same swing-access mount and modular configuration to its kiosks and terminals.",
+  { id: "consumer",   name: "Shared Display Systems", accent: "#14B8A6", // teal
+    blurb: "Logitech's Rally Bar 2 and Rally System 2 Pro turn enterprise room hardware into serviceable, centrally managed modules, while Apple's HomeView extends the same shared-screen logic into a proximity- and identity-aware home display.",
+    application: "Enterprise hardware should be serviceable without a full teardown. Rally Bar 2's pivoting mount and Rally System 2 Pro's modular components both expose service access and central management, while HomeView shows a shared screen can also adapt its density and access to who is approaching. Zebra can apply the same swing-access mount, modular configuration and distance/identity-aware interface to its kiosks and terminals.",
     cardImage: "https://resource.logitech.com/w_1200,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/rally-bar-2/rally-bar2-video-bar-install-minutes-desktop-2.jpg?v=1" }
 ];
 
 const WEEKS = [
+  {
+    id: "W42", year: 2026, label: "W42", dateRange: "12 – 18 Oct 2026",
+    indexFile: "weeks/W42/index.html",
+    zipName: "Weekly_Design_Trend_Report_2026-W42_2026-10-12_to_10-18.zip",
+    reports: [
+      { title: "XREAL 1 Pro+", date: "2026-10-18", domain: "ai",
+        blurb: "A targeted refresh connects optical performance to physical fit: the virtual screen becomes useful only when the product stays aligned, comfortable and understandable throughout a session.",
+        hero: "https://mmx.prnewswire.com/media/MS2014604/XREAL-Product-Image.jpg?id=OA3022510&p=medium",
+        file: "weeks/W42/01_XREAL_1_Pro_Plus.html",
+        tags: ["wearable","ai","ai device","spatial display","smart glasses","xreal","fit"] },
+      { title: "Apple HomeView", date: "2026-10-18", domain: "consumer",
+        blurb: "HomeView brings a shared screen, spatial placement and personal context into one product, exposing the right information to only the right person.",
+        hero: "https://www.apple.com/newsroom/images/2026/10/meet-apple-homeview-a-new-way-to-enjoy-entertainment-and-manage-the-home/article/Apple-HomeView-FaceTime-Center-Stage-261013_big.jpg.large.jpg",
+        file: "weeks/W42/02_Apple_HomeView.html",
+        tags: ["smart home","shared display","consumer electronics","identity","apple","proximity"] },
+      { title: "Sony ECM-W5", date: "2026-10-18", domain: "ai",
+        blurb: "ECM-W5 treats microphones, receiver, charging case and camera connection as one capture workflow, with automatic readiness and an intelligible recovery path when wireless recording becomes uncertain.",
+        hero: "https://d1ncau8tqf99kp.cloudfront.net/PDP/DI/Accessories/ECM-W5/desktop/hero.jpg",
+        file: "weeks/W42/03_Sony_ECM_W5.html",
+        tags: ["audio","ai device","wireless microphone","modular","sony","capture"] },
+      { title: "Renault E-Space Concept", date: "2026-10-18", domain: "automotive",
+        blurb: "E-Space begins with the people and activities inside the cabin: reconfigurable seats, separated display and input zones, and a visually light enclosure make spatial organization the central proposition.",
+        hero: "https://media.renault.com/wp-content/uploads/2026/10/64d08e9acf342f2c2d326fb7f8189df2-l.jpg.webp",
+        file: "weeks/W42/04_Renault_E_Space_Concept.html",
+        tags: ["automotive","car","concept car","ev","electric vehicle","renault","modular interior"] },
+      { title: "Alpine A310 VISION", date: "2026-10-18", domain: "automotive",
+        blurb: "Alpine reinterprets the A310 through geometry, layered surfaces and an architectural centerline, carrying recognizable identity into new construction possibilities.",
+        hero: "https://media.alpinecars.com/wp-content/uploads/2026/10/b00e6ee15e01bd060e8ac0d8a64119f5-l.jpg.webp",
+        file: "weeks/W42/05_Alpine_A310_VISION.html",
+        tags: ["automotive","car","concept car","ev","electric vehicle","alpine","heritage design"] },
+      { title: "Tesla Roadster", date: "2026-10-18", domain: "automotive",
+        blurb: "The redesigned Roadster combines a restrained outer envelope with increasingly complex active systems, explaining capability, operating state and configuration boundaries as modes multiply.",
+        hero: "https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Roadster-04-World-Desktop.jpg",
+        file: "weeks/W42/06_Tesla_Roadster_2026.html",
+        tags: ["automotive","car","active aerodynamics","ev","electric vehicle","tesla","concealed systems"] }
+    ]
+  },
   {
     id: "W41", year: 2026, label: "W41", dateRange: "5 – 11 Oct 2026",
     indexFile: "weeks/W41/index.html",
@@ -252,6 +289,14 @@ const TOP_SIGNALS = [
     detail: "ANYmal pairs robot identity with existing access infrastructure, Sharpa's haptics communicate task state, and Skydio's F10 dock makes fleet readiness visible before a mission starts.",
     evidence: ["ANYmal Door Access", "Sharpa D01 · W02 · AE01", "Skydio F10 Lightrunner"],
     heroOverride: "https://www.gevernova.com/news/sites/default/files/inline-images/aui-anybotics_0.png"
+  },
+  {
+    keyword: "Concealed Systems, Legible at the Point of Use",
+    domain: "automotive",
+    statement: "Hiding a complex or active system behind a calm surface only works if its real state becomes obvious exactly where someone needs to check it.",
+    detail: "Tesla's Roadster conceals high-energy aerodynamic and thrust hardware behind a minimal shell, while Sony's ECM-W5 puts pairing, gain and backup-recording state on a small screen at the exact point an operator is already holding the kit. Both treat visible state as the cost of hiding complexity, not an afterthought.",
+    evidence: ["Tesla Roadster", "Sony ECM-W5"],
+    heroOverride: "https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Roadster-04-World-Desktop.jpg"
   }
 ];
 
@@ -265,7 +310,10 @@ const DOMAIN_TRENDS = {
     { keyword: "Role-Based Cabin", statement: "Cabin architecture is explicitly designed around distinct occupant roles — not just \"driver plus passengers.\"", application: "Multi-operator vehicle computing (driver versus dock worker) can borrow the same role-based zoning.", evidence: ["Ferrari F80", "Ferrari Luce", "Tesla Model Y", "Red Bull RB22"] },
     { keyword: "Structural Integration", statement: "Power, thermal and aerodynamic systems are integrated at the structural level, pushing validation down to the contact point.", application: "Validate thermal and sealing for ruggedized mobile computers at the same contact points — ports, latches, cooling paths.", evidence: ["Ferrari F80", "Red Bull RB22", "Tesla Model Y", "BRABUS BODO"] },
     { keyword: "Tactile Anchors Inside Digital Cockpits", statement: "Even as displays become reconfigurable or transparent, concepts keep distinct physical shapes for the controls that matter most.", application: "Give scan, confirm and release controls distinct, locatable shapes inside an increasingly digital control panel, and validate blind identification with gloves.", evidence: ["Alfa Romeo Cuorerosso", "Peugeot RCZ Vision", "DS F3VER"], heroOverride: "https://images.autoexpress.co.uk/autoexpress/2026/10/Alfa%20Romeo%20Cuorerosso-25.jpg" },
-    { keyword: "Declared Service Boundaries", statement: "Concepts increasingly make repair and reconfiguration boundaries visible on the body itself, rather than hiding every seam inside one continuous shell.", application: "Give rugged handhelds and vehicle-mounted computers a visibly distinct, independently replaceable impact boundary, separate from a legible accessory-reconfiguration boundary, so a technician can read repair scope versus reconfiguration scope directly from the housing without full teardown.", evidence: ["Citroën 2 CV Concept", "FIAT Multiplay"], heroOverride: "https://i0.wp.com/lenouvelautomobiliste.fr/wp-content/uploads/2026/10/Citroen-2CV-concept-Le-Nouvel-automobiliste-thibaut-dumoulin-30.jpg?resize=1024%2C683&ssl=1" }
+    { keyword: "Declared Service Boundaries", statement: "Concepts increasingly make repair and reconfiguration boundaries visible on the body itself, rather than hiding every seam inside one continuous shell.", application: "Give rugged handhelds and vehicle-mounted computers a visibly distinct, independently replaceable impact boundary, separate from a legible accessory-reconfiguration boundary, so a technician can read repair scope versus reconfiguration scope directly from the housing without full teardown.", evidence: ["Citroën 2 CV Concept", "FIAT Multiplay"], heroOverride: "https://i0.wp.com/lenouvelautomobiliste.fr/wp-content/uploads/2026/10/Citroen-2CV-concept-Le-Nouvel-automobiliste-thibaut-dumoulin-30.jpg?resize=1024%2C683&ssl=1" },
+    { keyword: "Cabin-First Layout, Then the Shell", statement: "The cabin's activity and access needs are designed first, with the exterior shell wrapped around them rather than the reverse.", application: "Sequence Zebra vehicle-mount and work-cell design from the technician's entry, reach and task flow outward, instead of fitting a mount into whatever space a vehicle shell leaves behind.", evidence: ["Renault E-Space Concept"], heroOverride: "https://media.renault.com/wp-content/uploads/2026/10/29e955b0a637d2219c0fb074df072df8-l.jpg.webp" },
+    { keyword: "Identity Cues Repeated Across Scales", statement: "A single family identity cue is carried from the full body down to a wheel or small component, instead of being repeated as the same shape only once.", application: "Give a Zebra device family one consistent grip, dock or accent geometry that repeats at the handheld, cradle and accessory scale, so recognition and correct docking don't depend on reading a logo.", evidence: ["Alpine A310 VISION"], heroOverride: "https://media.alpinecars.com/wp-content/uploads/2026/10/b00e6ee15e01bd060e8ac0d8a64119f5-l.jpg.webp" },
+    { keyword: "Concealed Active Systems Need Unmistakable State", statement: "Hiding complex, active or high-energy hardware behind a calm shell raises the bar for making that hardware's real state obvious before and during activation.", application: "Any concealed sensor, emitter or high-energy accessory on Zebra hardware needs an explicit arm, active and fault signal, with decorative lighting kept visually distinct from a genuine warning.", evidence: ["Tesla Roadster"], heroOverride: "https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Roadster-04-World-Desktop.jpg" }
   ],
   ai: [
     { keyword: "Visible, Shared Sensing State", statement: "Sensing and recording state has to be unmistakable to the wearer — and to the people around them.", application: "Mute, listening and capture states need the same bystander-legible treatment on any Zebra wearable with a mic or camera.", evidence: ["Ray-Ban Meta Audio", "Ray-Ban Meta (Gen 3)"], heroOverride: "https://media.ray-ban.com/cms/resource/blob/1855480/0569c828966f15647a99b37f440fece6/rbm-pdp-ho26-aperol-features-capture-cover-data.jpg" },
@@ -273,7 +321,9 @@ const DOMAIN_TRENDS = {
     { keyword: "Fit, Hinge & Service Parts", statement: "Fit and contact surfaces are being redesigned as a serviceable, swappable system rather than one fixed shape.", application: "Design swappable straps, pads and hinge adjustments as first-class service parts.", evidence: ["Meta VR Glasses", "Ray-Ban Meta (Gen 3)", "Ray-Ban Meta Audio"], heroOverride: "https://cdn.mos.cms.futurecdn.net/Si53kYKWYKYQfks8AVsZNA-1200-80.jpg" },
     { keyword: "Compute Moves Off the Primary Surface", statement: "Power and compute budgets are becoming an explicit, designed workflow state instead of a background spec.", application: "Offload battery and processing to a belt pack or cradle rather than the head- or hand-worn unit.", evidence: ["Meta VR Glasses"] },
     { keyword: "One Platform, Many Physical Forms", statement: "A shared sensing and compute platform now ships in several fit- and task-matched physical forms.", application: "Share one compute-and-sensing core across a family of wrist, ring and headset form factors fitted to different roles.", evidence: ["Ray-Ban Meta (Gen 3)", "Ray-Ban Meta Audio"] },
-    { keyword: "Physical Sensor State Over Software Status", statement: "Camera and sensing products pair a physical, visible state cue — a lens cover, a mount boundary — with software status rather than trusting an app alone.", application: "Use a physical cover or mechanical indicator for any Zebra device with a camera or mic, so capture state reads without opening software.", evidence: ["Ring 2026 Camera Family"], heroOverride: "https://images.ctfassets.net/a3peezndovsu/zdYnQBL7LJCI1Bay38gY8/37b034e4ec6c88b9c6156394bf649d34/ring_pan-tilt_indoor_cam_2K_360_coverage_atf_1500x1500_04.jpg?w=1100&q=80" }
+    { keyword: "Physical Sensor State Over Software Status", statement: "Camera and sensing products pair a physical, visible state cue — a lens cover, a mount boundary — with software status rather than trusting an app alone.", application: "Use a physical cover or mechanical indicator for any Zebra device with a camera or mic, so capture state reads without opening software.", evidence: ["Ring 2026 Camera Family"], heroOverride: "https://images.ctfassets.net/a3peezndovsu/zdYnQBL7LJCI1Bay38gY8/37b034e4ec6c88b9c6156394bf649d34/ring_pan-tilt_indoor_cam_2K_360_coverage_atf_1500x1500_04.jpg?w=1100&q=80" },
+    { keyword: "Fit Is Part of Display Performance", statement: "For a worn display, physical fit adjustments are a calibration step that determines image stability, not a cosmetic afterthought.", application: "Document nose pad, temple and IPD-style fit adjustments as part of a wearable display's setup and validation process, and test text recognition after a full-shift wear trial, not just at first fitting.", evidence: ["XREAL 1 Pro+"], heroOverride: "https://resource.xreal.com/www-xreal-com/images/hebe/hebe-scene-work-bg-desktop.webp" },
+    { keyword: "Redundant Capture Needs a Visible Confirmation", statement: "A backup recording path only earns trust when its state — present, charged, recording — is visible at the point where the operator is already holding the kit.", application: "Pair any Zebra field-audio or evidence-capture accessory with a local backup path and a small, glanceable display showing pairing, recording and remaining capacity at the component the worker is handling.", evidence: ["Sony ECM-W5"], heroOverride: "https://d1ncau8tqf99kp.cloudfront.net/PDP/DI/Accessories/ECM-W5/desktop/hero.jpg" }
   ],
   wearables: [
     { keyword: "Two Solar Surfaces, Two Charging Moments", statement: "Two solar collection surfaces split \"worn\" from \"set aside\" charging into two deliberately different moments.", application: "A dual-surface or dock-plus-body charging path can replace a single charging contact point.", evidence: ["Amazfit T-Rex Dual Solar"], heroOverride: "https://us.amazfit.com/cdn/shop/files/T-Rex_Dual_Solar__Lifestyle_2.jpg?v=1789715428&width=1500" },
@@ -298,7 +348,8 @@ const DOMAIN_TRENDS = {
   consumer: [
     { keyword: "Service Access Designed Into the Mount", statement: "Fixed enterprise hardware is designed so its own mount provides serviceable access — pivoting, an exposed rear — instead of requiring full removal for maintenance.", application: "Give vehicle-mounted terminals and fixed scanners a controlled service swing or access panel, and measure maintenance time and reach from the actual mounting height.", evidence: ["Logitech Rally Bar 2"], heroOverride: "https://resource.logitech.com/w_1206,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/rally-bar-2/rally-bar2-video-bar-fast-setup.jpg?v=1" },
     { keyword: "Modular Roles, Managed Centrally", statement: "Distributed hardware systems separate sensing, audio and compute into distinct modules while a central fleet dashboard keeps configuration legible.", application: "Separate sensing, display and compute into serviceable, replaceable modules for shared stations, and expose their configuration state to remote fleet management.", evidence: ["Logitech Rally System 2 Pro"], heroOverride: "https://resource.logitech.com/w_1200,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/business/products/video-conferencing/rally-system-2-pro/rally-system-2-pro-modular-solution.jpg?v=1" },
-    { keyword: "Threshold Status Made Public", statement: "Availability state is pushed outside the room itself, readable before someone commits to walking in and interrupting.", application: "Give shared Zebra kiosks and mounted terminals the same red/green, distance-readable availability signal instead of hiding status behind a login screen.", evidence: ["Logitech Rally System 2 Pro"], heroOverride: "https://resource.logitech.com/w_1206,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/business/products/video-conferencing/rally-system-2-pro/rally-system-2-pro-device-space-management-3.jpg?v=1" }
+    { keyword: "Threshold Status Made Public", statement: "Availability state is pushed outside the room itself, readable before someone commits to walking in and interrupting.", application: "Give shared Zebra kiosks and mounted terminals the same red/green, distance-readable availability signal instead of hiding status behind a login screen.", evidence: ["Logitech Rally System 2 Pro"], heroOverride: "https://resource.logitech.com/w_1206,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/business/products/video-conferencing/rally-system-2-pro/rally-system-2-pro-device-space-management-3.jpg?v=1" },
+    { keyword: "Shared Screens Adapt to Distance and Identity", statement: "A fixed shared screen changes its information density and access based on who is approaching and from how far away, rather than showing one generic state to everyone.", application: "Give shared Zebra kiosks and wall terminals a large glanceable state at a distance and a detailed, identity-confirmed control set up close, with every identity switch explicit and reversible.", evidence: ["Apple HomeView"], heroOverride: "https://www.apple.com/newsroom/images/2026/10/meet-apple-homeview-a-new-way-to-enjoy-entertainment-and-manage-the-home/article/Apple-HomeView-FaceTime-Center-Stage-261013_big.jpg.large.jpg" }
   ],
   sports: [
     { keyword: "One Family, Task-Matched Variants", statement: "A single footwear family splits into variants matched to the rider's actual task, not cosmetic tiering.", application: "A shared base accessory with task-specific variants can replace a one-size-fits-all wearable mount.", evidence: ["adidas FREERIDER 2027"], heroOverride: "https://www.bikeradar.com/resources/content/32337f2f-7841-4ef6-a233-d1f001580530/fbf3ce62-f438-47b2-a2d5-fbfff07117af/832c34b2-e6f8-4d61-8a41-9e0a05ba03c2/adidas-Freerider-Pro-BOA-C-sole-scaled.jpg?preview=false&platform=WEB&deviceId=62acf397-4952-4f26-966e-a704cf065c37" },

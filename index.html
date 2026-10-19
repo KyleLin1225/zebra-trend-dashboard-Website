@@ -478,6 +478,15 @@ const prevLatestDateObj = new Date(latestDateObj.getTime() - 14*86400000);
 animateDate($(".dnum"), prevLatestDateObj, latestDateObj);
 
 /* ---------- top signals (3, horizontal, expandable, with representative hero image) ---------- */
+// TOP_SIGNALS in data.js is a growing pool of every cross-domain signal authored so far, not
+// just the 3 shown today — picking the top 3 by evidence count here (re-run on every load) means
+// a signal only appears while it's genuinely the most-cited, and naturally drops out once a newer,
+// more-evidenced signal overtakes it, instead of the page accumulating one more card every week.
+const MAX_TOP_SIGNALS = 3;
+function pickTopSignals(all, n){
+  return all.slice().sort((a,b) => (b.evidence||[]).length - (a.evidence||[]).length).slice(0, n);
+}
+const shownSignals = pickTopSignals(TOP_SIGNALS, MAX_TOP_SIGNALS);
 function signalHero(s){
   if(s.heroOverride) return s.heroOverride;
   for(const title of s.evidence){
@@ -486,7 +495,7 @@ function signalHero(s){
   }
   return null;
 }
-$("#signalsGrid").innerHTML = TOP_SIGNALS.map((s,i) => {
+$("#signalsGrid").innerHTML = shownSignals.map((s,i) => {
   const hero = signalHero(s);
   const bgStyle = hero ? ` style="background-image:linear-gradient(180deg, rgba(7,9,9,.1) 0%, rgba(7,9,9,.62) 55%, rgba(7,9,9,.97) 100%), url('${hero}')"` : "";
   return `
