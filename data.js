@@ -41,6 +41,43 @@ const DOMAINS = [
 
 const WEEKS = [
   {
+    id: "W43", year: 2026, label: "W43", dateRange: "19 – 25 Oct 2026",
+    indexFile: "weeks/W43/index.html",
+    zipName: "Weekly_Design_Trend_Report_2026-W43_2026-10-19_to_10-25.zip",
+    reports: [
+      { title: "Sigma fp2", date: "2026-10-23", domain: "consumer",
+        blurb: "A physical STILL/CINE switch, a dedicated Color button and 1/4-20 mounts across the chassis replace menu depth with choices a thumb can find without looking.",
+        hero: "https://amateurphotographer.com/wp-content/uploads/sites/7/2026/10/Sigma_FP2-PA190228-acr-AW-AP.jpg",
+        file: "weeks/W43/01_Sigma_fp2.html",
+        tags: ["camera","consumer electronics","modular","physical switch","sigma","full-frame"] },
+      { title: "Antigravity A1 Follow Me Bundle", date: "2026-10-20", domain: "wearables",
+        blurb: "A 44.7g touchscreen watch and an 8.2g single-button ring replace goggles and a joystick, wagering that gesture control plus GNSS tracking can out-simplify a traditional controller.",
+        hero: "https://cdn.dronexl.co/wp-content/uploads/2026/10/antigravity-a1-follow-me-bundle-cyclist-watch-ring-remote.webp",
+        file: "weeks/W43/02_Antigravity_A1_Follow_Me.html",
+        tags: ["drone","wearable","gesture control","wrist remote","antigravity","hardware fallback"] },
+      { title: "Teenage Engineering EP-35", date: "2026-10-22", domain: "consumer",
+        blurb: "A carry handle houses every input and becomes the entire control surface, while a rear storage hatch lights itself the moment it opens.",
+        hero: "https://assets.teenage.engineering/_img/6ada1e46982c0e6e3c49faf7_4096.webp",
+        file: "weeks/W43/03_TE_EP-35.html",
+        tags: ["audio","consumer electronics","industrial design","modular","teenage engineering","amplifier"] },
+      { title: "Signode AMR Portfolio", date: "2026-10-22", domain: "robotics",
+        blurb: "Five new AMR vehicle classes join Signode's lineup, sharing one navigation, docking and blue-LED status language across a shared-aisle warehouse floor.",
+        hero: "https://spnews.com/downloads/11387/download/Untitled-4.png?cb=561e960248a96d8f011aeefe5308fd53",
+        file: "weeks/W43/04_Signode_AMR_Portfolio.html",
+        tags: ["robotics","amr","warehouse automation","fleet","signode","safety"] },
+      { title: "Jetta M6", date: "2026-10-22", domain: "automotive",
+        blurb: "FAW-Volkswagen's first battery-electric sedan pairs a \"Bamboo Aesthetics\" surface language with one shared body shell and a dual-screen cockpit, split across three trims.",
+        hero: "https://cnevpost.com/wp-content/uploads/2026/10/2026102210152997.jpg",
+        file: "weeks/W43/05_VW_Jetta_M6.html",
+        tags: ["automotive","car","ev","electric vehicle","volkswagen","jetta","shared platform"] },
+      { title: "OPPO Find X10 Series", date: "2026-10-21", domain: "mobile",
+        blurb: "A Hasselblad-engineered triple-200MP camera system and a factory-built Tilta Khronos creator rig turn the phone into two different products depending on which accessories are attached.",
+        hero: "https://www.oppo.com/content/dam/oppo_com/oppo/product-asset-library/find-x/find-x10-series-en/find-x10-pro-max/en/white-gray/v1/assets/eye-care-en-characters-bg.jpg.avif",
+        file: "weeks/W43/06_OPPO_Find_X10_Series.html",
+        tags: ["mobile","smartphone","camera","oppo","hasselblad","modular accessory"] }
+    ]
+  },
+  {
     id: "W42", year: 2026, label: "W42", dateRange: "12 – 18 Oct 2026",
     indexFile: "weeks/W42/index.html",
     zipName: "Weekly_Design_Trend_Report_2026-W42_2026-10-12_to_10-18.zip",
