@@ -245,7 +245,7 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
       <span class="sb-brand-mini">Trend Dashboard</span>
     </div>
     <div class="sb-section">
-      <div class="sb-label-row"><span class="sb-label">Weekly Trend Reports</span></div>
+      <div class="sb-label-row"><span class="sb-label">Weekly Trend Reports</span><a class="sb-more-btn" href="weeks-overview.html">More →</a></div>
       <div class="tree-row year" id="yearRow"><span class="chev open" id="yearChev">▸</span>2026</div>
       <div class="tree-children open" id="yearChildren"></div>
     </div>
@@ -364,7 +364,9 @@ $("#yearRow").addEventListener("click", ()=>{
   $("#yearChev").classList.toggle("open", open);
   toggleCollapsible(el, open);
 });
-$("#yearChildren").innerHTML = `<div>${WEEKS.map(w => `
+/* Sidebar shows only the 8 most recent weeks, same cap as the single-report list below —
+   a "More →" link (added to the section header above) goes to weeks-overview.html for the rest. */
+$("#yearChildren").innerHTML = `<div>${WEEKS.slice(0,8).map(w => `
   <div class="week-block">
     <div class="week-row" data-week="${w.id}">
       <a href="${w.indexFile}" style="flex:1">${w.label} <span style="color:var(--muted);font-size:11px">· ${w.dateRange}</span></a>
