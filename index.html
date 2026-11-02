@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Trend Dashboard · V3</title><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Trend Dashboard · V4</title><style>
 :root{--bg:#070909;--panel:#111515;--panel2:#15191a;--line:#2a3030;--ink:#f5f6f1;--muted:#abb2af;--accent:#b9ff43;--sbw:280px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.58 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;overflow-x:hidden}
@@ -110,9 +110,326 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 .stat span{color:var(--muted);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase}
 
 .section-label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:800;margin:0 0 16px;display:flex;justify-content:space-between;align-items:center}
+.momentum-badge{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;padding:3px 9px;border-radius:999px;border:1px solid currentColor}
+.momentum-badge.new{color:var(--accent)}
+.momentum-badge.building{color:#ffb020}
+.momentum-badge.holding{color:var(--muted);opacity:.7}
 .section-label a{color:var(--accent);font-size:12px;letter-spacing:.04em;text-transform:none;font-weight:700}
 
-.signals{display:flex;flex-direction:column;gap:16px;margin-bottom:54px}
+/* ---- V4 TEST · "This period's read" ------------------------------------------------------
+   The four blocks below (Top Signals / Aesthetic Signals / Where Zebra Should Focus / Trending
+   keywords) were four unlabelled frames in a row, and nothing on the page said how they relate
+   or in what order to read them. They are one argument: two readings of the period, a decision
+   taken from those readings, and the inventory the readings were drawn out of. So they now sit
+   inside one outer section that states that chain up front, numbers each frame to match, and —
+   the part that was missing entirely — publishes ONE shared week axis that every trend in all
+   four frames is plotted against. Before this, time was visible only as a New/Building/Holding
+   word on two of the four blocks, and as a separate Timeline view hidden behind a toggle in the
+   fourth; a reader could not tell whether a focus item rested on last week's evidence or W39's. */
+.period-read{position:relative}
+.pr-head{border:1px solid var(--line);border-radius:26px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,0) 260px);padding:26px 26px 22px;margin-bottom:28px}
+.pr-title{font-size:clamp(22px,2.7vw,30px);line-height:1.18;letter-spacing:-.025em;font-weight:780;margin:12px 0 10px;max-width:780px}
+.pr-sub{color:var(--muted);font-size:13.5px;line-height:1.6;margin:0 0 22px;max-width:740px}
+/* A chain, not a tab bar: four steps with an arrow between them, because the reading order is
+   the point. Each card is a jump link to the frame that answers its question. */
+/* Carries the gap into section 01 now that the week-axis block that used to sit here has
+   moved up into the masthead. */
+.pr-chain{display:flex;flex-wrap:wrap;gap:12px;margin:6px 0 54px}
+.pr-step-card{flex:1 1 180px;min-width:168px;position:relative;display:block;border:1px solid var(--line);border-radius:14px;background:var(--bg);padding:13px 15px;text-decoration:none;transition:border-color .18s,transform .18s}
+.pr-step-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.pr-step-card .n{display:block;font-size:10px;letter-spacing:.14em;font-weight:800;color:var(--accent);margin-bottom:5px}
+.pr-step-card .q{display:block;font-size:14px;font-weight:700;color:var(--ink);line-height:1.3;letter-spacing:-.01em}
+.pr-step-card .w{display:block;font-size:11.5px;color:var(--muted);margin-top:6px;line-height:1.45}
+.pr-step-card::after{content:"→";position:absolute;right:-14px;top:50%;transform:translateY(-50%);color:var(--muted);opacity:.55;font-size:13px}
+.pr-step-card:last-child::after{content:none}
+
+/* ---- the lede: one complete read before any scrolling ------------------------------------
+   Measured on the old build: the page opened with a tagline, a four-tile stat row and a
+   paragraph explaining its own reading order — 1,756px before the first trend and 4,031px
+   before "Where Zebra should focus", on a page 8,192px tall. Most readers only ever see the
+   home page, so the order is now inverted: the throughline, the tension that leaves it
+   unresolved, and the one thing to act on, all above the fold. The evidence that produced
+   them follows underneath, unchanged. A page that needed a paragraph explaining how to read
+   it had an ordering problem, so that paragraph is gone rather than rewritten.
+
+   The lede and the stat block were then two bordered panels stacked on each other, which is
+   why neither read as a masthead — a masthead sits ON the page, it is not a card. Checked
+   against how periodic reports with a point of view open: GitHub's Octoverse (kicker
+   "OCTOVERSE REPORT 2026" → one display headline stating the finding → one supporting line →
+   one CTA → a full-bleed band), TrendWatching (kicker → oversized two-line headline → sub →
+   CTA → metadata chips), State of JS (an editorial letter, no tiles at all), Stack Overflow's
+   survey (wordmark → one dense paragraph → full-bleed image). None of them boxes the opening,
+   none of them leads with a site tagline, and every one puts the EDITION'S CLAIM in the
+   display type. So the two panels are now one unboxed header: metadata kicker, the period
+   thesis at display size, the tension that leaves it open, then the figures as the solid band
+   it ends on. The old "A trend site that keeps updating." is not restored — that is the site
+   describing itself, which is exactly the slot Octoverse spends on the finding. */
+.lede-delta{margin-left:auto;display:flex;flex-wrap:wrap;gap:7px}
+.lede-delta span{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:750;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+.lede-delta span b{color:var(--ink);font-weight:850}
+.lede-delta span.on,.lede-delta span.on b{color:var(--accent)}
+.lede-delta span.on{border-color:rgba(185,255,67,.45)}
+.lede-act{display:flex;gap:18px;align-items:flex-start;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:16px;background:var(--bg);padding:17px 19px;text-decoration:none;color:inherit;transition:border-color .18s,transform .18s}
+.lede-act:hover{border-color:var(--accent);transform:translateY(-2px)}
+.la-thumb{flex:0 0 136px;height:92px;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#030505}
+.la-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.la-body{flex:1 1 auto;min-width:0}
+.la-badge,.la-title,.la-gap,.la-more{display:block}
+.la-badge{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:850;color:#0b0f0b;background:var(--accent);border-radius:999px;padding:4px 10px;margin-bottom:9px;width:fit-content}
+.la-title{font-size:19px;font-weight:765;line-height:1.26;letter-spacing:-.018em;margin-bottom:7px}
+/* The gap paragraph is the auditable half of the baseline gate and runs long by design, so it
+   is clamped here rather than shortened in data.js — the full text is one click down in 03.
+   Two lines, not three: this card is a pointer, and a third line of dense prose was asking the
+   reader to finish the argument before they had seen any of the evidence behind it. */
+.la-gap{font-size:13.5px;line-height:1.55;color:#cbd0ce;margin-bottom:9px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.la-gap b{color:var(--accent);font-weight:780}
+.la-more{font-size:12.5px;color:var(--muted)}
+.lede-act:hover .la-more{color:var(--accent)}
+@media(max-width:760px){.lede-act{flex-direction:column}.la-thumb{flex:0 0 auto;width:100%;height:150px}.lede-delta{margin-left:0;width:100%}}
+/* Once the cards wrap, a "→" pointing into empty space at the end of a row is worse than none:
+   it implies a step that isn't there. The numbers still carry the order. */
+@media(max-width:860px){.pr-head{padding:22px 18px 20px}.pr-step-card::after{content:none}}
+@media(max-width:560px){.pr-step-card{flex:1 1 100%}}
+/* The shared week axis, published once. The five-cell strip printed on every signal, aesthetic
+   trend and focus item below is otherwise five anonymous dots — this is the ruler it reads
+   against. Bar height is that week's report count, so the axis also shows where the corpus
+   itself is thick or thin, which is the honest caveat behind every strip on the page. */
+/* THE MASTHEAD — see the long note above .lede-delta for the references this is built on.
+   Unboxed, so it reads as the top of the page rather than the first card on it; the only edge
+   it has is the rule it ends on, and a soft accent wash that fades out before the body starts. */
+.masthead{position:relative;margin:0 0 26px;padding:2px 0 30px;border-bottom:1px solid var(--line);background:radial-gradient(980px 340px at 8% -18%,rgba(185,255,67,.10),transparent 68%)}
+.mast-meta{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 20px;margin-bottom:24px}
+/* Display size, because this line is the edition's claim — the slot Octoverse gives "Developer
+   activity reaches new highs on GitHub". It was 43px inside a panel, which is a card title. */
+.mast-thesis{font-size:clamp(31px,4.5vw,55px);font-weight:775;line-height:1.05;letter-spacing:-.038em;margin:0 0 28px;max-width:15.5em}
+.mast-tension{margin:0 0 32px;max-width:700px}
+/* The band the header ends on. Full width, tiles left, ruler right, so the measured half of the
+   header fills the width the headline leaves open on the right. */
+.mast-band{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px 40px;align-items:start;border-top:1px solid var(--line);padding-top:26px}
+/* auto-fit rather than a fixed four, so the tiles drop to two rows on their own once the left
+   column can no longer give each one a readable width — the date needs ~120px of it. */
+.masthead .stat-row{margin-bottom:0;gap:12px;grid-template-columns:repeat(auto-fit,minmax(118px,1fr))}
+.masthead .stat{padding:16px 17px;border-width:1px;border-radius:14px}
+.masthead .stat b{font-size:clamp(23px,2.4vw,31px);line-height:1.1}
+/* The date is ten characters where the others are one or two, so it needs its own size. */
+.masthead .stat b.dnum{font-size:clamp(15px,1.45vw,21px)}
+.masthead .stat span{font-size:10.5px;letter-spacing:.07em;font-weight:750}
+/* Legend and action card sit below the header rule: the legend explains the ruler the header
+   ends on, the action card is the first thing the body says. */
+.mast-legend{margin:0 0 26px}
+.mast-legend .pr-legend{margin-top:0}
+#ledeAct{margin:0 0 40px}
+/* Below this the ruler's own label no longer fits one line beside the tiles, which is the
+   point where side by side stops being tidier than stacked. */
+@media(max-width:1180px){.mast-band{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:760px){.masthead{padding-bottom:24px}.mast-thesis{margin-bottom:22px}.mast-tension{margin-bottom:24px}}
+.pr-axis{border-top:none;padding-top:0}
+.pr-axis-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--muted);margin-bottom:14px}
+.pr-ruler{display:grid;gap:10px;align-items:end;max-width:460px}
+.pr-wk{display:flex;flex-direction:column;align-items:center;gap:6px}
+/* Narrow enough to read as a ruler. At 44px the bars were squares, and a 5-vs-6-report
+   difference across a 44px block is invisible — it looked like decoration, not a scale. */
+.pr-wk .bar{width:100%;max-width:30px;background:var(--accent);opacity:.28;border-radius:4px 4px 0 0;min-height:4px}
+.pr-wk.latest .bar{opacity:.85}
+.pr-wk .wl{font-size:10.5px;font-weight:800;letter-spacing:.06em;color:var(--muted)}
+.pr-wk.latest .wl{color:var(--accent)}
+.pr-wk .wn{font-size:10px;color:var(--muted);opacity:.7}
+.pr-legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin-top:24px;font-size:11.5px;color:var(--muted);line-height:1.55}
+.pr-legend .li{display:flex;align-items:center;gap:8px}
+/* The explanatory item runs the full width and wraps to several lines on narrow screens, so its
+   sample strip aligns to the first line rather than floating at the paragraph's mid-height. */
+.pr-legend .li.wide{flex:1 1 100%;align-items:flex-start}
+.pr-legend .li.wide .spark{margin-top:2px}
+/* Step number on each frame's own label, so a frame can be matched back to the chain above
+   without reading its heading. */
+.pr-step{display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;border-radius:50%;border:1px solid var(--accent);color:var(--accent);font-size:10px;font-weight:800;letter-spacing:0;margin-right:10px;flex:0 0 auto}
+.section-label .lbl{display:flex;align-items:center;gap:0;min-width:0}
+
+/* ---- the inline week strip -------------------------------------------------------------
+   Same grammar as the keyword Timeline view's rows, shrunk to sit inline inside a card: one
+   cell per week of the period, a dot in every week that fed this trend (sized by how many of
+   that week's reports did), and a bar from its first such week to its latest. Printed on Top
+   Signals, Aesthetic Signals and focus items alike so one glance answers "is this fresh or is
+   it coasting" the same way in all three, instead of three sections each implying time
+   differently. */
+.spark-wrap{display:inline-flex;align-items:center;gap:9px;vertical-align:middle}
+.spark{position:relative;display:inline-grid;grid-auto-flow:column;grid-auto-columns:14px;align-items:center;height:14px;vertical-align:middle;flex:0 0 auto}
+.sp-rail{position:absolute;left:7px;right:7px;top:50%;height:1px;background:currentColor;opacity:.28}
+.sp-span{position:absolute;top:50%;height:2px;background:var(--accent);opacity:.5;transform:translateY(-50%);border-radius:2px}
+.sp-cell{position:relative;display:flex;align-items:center;justify-content:center;height:14px}
+/* --dd, not --d: --d is the stagger delay set on revealed parents, and custom properties
+   inherit — a dot that ever lost its inline value would resolve width to a delay. */
+.sp-cell i{width:var(--dd,5px);height:var(--dd,5px);border-radius:50%;background:var(--accent);opacity:var(--o,.5)}
+.spark-label{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:700;color:var(--muted);white-space:nowrap}
+
+/* V4 TEST — one bordered frame holds the label, the throughline narrative and the 3 signal
+   cards together, so the narrative reads as this section's lede instead of a floating paragraph
+   disconnected from the cards it's actually introducing. */
+.signals-frame{background:linear-gradient(180deg, rgba(185,255,67,.045), rgba(185,255,67,0) 220px);border:1px solid var(--line);border-radius:26px;padding:26px 26px 20px;margin-bottom:54px}
+/* A different tint (violet, not the green/amber used above) signals this is a different lens —
+   visual/material language, not interaction mechanics — even before reading the label. */
+.aesthetic-frame{background:linear-gradient(180deg, rgba(196,120,255,.05), rgba(196,120,255,0) 220px);border:1px solid var(--line);border-radius:26px;padding:26px 26px 20px;margin-bottom:54px}
+/* Shared by all four frames — each one needs a line saying what it is for and how it relates
+   to the others, which is half of what the chain header is doing at the block level. */
+.section-sub{color:var(--muted);font-size:12.5px;margin:-4px 0 18px;max-width:700px;line-height:1.5}
+/* V4 TEST — Apple-style editorial feature layout: a big clean product photo beside (not under a
+   dark gradient, not behind) a large headline, alternating sides per entry. Deliberately a
+   different reading rhythm from the full-bleed photo-with-overlaid-text cards used by Top
+   Signals above and the roadmap rows used by Where Zebra Should Focus below, so all three
+   "frame" sections on this page stay visually distinct instead of reading as one repeated card. */
+.aes-list{display:flex;flex-direction:column;gap:52px}
+/* Top-aligned, not centred. Centring floated the image block in the middle of the row, and
+   because its height is locked by its aspect ratio while the copy's grows as the column
+   narrows, the gap above it scaled with the window: 38px at 1440 but 122px at 1010, which is
+   what read as broken. Aligned to the top, whatever difference is left falls at the bottom of
+   the taller column, where unequal columns are supposed to end. */
+/* Stretch, not top-align. A fixed tile ratio can only match the copy at one window width: the
+   copy gets taller as its column narrows while the image block gets shorter, so any ratio I
+   pick leaves a void below the images at some widths and below the text at others. Letting the
+   grid fill the row removes the void at every width and makes the images as large as the
+   section allows, which is also the point — in 02 the picture is the evidence. */
+.aes-feature{display:flex;align-items:stretch;gap:44px}
+.aes-feature.rev{flex-direction:row-reverse}
+/* Gallery, not a single hero shot — each trend's evidence is 3-4 distinct products, so showing
+   one photo per product (via aesMedia()) makes the claim visually checkable against all of its
+   evidence, not just the single best-matching photo. Odd counts let the last tile run full-width
+   so the grid doesn't end on a half-empty row. */
+/* 54/46 rather than 44/56: the images are the evidence in this section, so they get the larger
+   share. The vertical room for it comes from the evidence list, which stopped being a 110px
+   block of capsules. */
+.aes-media{flex:1 1 54%;align-self:stretch;min-height:270px;display:grid;grid-template-columns:repeat(2,1fr);grid-auto-rows:minmax(0,1fr);gap:5px;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:var(--panel)}
+/* The tiles take their height from the row, so --aes-ar no longer sets the crop here — it is
+   kept for the stacked layout below, where there is no row height to fill. object-fit:cover
+   does the cropping either way. */
+.aes-media img{width:100%;height:100%;min-height:0;display:block;object-fit:cover}
+/* Odd count: the first tile runs full width so the grid never ends on a half-empty row. */
+.aes-media img:first-child:nth-last-child(odd){grid-column:1/-1}
+.aes-copy{flex:1 1 46%;min-width:0}
+.aes-kicker{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:#c478ff;margin:0 0 9px}
+.aes-time{margin:0 0 14px}
+.aes-title{font-size:32px;line-height:1.15;letter-spacing:-.02em;font-weight:800;color:var(--ink);margin:0 0 14px}
+.aes-statement{font-size:16px;line-height:1.5;color:#dfe3e1;margin:0 0 10px}
+.aes-detail{font-size:13.5px;line-height:1.6;color:var(--muted);margin:0 0 18px}
+/* Runs as a line of text with the copy above it rather than a separate rack of capsules. */
+.aes-evidence{font-size:12.5px;line-height:1.85;color:var(--muted);margin:0}
+.aes-ev-lbl{text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:800;color:#c478ff;margin-right:9px}
+.aes-ev-chip{color:var(--muted);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.15);transition:color .15s,border-color .15s}
+.aes-ev-chip:hover{color:#dfc2ff;border-bottom-color:#c478ff}
+.aes-ev-sep{color:#4a5350}
+/* Stacked: there is no row height to stretch into, so the block needs its own. A square block
+   gives the 2x2 grid square-ish tiles; at the trend's own 16/9 the whole block was only 154px
+   tall on a phone, which made each of the four 133x73 — too small to be evidence of anything. */
+@media(max-width:760px){.aes-feature,.aes-feature.rev{flex-direction:column;gap:20px}.aes-media{width:100%;min-height:0;aspect-ratio:1/1}.aes-title{font-size:25px}}
+.signals-frame .section-label{padding:0 2px}
+/* Now closes section 01 instead of opening it, so the spacing flips: air above it to separate
+   it from the last card, none below. */
+.period-narrative{position:relative;padding-left:22px;margin:30px 2px 4px;max-width:860px}
+.period-narrative::before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:3px;background:var(--accent);border-radius:3px}
+.period-narrative .pn-kicker{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--accent);margin-bottom:8px}
+.pn-thesis{color:var(--ink);font-size:22px;font-weight:730;letter-spacing:-.01em;line-height:1.32;margin:0 0 10px}
+.pn-detail{color:#9aa19e;font-size:14px;line-height:1.58;margin:0;max-width:720px}
+.tension-bar{margin-top:18px;max-width:560px}
+.tension-bar .tb-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:7px}
+.tension-bar .tb-labels b{color:var(--ink);font-weight:800}
+.tension-bar .tb-track{display:flex;height:10px;border-radius:999px;overflow:hidden;background:var(--line)}
+.tension-bar .tb-seg{height:100%;transition:flex-basis .6s ease}
+.tension-bar .tb-seg.a{background:var(--accent)}
+.tension-bar .tb-seg.b{background:#58d0ff}
+.tension-bar .tb-foot{font-size:11px;color:var(--muted);margin-top:7px}
+/* The scope line is deliberately quieter than the verdict above it: it is the caveat that
+   stops "17 reports" being read as 17 of the 46 in the masthead, not a second headline. */
+.tension-bar .tb-scope{font-size:10.5px;color:var(--muted);opacity:.7;margin-top:3px}
+.signals{display:flex;flex-direction:column;gap:16px}
+
+/* V4 TEST — prescriptive, ranked, more compact than the Top Signal cards on purpose: this
+   section answers "what do we do about it", the cards above answer "what's happening". */
+/* V4 TEST — one frame holds "what to act on" and "what the full keyword landscape looks like"
+   together, with a warm wash to read as a distinct zone from the green signals-frame above:
+   that one answers "what's happening", this one answers "what do we do, and where does it
+   trace back to in everything we're tracking". */
+.action-frame{background:linear-gradient(180deg, rgba(255,176,32,.045), rgba(255,176,32,0) 260px);border:1px solid var(--line);border-radius:26px;padding:26px 26px 20px;margin-bottom:54px}
+.action-frame .section-label{padding:0 2px}
+.action-frame .section-label:not(:first-child){margin-top:30px}
+/* Step 04 split out of the action frame into its own. It used to share a frame with the focus
+   list on the argument that "what to act on" and "where it traces back to" belong together —
+   but with the chain header now stating that relationship in words, one frame per step is what
+   lets a reader match frame to step at a glance. Cool neutral tint: this block is inventory,
+   not a reading (green) or a decision (amber). */
+.landscape-frame{background:linear-gradient(180deg, rgba(88,208,255,.04), rgba(88,208,255,0) 260px);border:1px solid var(--line);border-radius:26px;padding:26px 26px 20px;margin-bottom:54px}
+.landscape-frame .section-label{padding:0 2px}
+/* V4 TEST — deliberately NOT another hero-banner card: this section answers "what do we do",
+   not "what's happening" or "what it looks like" — compact horizontal roadmap rows read as a
+   checklist/board, a third distinct rhythm alongside the full-bleed Top Signal cards and the
+   Apple-style Aesthetic Signal features above. No side color stripe — the urgency color only
+   shows up on hover (the row's own border) and in the rank+urgency capsule, so it doesn't fight
+   with the photo for attention at rest. */
+.priority-list{display:flex;flex-direction:column;gap:14px}
+.wz-row{display:flex;align-items:stretch;background:var(--panel);border:2px solid var(--line);border-radius:16px;overflow:hidden;transition:border-color .2s}
+/* Arriving here from a Top Signal card's "becomes focus item" link — the mirror of the pulse
+   the priority list already fires on a keyword chip, so the 01↔03 jump looks the same in both
+   directions instead of one being a silent scroll. */
+.wz-row.wz-pulse{border-color:var(--accent)}
+.wz-row.now:hover{border-color:#ff6b57}
+.wz-row.next:hover{border-color:#ffb020}
+.wz-row.watch:hover{border-color:var(--muted)}
+/* 300px (not 240) against a ~235px row height keeps the thumb closer to its sources' landscape
+   ratio, so cover-cropping a 16:9 mechanism shot loses ~28% of the frame instead of ~50%. */
+.wz-thumb-wrap{flex:0 0 300px;align-self:stretch;overflow:hidden;background:var(--panel)}
+.wz-thumb-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.wz-body{flex:1;min-width:0;padding:18px 24px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+/* Rank + urgency word share one capsule so the numbered position isn't a separate ghost numeral
+   competing with the photo for the row's left edge — the thumb can now run the full left side. */
+.p-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.p-badge{display:inline-flex;align-items:baseline;gap:7px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:800;padding:5px 14px;border-radius:999px;border:1.5px solid currentColor;width:fit-content}
+.p-badge.now{color:#ff6b57}
+.p-badge.next{color:#ffb020}
+.p-badge.watch{color:var(--muted)}
+.p-title{font-size:18.5px;line-height:1.3;margin:0;font-weight:720;color:var(--ink)}
+.p-rationale{color:#cbd0ce;font-size:13.5px;line-height:1.55;margin:0}
+.p-links{font-size:11.5px;color:var(--muted);margin-top:2px}
+.p-links a{color:var(--accent);text-decoration:none}
+.p-links a:hover{text-decoration:underline}
+/* Source signal that exists in the tracked pool but isn't one of the 3 shown in 01 — still a
+   link, but not the accent green, so "jump up to its card" and "open its reports" stay visibly
+   different actions. */
+.p-links a.off{color:#cbd0ce}
+.p-links a.off:hover{color:var(--accent)}
+/* The baseline check, collapsed by default. It is the evidence that the recommendation is a
+   delta and not a description of the current catalogue, so it has to be on the card and one
+   click away — but it is auditing material, not the headline, so it stays shut until asked for. */
+.p-baseline{margin:4px 0 2px;font-size:12.5px;color:var(--muted)}
+.p-baseline summary{cursor:pointer;color:#cbd0ce;font-size:11.5px;letter-spacing:.02em;list-style:none;display:inline-flex;align-items:center;gap:6px;border-bottom:1px dashed var(--line);padding-bottom:1px}
+.p-baseline summary::-webkit-details-marker{display:none}
+.p-baseline summary::before{content:"▸";font-size:9px;transition:transform .2s;display:inline-block}
+.p-baseline[open] summary::before{transform:rotate(90deg)}
+.p-baseline summary:hover{color:var(--accent);border-color:var(--accent)}
+.p-baseline p{margin:10px 0 0;line-height:1.55;max-width:760px}
+.p-baseline b{color:#dfe3e1;font-weight:700}
+.p-baseline a{color:var(--accent);text-decoration:none;white-space:nowrap}
+.p-baseline a:hover{text-decoration:underline}
+/* Same idea one level up: what the gate rejected for the whole list. */
+.dropped{margin:16px 2px 0;font-size:12.5px;color:var(--muted)}
+.dropped summary{cursor:pointer;color:#cbd0ce;font-size:11.5px;letter-spacing:.02em;border-bottom:1px dashed var(--line);display:inline-block;padding-bottom:1px}
+.dropped summary:hover{color:var(--accent);border-color:var(--accent)}
+.dropped ol{margin:14px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:11px}
+.dropped li{line-height:1.55}
+.dropped b{display:block;color:#cbd0ce;font-weight:650;margin-bottom:2px}
+.dropped a{color:var(--accent);text-decoration:none;white-space:nowrap}
+.dropped a:hover{text-decoration:underline}
+.p-viewcloud{background:none;border:none;color:var(--accent);font-size:11.5px;font-family:inherit;cursor:pointer;padding:0;text-decoration:none}
+.p-viewcloud:hover{text-decoration:underline}
+@media(max-width:760px){.wz-row{flex-direction:column}.wz-thumb-wrap{width:100%;height:160px}.wz-body{padding:16px 18px}}
+/* Priority-linked chips keep a persistent colored ring at rest, done by recoloring the chip's
+   own existing 2px border (not an added box-shadow) — box-shadow isn't counted by the cloud's
+   collision-packing measurement, so it was visually overlapping neighboring chips without the
+   packer knowing. A border-color change costs no extra space, since every chip's border-width
+   is already identical and already accounted for. Plain hover keeps that ring color — only the
+   text turns green and the chip enlarges, so red/orange/gray rings don't flash green on every
+   mouse pass. The explicit "jump here from the priority list" pulse is a different, rarer moment
+   and intentionally swaps to one clean green ring instead, so the target is unambiguous. */
+.chip[data-priority]{border-color:var(--p-ring, var(--accent))}
+.chip[data-priority]:hover{border-color:var(--p-ring, var(--accent));color:var(--accent)}
+.chip.chip-pulse{border-color:var(--accent)!important;color:var(--accent)!important;transform:translate(-50%,-50%) translate(var(--tx,0px),var(--ty,0px)) scale(1.15)!important;z-index:10}
 .signal{background:var(--panel);border:2px solid var(--line);border-radius:20px;position:relative;overflow:hidden;transition:border-color .25s}
 .signal:hover{border-color:var(--accent)}
 .signal-bg{position:absolute;top:0;left:0;right:0;height:380px;background:linear-gradient(135deg,var(--panel),#0c0f0f);background-size:cover;background-position:center;background-repeat:no-repeat;z-index:0}
@@ -125,6 +442,14 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 .signal h2{font-size:clamp(21px,2.6vw,28px);line-height:1.2;letter-spacing:-.02em;margin:10px 0 11px;max-width:800px;font-weight:720}
 .signal h2 strong{color:var(--accent);font-weight:780}
 .signal p.detail{color:#cbd0ce;max-width:800px;margin:0;font-size:13.5px;line-height:1.58;padding-right:50px}
+/* The 01→03 backlink. The focus list already links up to the signals it draws from; without
+   this the chain only ran one way, so a reader starting at a signal had no way to find out
+   whether anything was being done about it. One line, ellipsised, never wrapping — the card's
+   height is fixed and this must not push the headline off the photo. */
+.sig-act{font-size:11.5px;color:var(--muted);margin:11px 0 0;max-width:660px;padding-right:50px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sig-act a{color:var(--accent);text-decoration:none}
+.sig-act a:hover{text-decoration:underline}
+.sig-time{margin-top:9px}
 .expander{position:absolute;right:20px;top:316px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:border-color .2s,color .2s,transform .2s}
 .expander:hover{border-color:var(--accent);color:var(--accent);transform:scale(1.07)}
 .expander .tri{display:inline-flex;align-items:center;justify-content:center;font-size:30px;line-height:1;transition:transform .35s cubic-bezier(.4,0,.2,1)}
@@ -151,7 +476,7 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
    a landscape rectangle rather than a circular blob. */
 .chip-cloud{position:relative;height:560px;margin-bottom:44px}
 .chip{position:absolute;top:50%;left:50%;background:var(--panel);border:2px solid var(--line);border-radius:999px;color:#dfe3e1;cursor:pointer;font-weight:600;white-space:nowrap;transform:translate(-50%,-50%) translate(var(--tx,0px),var(--ty,0px)) scale(var(--mag,1));transition:border-color .15s,color .15s}
-.chip:hover{border-color:var(--accent);color:var(--accent);transform:translate(-50%,-50%) translate(var(--tx,0px),var(--ty,0px)) scale(1.1);z-index:10}
+.chip:hover{color:var(--accent);transform:translate(-50%,-50%) translate(var(--tx,0px),var(--ty,0px)) scale(1.1);z-index:10}
 .chip.kw-1{font-size:19px;padding:15px 23px;opacity:1}
 .chip.kw-2{font-size:17px;padding:13px 20px;opacity:.9}
 .chip.kw-3{font-size:15px;padding:11px 17px;opacity:.78}
@@ -171,8 +496,56 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
   .chip-cloud{position:absolute;top:0;left:0;height:520px;width:1100px;margin-bottom:0}
   .chip-cloud .chip{transition:none}
 }
+.chip.thin{border-style:dashed}
+.cloud-legend{display:flex;align-items:center;gap:9px;font-size:11.5px;line-height:1.5;color:var(--muted);margin:-6px 0 16px}
+.legend-swatch{flex:0 0 auto;width:22px;height:13px;border:2px dashed var(--line);border-radius:999px}
 .chip-drag-hint{display:none;text-align:center;font-size:11px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin:-8px 0 16px}
+/* How many chips actually fit, written by layoutKeywordCloud — the number changes with the
+   window width, so it can't be typed into the markup. */
+.cloud-count{font-size:11.5px;color:var(--muted);margin:-28px 0 18px;opacity:.8}
+@media(max-width:700px){.cloud-count{margin:0 0 16px}}
 @media(max-width:700px){.chip-drag-hint{display:block}}
+
+/* ---- keyword timeline (the cloud's second view) ----
+   The cloud encodes one variable well — how much evidence a keyword carries — and cannot encode
+   when that evidence arrived, because chip SIZE is a rank octile and chip POSITION is packing.
+   This view spends both axes on that missing question instead: one row per keyword, one column
+   per week, a dot per week sized by how many of that week's reports fed the keyword, and a bar
+   drawn from its first active week to its last. The bar is the whole point — a keyword that is
+   one fat dot is a single week's spike, a keyword with a long bar is a pattern that kept
+   recurring. It scales the way the cloud can't: later periods add columns, not more overlap. */
+.kw-section-label{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.kw-modes{display:flex;gap:6px;flex:0 0 auto}
+.kw-mode{background:none;border:2px solid var(--line);border-radius:999px;color:var(--muted);font:inherit;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:5px 13px;cursor:pointer;transition:border-color .15s,color .15s}
+.kw-mode:hover{color:var(--ink)}
+.kw-mode.active{border-color:var(--accent);color:var(--accent)}
+.legend-bar{flex:0 0 auto;width:22px;height:0;border-top:2px solid var(--line);position:relative;top:1px}
+.kw-timeline{border:2px solid var(--line);border-radius:16px;background:var(--panel);overflow:hidden;margin-bottom:44px}
+.kt-row{display:grid;grid-template-columns:minmax(0,1fr) 300px 58px;align-items:center;gap:14px;padding:9px 18px;border-top:1px solid var(--line)}
+.kt-row:first-child{border-top:none}
+.kt-head{padding-top:12px;padding-bottom:10px;background:rgba(255,255,255,.02)}
+.kt-head .kt-name,.kt-head .kt-total{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:var(--muted)}
+.kt-name{font-size:13.5px;font-weight:650;color:#dfe3e1;text-decoration:none;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+a.kt-name:hover{color:var(--accent)}
+.kt-track{position:relative;display:grid;align-items:center;height:22px}
+.kt-head .kt-track{height:auto}
+.kt-tick{font-size:9.5px;letter-spacing:.06em;color:var(--muted);text-align:center;opacity:.8}
+/* Faint rail behind every row so an empty week still reads as a measured zero, not a gap. */
+.kt-rail{position:absolute;left:10%;right:10%;top:50%;height:1px;background:var(--line);opacity:.55}
+.kt-span{position:absolute;top:50%;height:2px;background:var(--accent);opacity:.42;transform:translateY(-50%);border-radius:2px}
+.kt-cell{position:relative;display:flex;align-items:center;justify-content:center;height:22px}
+.kt-dot{width:var(--d,8px);height:var(--d,8px);border-radius:50%;background:var(--accent);opacity:var(--o,.5)}
+.kt-total{font-size:11.5px;color:var(--muted);text-align:right}
+.kt-total.thin{border-bottom:1px dashed var(--line)}
+/* Mobile: a 150px-wide track left so little room for the name column that every keyword
+   ellipsised to "The Dial Th…". Stack instead — full keyword on its own line, full-width track
+   under it — and let the header row carry the week labels alone. */
+@media(max-width:700px){
+  .kw-section-label{flex-wrap:wrap}
+  .kt-row{grid-template-columns:1fr;gap:7px;padding:11px 14px}
+  .kt-name{white-space:normal;overflow:visible;font-size:13px}
+  .kt-head .kt-name,.kt-total{display:none}
+}
 
 .cat-section-label{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 16px}
 .cat-controls{display:flex;gap:8px;align-items:center}
@@ -210,6 +583,85 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 .fcard p{color:var(--muted);font-size:12.5px;margin:0;line-height:1.45}
 
 .sidebar{box-shadow:0 0 60px #000}
+
+/* ==== MOTION LAYER =========================================================================
+   Deliberately placed after every component rule above, because the reveal has to win the
+   transition cascade: .fcard and .cat-tile each declare their own `transition:` list for the
+   hover lift, which (same specificity, later in the file) was overriding the reveal's and
+   silently cancelling the fade on those two. The doubled `.reveal-in.reveal-in` selector takes
+   it, and revealNow() then strips both classes once the transition ends, so the hover lift
+   goes back to the component's own fast timing instead of inheriting the reveal's slow one.
+
+   Rules this layer follows, so "smoother reading" doesn't become decoration:
+   1. Motion runs once, when a thing first scrolls into view, and never again. Nothing on this
+      page loops or moves while you are trying to read it.
+   2. Every animation either carries meaning — a week strip draws left to right because that is
+      the direction of time, the tension bar slides off an even split so you see which way the
+      period leans, the axis bars grow from their baseline — or it does the one honest job a
+      fade can do: mark where a block begins.
+   3. No content is revealed BY an animation, only accompanied by one. Every from-state lives
+      inside `prefers-reduced-motion: no-preference`, so a reader who asks for no motion gets
+      the finished state directly rather than a hidden one waiting on a script. */
+
+.reveal-in.reveal-in{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.7,.2,1) var(--d,0s),transform .7s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+/* Jumping from a chain card used to land the frame's top edge under the sticky topbar, so you
+   arrived mid-heading and had to scroll back up — the one navigation move on the page that
+   actively broke reading flow. */
+.pr-head,.signals-frame,.aesthetic-frame,.action-frame,.landscape-frame{scroll-margin-top:88px}
+/* skipMotion() also has to stop the tension bar's own flex-basis transition, or setting the
+   real split would merely start an animation that a suspended page never advances. */
+.motion-off .reveal-init{opacity:1;transform:none}
+.motion-off .tb-seg{transition:none}
+
+@media (prefers-reduced-motion: no-preference){
+  /* The week strip draws itself in the direction of time: the span bar grows from its left
+     end, then each active week's dot pops in in chronological order (--sd per cell, set when
+     the strip is built). This is the one animation on the page that is really an explanation —
+     it makes "this ran from W40 to W43" a movement rather than a static row of dots. */
+  /* Every from-state here is additionally gated on body:not(.motion-off). skipMotion() sets
+     that class, which makes the from-state stop matching entirely — so the element falls back
+     to its natural finished look instead of needing a transition to run in order to become
+     visible. That distinction matters: a transition only advances while the page is actually
+     being rendered, so in a suspended tab a dot whose only route to scale(1) is a transition
+     stays at scale(0) — invisible — indefinitely. */
+  body:not(.motion-off) .spark .sp-span{transform-origin:left center;transform:translateY(-50%) scaleX(0)}
+  body:not(.motion-off) .spark .sp-cell i{transform:scale(0)}
+  /* The to-states are gated on the same class, so under motion-off neither side matches and no
+     transition is declared at all — otherwise the element would still be waiting on a 500ms
+     animation to carry it from a from-state that no longer exists. */
+  body:not(.motion-off) .spark.spark-go .sp-span{transform:translateY(-50%) scaleX(1);transition:transform .5s cubic-bezier(.2,.7,.2,1) .08s}
+  /* Slight overshoot on the dots only — they are the "arrival" of a week's evidence, and the
+     bar they sit on must not bounce with them or the axis itself looks elastic. */
+  body:not(.motion-off) .spark.spark-go .sp-cell i{transform:scale(1);transition:transform .32s cubic-bezier(.34,1.5,.64,1) var(--sd,0s)}
+
+  /* Axis bars grow out of the baseline they are measured from. */
+  body:not(.motion-off) .pr-wk .bar{transform-origin:bottom center;transform:scaleY(0)}
+  body:not(.motion-off) .pr-axis.axis-go .pr-wk .bar{transform:scaleY(1);transition:transform .55s cubic-bezier(.2,.7,.2,1) var(--bd,0s)}
+
+  /* Generic opacity-only reveal, for things whose transform is already carrying something else.
+     The keyword cloud is the reason it exists: every chip's transform holds its packed position,
+     so the cloud can only be faded as a block, never slid. */
+  body:not(.motion-off) .fade-init{opacity:0}
+  /* Must carry the same `body:not(.motion-off)` prefix as the from-state above, not because the
+     gate is needed here, but because adding it to .fade-init raised that rule's specificity —
+     a bare `.fade-in` then lost to it and the cloud stayed at opacity 0 forever. */
+  body:not(.motion-off) .fade-in{opacity:1;transition:opacity .6s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+
+  /* A slow push into the hero photo on hover, so a card answers the pointer before it is
+     clicked. .signal clips, and .signal-bg is absolutely positioned, so nothing reflows. */
+  .signal-bg{transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+  .signal:hover .signal-bg{transform:scale(1.035)}
+}
+
+/* A reader who has asked the OS for no motion gets none: no from-states are applied at all
+   (they are all scoped to no-preference above), and anything still animating is cut to an
+   imperceptible duration rather than removed, so transitionend handlers still fire and the
+   cleanup in revealNow() isn't left hanging. */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
+  .reveal-init{opacity:1;transform:none}
+}
+
 @media(max-width:1000px){.stat-row,.feed,.cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.stat-row,.feed{grid-template-columns:1fr}.topbar-inner{gap:10px}.signal p.detail{padding-right:44px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.signal p.detail.expanded{display:block;overflow:visible}.signal-bg{height:300px}.signal-body{height:300px;padding:22px 20px 20px}.signal.detail-open .signal-body{height:auto;min-height:300px}.expander{top:236px}.cat-tile{height:300px}.cat-tile .cat-img{height:210px}.cat-tile .cat-body{gap:4px}
   /* The full search bar no longer fits beside the brand on one row at phone widths — collapse
@@ -286,22 +738,87 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
     </div></div>
 
     <main class="content">
-      <section class="hero reveal-init" id="heroBlock">
-        <div class="kicker" id="genLabel"></div>
-        <h1>A trend site that keeps updating.</h1>
-        <p class="lead">Every weekly release and standalone report rolls straight into this dashboard. Browse the sidebar by year and week, search by idea, or drop into any report one by one.</p>
-      </section>
+      <section class="period-read">
+      <!-- THE MASTHEAD — one header, not two panels. Edition metadata, this period's claim at
+           display size, the tension that leaves it open, and the figures as the band it ends
+           on. See the CSS note for the trend-report headers this is measured against. Every
+           line in it is read from the same data the sections below render. -->
+      <header class="masthead">
+        <div class="mast-meta">
+          <div class="kicker" id="genLabel"></div>
+          <div class="lede-delta" id="ledeDelta"></div>
+        </div>
+        <h1 class="mast-thesis" id="periodThesis"></h1>
+        <div class="tension-bar mast-tension" id="tensionBar"></div>
+        <div class="mast-band">
+          <div class="stat-row" id="statRow"></div>
+          <div class="pr-axis" id="prAxis"></div>
+        </div>
+      </header>
 
-      <div class="stat-row" id="statRow"></div>
+      <!-- Below the header rule: how to read the ruler it ended on, then the one thing to act
+           on, then the four ways into the evidence. -->
+      <div id="ledeAct"></div>
 
-      <div class="section-label">Top signals this period</div>
-      <div class="signals" id="signalsGrid"></div>
+      <!-- Navigation used to sit inside the opening block, ahead of any content. It is
+           orientation material, so it now follows the header. -->
+      <div class="pr-chain" id="prChain"></div>
 
-      <div class="section-label">Trending keywords — click to jump to related reports</div>
-      <div class="chip-cloud-viewport" id="chipCloudViewport">
-        <div class="chip-cloud" id="chipCloud"></div>
+      <div class="signals-frame" id="step-1">
+        <div class="section-label"><span class="lbl"><span class="pr-step">01</span>Top signals this period</span></div>
+        <!-- The week-strip legend, moved down from the opening to sit with the first cards that
+             actually carry a strip. -->
+        <div class="mast-legend" id="prLegend"></div>
+        <div class="signals" id="signalsGrid"></div>
+        <!-- This paragraph used to open the section, and it named Sigma's STILL/CINE switch,
+             Ferrari's drive-mode rotary and Jetta's dial — the same three examples the first
+             card names 300px below it. Read before the cards it is a wall you cross twice;
+             read after them it is the thing the three cards do not individually say, which is
+             that sensing and autonomous hardware reach the same end by a different route. -->
+        <div class="period-narrative">
+          <span class="pn-kicker">What connects the three</span>
+          <p class="pn-detail" id="periodDetail"></p>
+        </div>
       </div>
-      <div class="chip-drag-hint">↔ Drag to explore</div>
+
+      <div class="aesthetic-frame" id="step-2">
+        <div class="section-label"><span class="lbl"><span class="pr-step">02</span>Aesthetic signals this period</span></div>
+        <p class="section-sub">The same products as 01, read through form instead of behaviour: colour, surface, where the controls sit. Only patterns with evidence across 2+ reports.</p>
+        <div id="aestheticGrid"></div>
+      </div>
+
+      <div class="action-frame" id="step-3">
+        <div class="section-label"><span class="lbl"><span class="pr-step">03</span>Where Zebra should focus</span></div>
+        <!-- Was 88 words: the gate, a UI instruction for a button sitting two inches below it,
+             how to read the strip, and what ↗ means. Only the gate is worth the reader's time
+             before the items; the rest is on the controls themselves. -->
+        <p class="section-sub">Every item must come out of the tracked signals <em>and</em> be something Zebra doesn't already ship — checked against zebra.com, not from memory.</p>
+        <div class="priority-list" id="priorityList"></div>
+      </div>
+
+      <div class="landscape-frame" id="step-4">
+        <div class="section-label kw-section-label">
+          <span class="lbl"><span class="pr-step">04</span>Everything underneath — click a keyword to jump to its reports</span>
+          <span class="kw-modes" id="kwModes">
+            <button class="kw-mode active" data-mode="cloud">Cloud</button>
+            <button class="kw-mode" data-mode="timeline">Timeline</button>
+          </span>
+        </div>
+        <p class="section-sub" id="kwSub"></p>
+        <div id="kwCloudView">
+          <p class="cloud-legend"><span class="legend-swatch"></span>A dashed outline means the keyword rests on a single report so far. Hover any keyword for its source count. Thinly-covered domains fill in as later periods add reports.</p>
+          <div class="chip-cloud-viewport" id="chipCloudViewport">
+            <div class="chip-cloud" id="chipCloud"></div>
+          </div>
+          <div class="chip-drag-hint">↔ Drag to explore</div>
+          <p class="cloud-count" id="cloudCount"></p>
+        </div>
+        <div id="kwTimelineView" hidden>
+          <p class="cloud-legend"><span class="legend-bar"></span><span>The cloud shows how much evidence a keyword has; this shows <em>when</em> that evidence arrived. A bar spanning several weeks means a sustained pattern; a single dot means one week's spike. Dot size is the number of reports that week.</span></p>
+          <div class="kw-timeline" id="kwTimeline"></div>
+        </div>
+      </div>
+      </section>
 
       <div class="section-label cat-section-label">
         <span>Domains this period</span>
@@ -438,11 +955,14 @@ $("#suggestSend").addEventListener("click", submitSuggestion);
 $("#suggestInput").addEventListener("keydown", e=>{ if(e.key==="Enter") submitSuggestion(); });
 renderSuggestions();
 
-/* ---------- stats (animated count-up, incl. a date that counts up from last week) ---------- */
+/* ---------- stats (animated count-up, incl. a date that counts up from last week) ----------
+   Back at the top of the page as the bordered tiles they always were, inside the masthead and
+   beside the week axis. Only the padding is tighter than the original, because the tiles now
+   occupy half the width rather than all of it. The count-up animation is kept; it is what made
+   them read as live rather than static. */
 const totalReports = ALL_REPORTS.length;
 const weekCount = WEEKS.length;
 const latestDate = ALL_REPORTS[0].date;
-$("#genLabel").textContent = `Generated from ${totalReports} reports · latest ${latestDate}`;
 $("#statRow").innerHTML = `
   <div class="stat"><b class="cnum" data-target="${totalReports}">0</b><span>Total reports</span></div>
   <div class="stat"><b class="cnum" data-target="${weekCount}">0</b><span>Weekly releases</span></div>
@@ -477,7 +997,7 @@ function animateDate(el, fromD, toD, duration=1100){
 }
 const latestDateObj = parseISODate(latestDate);
 const prevLatestDateObj = new Date(latestDateObj.getTime() - 14*86400000);
-animateDate($(".dnum"), prevLatestDateObj, latestDateObj);
+if ($(".dnum")) animateDate($(".dnum"), prevLatestDateObj, latestDateObj);
 
 /* ---------- top signals (3, horizontal, expandable, with representative hero image) ---------- */
 // TOP_SIGNALS in data.js is a growing pool of every cross-domain signal authored so far, not
@@ -489,6 +1009,262 @@ function pickTopSignals(all, n){
   return all.slice().sort((a,b) => (b.evidence||[]).length - (a.evidence||[]).length).slice(0, n);
 }
 const shownSignals = pickTopSignals(TOP_SIGNALS, MAX_TOP_SIGNALS);
+
+// V4 TEST — narrative is now {text, tension}; the tension bar's evidence counts are summed
+// live from TOP_SIGNALS so the number on screen can never drift from the actual data.
+if (typeof PERIOD_NARRATIVE !== "undefined") {
+  $("#periodThesis").textContent = PERIOD_NARRATIVE.thesis || "";
+  $("#periodDetail").textContent = PERIOD_NARRATIVE.detail || "";
+  const tension = PERIOD_NARRATIVE.tension;
+  if (tension && tension.length === 2) {
+    // Each side is the union of its signals' evidence, so a report cited by two signals on the
+    // same side counts once. A report cited on BOTH sides genuinely evidences both, so it is
+    // kept on each and disclosed in the scope line — which is why the two counts can sum to
+    // more than the distinct total. Silently dropping it would understate one side.
+    const sets = tension.map(side => {
+      const uniqueEvidence = new Set();
+      side.signals.forEach(kw => {
+        const sig = TOP_SIGNALS.find(s => s.keyword === kw);
+        (sig && sig.evidence || []).forEach(e => uniqueEvidence.add(e));
+      });
+      return uniqueEvidence;
+    });
+    const counts = sets.map(s => s.size);
+    const distinct = new Set([...sets[0], ...sets[1]]).size;
+    const overlap = counts[0] + counts[1] - distinct;
+    const usedSignals = tension[0].signals.length + tension[1].signals.length;
+    const total = counts[0] + counts[1] || 1;
+    const pctA = Math.round(counts[0]/total*100);
+    // The verdict was hard-coded ("Neither side is winning") while the numbers beside it were
+    // computed live, so once W44 pushed the split to 17:6 the sentence contradicted its own
+    // bar. Derive it from the same counts the bar is drawn from.
+    const lead = counts[0] >= counts[1] ? 0 : 1;
+    const leadPct = Math.max(pctA, 100 - pctA);
+    const leadLabel = tension[lead].label.charAt(0).toLowerCase() + tension[lead].label.slice(1);
+    const verdict =
+      leadPct <= 58 ? "Neither side is winning. Design for both."
+      : leadPct <= 67 ? `The evidence leans toward ${leadLabel}, but not decisively.`
+      : `This period runs ${counts[lead]} to ${counts[1 - lead]} toward ${leadLabel}.`;
+    // "17 reports" sitting under a 46-report masthead reads as a split of the whole corpus.
+    // It is not: only the signals named in `tension` are on the axis at all.
+    const scope = `${distinct} of ${ALL_REPORTS.length} reports, cited by ${usedSignals} of ${TOP_SIGNALS.length} top signals`
+      + (overlap ? ` · ${overlap} counted on both sides` : "");
+    // .tb-seg has carried `transition:flex-basis .6s` from the start, but the bar was rendered
+    // straight at its final split so the transition had nothing to run from. Starting it at an
+    // even 50/50 and letting the observer release it (see the motion layer) means the bar
+    // visibly leans — which is the whole claim this section is making — instead of simply being
+    // a static ratio the reader has to measure by eye.
+    $("#tensionBar").innerHTML = `
+      <div class="tb-labels"><span><b>${counts[0]}</b> reports · ${tension[0].label}</span><span><b>${counts[1]}</b> reports · ${tension[1].label}</span></div>
+      <div class="tb-track"><div class="tb-seg a" style="flex-basis:50%" data-basis="${pctA}%"></div><div class="tb-seg b" style="flex-basis:50%" data-basis="${100-pctA}%"></div></div>
+      <div class="tb-foot">${verdict}</div>
+      <div class="tb-scope">${scope}</div>`;
+  }
+}
+
+/* ---------- ONE shared time axis for the whole period-read block ----------------------------
+   Every trend on this page — Top Signal, Aesthetic Signal, focus item, keyword — is a claim
+   backed by a set of report titles, so "when did this happen" is answerable the same way for
+   all four: which weeks those reports landed in. That answer used to be computed twice, and
+   differently. momentumTag() read WEEKS only, while the keyword Timeline did its own
+   nearest-week date placement — so the 6 standalone reports, none of which appear in WEEKS at
+   all, were silently dropped from every momentum badge while still being counted in the
+   Timeline. Two of them (Ferrari F80, Ferrari Luce) are cited by the aesthetic trends, so that
+   was a live wrong answer, not a hypothetical one. One map, built once, used by everything. */
+const WEEK_COLS = WEEKS.slice().reverse();                 // oldest week first
+const LATEST_COL = WEEK_COLS.length - 1;
+const reportWeekCol = {};
+(function buildWeekMap(){
+  const ms = s => new Date(s).getTime();
+  // Week membership is authoritative for weekly reports. Standalone and launch-event reports
+  // aren't in WEEKS, so they're placed by date into the week whose own reports sit closest —
+  // avoids hard-coding week start dates that would drift the moment a period boundary moves.
+  const colMid = WEEK_COLS.map(w => {
+    const ds = w.reports.map(r => ms(r.date)).filter(n => !isNaN(n));
+    return ds.length ? (Math.min(...ds) + Math.max(...ds)) / 2 : 0;
+  });
+  WEEK_COLS.forEach((w, i) => w.reports.forEach(r => { reportWeekCol[r.title] = i; }));
+  ALL_REPORTS.forEach(r => {
+    if (reportWeekCol[r.title] !== undefined) return;
+    const t = ms(r.date);
+    if (isNaN(t)) return;
+    let best = 0;
+    colMid.forEach((m, i) => { if (Math.abs(t - m) < Math.abs(t - colMid[best])) best = i; });
+    reportWeekCol[r.title] = best;
+  });
+})();
+
+// counts[i] = how many of this entry's evidence reports landed in week column i.
+function weekProfile(entry){
+  const ev = entry.evidence || [];
+  const counts = WEEK_COLS.map(() => 0);
+  ev.forEach(t => { const c = reportWeekCol[t]; if (c !== undefined) counts[c]++; });
+  const active = counts.reduce((a, n, i) => (n ? a.concat(i) : a), []);
+  return { counts, active, total: ev.length };
+}
+// V4 TEST — momentum tag: did this entry's evidence grow in the latest week, or is it holding
+// steady on older evidence? Derived from the shared map above, so it stays correct automatically
+// as new weeks get added and counts standalone reports like any other evidence.
+function momentumTag(entry){
+  const { active } = weekProfile(entry);
+  if (!active.length || active[active.length-1] !== LATEST_COL) return { cls:"holding", label:"Holding" };
+  return active.length === 1 ? { cls:"new", label:"New This Week" } : { cls:"building", label:"Building" };
+}
+// The badge gives a verdict; this gives the span in plain words, because "Building" alone can't
+// distinguish a trend running since W39 from one that started last week and grew once.
+function spanLabel(entry){
+  const { active } = weekProfile(entry);
+  if (!active.length) return "Not dated";
+  const first = WEEK_COLS[active[0]].label, last = WEEK_COLS[active[active.length-1]].label;
+  if (active[0] === active[active.length-1]) return `${first} only`;
+  return `${first}–${last} · ${active.length} of ${WEEK_COLS.length} weeks`;
+}
+// The inline strip (see the .spark CSS block). Takes raw per-week counts so the legend can draw
+// a sample strip with the same code path the real ones use.
+function sparkFromCounts(counts, tip){
+  const n = counts.length;
+  const active = counts.reduce((a, c, i) => (c ? a.concat(i) : a), []);
+  const span = active.length > 1
+    ? `<span class="sp-span" style="left:${(active[0]+.5)/n*100}%;right:${(n-active[active.length-1]-.5)/n*100}%"></span>`
+    : "";
+  // --sd staggers each dot by its week index, so when the strip animates in the dots arrive in
+  // chronological order behind the bar rather than all at once (see the MOTION LAYER CSS).
+  const cells = counts.map((c, i) => `<span class="sp-cell">${c
+    ? `<i style="--dd:${Math.min(11, 4 + c*2.4)}px;--o:${Math.min(1, .45 + c*.18)};--sd:${120 + i*70}ms"></i>` : ""}</span>`).join("");
+  return `<span class="spark" title="${escapeHtml(tip||"")}"><span class="sp-rail"></span>${span}${cells}</span>`;
+}
+function sparkWrap(entry){
+  const { counts } = weekProfile(entry);
+  const tip = "Reports by week — " + WEEK_COLS.map((w,i) => `${w.label}: ${counts[i]}`).join(" · ");
+  return `<span class="spark-wrap">${sparkFromCounts(counts, tip)}<span class="spark-label">${spanLabel(entry)}</span></span>`;
+}
+// V4 TEST — priority list render. Each relatedSignals title links to its card above (by index
+// in the currently-shown top 3) when it's actually on-screen there; otherwise it renders as
+// plain text rather than a dead link, since TOP_SIGNALS is a larger pool than what's shown.
+const URGENCY_LABEL = { now: "Act Now", next: "Next Cycle", watch: "Watch" };
+// V4 TEST — evidence set per priority (union of its relatedSignals' TOP_SIGNALS evidence),
+// computed once here and reused below to cross-highlight keyword-cloud chips that trace back
+// to each priority — the link between "what to act on" and "the full keyword landscape" is a
+// real evidence-overlap check, not a hand-maintained list of which keywords "feel related".
+const PRIORITY_EVIDENCE_SETS = (typeof ZEBRA_PRIORITIES !== "undefined") ? ZEBRA_PRIORITIES.map(p => {
+  const set = new Set();
+  (p.relatedSignals||[]).forEach(kw => {
+    const sig = TOP_SIGNALS.find(s => s.keyword === kw);
+    (sig && sig.evidence || []).forEach(e => set.add(e));
+  });
+  return set;
+}) : [];
+// A hero photo per priority grounds "what to act on" in an actual product shot instead of a pure
+// text block — pulled from the same evidence reports the priority already cites (via
+// PRIORITY_EVIDENCE_SETS), not a new image search, so it stays a real reference, not decoration.
+// usedHeroes avoids two priorities showing the same photo when their evidence overlaps. Rendered
+// as a compact roadmap row (ghost rank numeral + landscape thumb + urgency stripe) — deliberately
+// NOT the .signal hero-card anatomy Top Signals/Aesthetic Signals use, see the CSS comment above.
+function priorityHero(p, idx, usedHeroes){
+  if (p.image) { usedHeroes.add(p.image); return p.image; }
+  const titles = Array.from(PRIORITY_EVIDENCE_SETS[idx] || []);
+  const candidates = titles.map(t => { const r = ALL_REPORTS.find(x => x.title === t); return r && r.hero; }).filter(Boolean);
+  const fresh = candidates.find(h => !usedHeroes.has(h));
+  const chosen = fresh || candidates[0] || null;
+  if (chosen) usedHeroes.add(chosen);
+  return chosen;
+}
+if (typeof ZEBRA_PRIORITIES !== "undefined") {
+  const usedPriorityHeroes = new Set();
+  $("#priorityList").innerHTML = ZEBRA_PRIORITIES.map((p,i) => {
+    // A source signal is either on screen in 01 (jump to its card) or merely in the tracked pool
+    // (TOP_SIGNALS is larger than the 3 shown). The second case used to render as plain text — a
+    // name the reader would scan 01 for and never find, with no way through. Now it's marked ↗
+    // and links to its own evidence instead, which is the honest version: the focus list draws on
+    // the whole tracked pool, not only on what happens to be displayed above it this period.
+    const links = (p.relatedSignals||[]).map(title => {
+      const idx = shownSignals.findIndex(s => s.keyword === title);
+      if (idx > -1) return `<a href="#" data-jump="${idx}">${title}</a>`;
+      const sig = TOP_SIGNALS.find(s => s.keyword === title);
+      const ev = (sig && sig.evidence) || [];
+      if (!ev.length) return title;
+      const href = "reports-overview.html?titles=" + encodeURIComponent(ev.join("|")) + "&kw=" + encodeURIComponent(title);
+      return `<a class="off" href="${href}" title="Tracked signal, not among the 3 shown in 01 this period — opens its ${ev.length} reports">${title} ↗</a>`;
+    }).join(", ");
+    const hero = priorityHero(p, i, usedPriorityHeroes);
+    const thumb = hero ? `<img src="${hero}" alt="">` : "";
+    return `<div class="wz-row ${p.urgency} reveal-init">
+      <div class="wz-thumb-wrap">${thumb}</div>
+      <div class="wz-body">
+        <div class="p-head">
+          <span class="p-badge ${p.urgency}">${String(i+1).padStart(2,"0")} · ${URGENCY_LABEL[p.urgency]||p.urgency}</span>
+          ${sparkWrap({ evidence: Array.from(PRIORITY_EVIDENCE_SETS[i] || []) })}
+        </div>
+        <h3 class="p-title">${p.title}</h3>
+        <p class="p-rationale">${p.rationale}</p>
+        ${p.zebraBaseline ? `<details class="p-baseline">
+          <summary>What Zebra already ships here — and what's actually missing</summary>
+          <p><b>Already ships.</b> ${p.zebraBaseline.ships} ${p.zebraBaseline.source
+            ? `<a href="${p.zebraBaseline.source}" target="_blank" rel="noopener">zebra.com ↗</a>` : ``}</p>
+          <p><b>The gap.</b> ${p.zebraBaseline.gap}</p>
+        </details>` : ``}
+        <div class="p-links">Draws from: ${links} · <button class="p-viewcloud" data-rank="${i+1}">see it in the keyword cloud ↓</button></div>
+      </div>
+    </div>`;
+  }).join("");
+  // The gate's rejects, published under the list. Two items instead of three looks like thin
+  // work unless you can see what was considered and why it was cut — and "we checked zebra.com
+  // and Zebra already does this" is itself the most useful finding the check produces.
+  if (typeof DROPPED_PRIORITIES !== "undefined" && DROPPED_PRIORITIES.length) {
+    $("#priorityList").insertAdjacentHTML("afterend", `
+      <details class="dropped">
+        <summary>${DROPPED_PRIORITIES.length} further candidates were cut against Zebra's current products</summary>
+        <ol>${DROPPED_PRIORITIES.map(d => `<li>
+          <b>${d.title}</b>
+          <span>${d.reason} ${d.source ? `<a href="${d.source}" target="_blank" rel="noopener">zebra.com ↗</a>` : ``}</span>
+        </li>`).join("")}</ol>
+      </details>`);
+  }
+  $$("#priorityList a[data-jump]").forEach(a => a.addEventListener("click", (e) => {
+    e.preventDefault();
+    const card = $$(".signal")[Number(a.dataset.jump)];
+    if (card) card.scrollIntoView({ behavior: "smooth", block: "center" });
+  }));
+
+  // ---- the lede's action card: ZEBRA_PRIORITIES[0], verbatim, promoted above the fold.
+  // Not a second copy of the copy — it reads the same object 03 renders, and leads with the
+  // `gap` rather than the title's rationale, because the gap is the half that survives the
+  // baseline check and therefore the half worth putting in front of someone who may not scroll.
+  const lead = ZEBRA_PRIORITIES[0];
+  $("#ledeAct").innerHTML = `
+    <a class="lede-act reveal-init" href="#step-3">
+      ${lead.image ? `<span class="la-thumb"><img src="${lead.image}" alt=""></span>` : ``}
+      <span class="la-body">
+        <span class="la-badge">What to do about it · ${URGENCY_LABEL[lead.urgency] || lead.urgency}</span>
+        <span class="la-title">${lead.title}</span>
+        <span class="la-gap">${lead.zebraBaseline
+          ? `<b>The gap.</b> ${lead.zebraBaseline.gap}`
+          : lead.rationale}</span>
+        <span class="la-more">Full check, and ${ZEBRA_PRIORITIES.length - 1} more ↓</span>
+      </span>
+    </a>`;
+}
+
+// ---- the delta chips: what MOVED this period, not how much was produced.
+// A returning reader's whole question is "what's different since I last looked", and the stat
+// row this replaces could not answer it — 40 reports reads the same every week. Counted live
+// off momentumTag across both signal pools, so it cannot drift from the badges below.
+(function(){
+  const pool = [].concat(
+    typeof TOP_SIGNALS !== "undefined" ? TOP_SIGNALS : [],
+    typeof AESTHETIC_TRENDS !== "undefined" ? AESTHETIC_TRENDS : []
+  );
+  if (!pool.length || !$("#ledeDelta")) return;
+  const tally = { new:0, building:0, holding:0 };
+  pool.forEach(e => { tally[momentumTag(e).cls]++; });
+  const dropped = (typeof DROPPED_PRIORITIES !== "undefined") ? DROPPED_PRIORITIES.length : 0;
+  $("#ledeDelta").innerHTML =
+    `<span class="${tally.new ? "on" : ""}"><b>${tally.new}</b> new this week</span>` +
+    `<span><b>${tally.building}</b> building</span>` +
+    `<span><b>${tally.holding}</b> holding</span>` +
+    (dropped ? `<span><b>${dropped}</b> cut on the Zebra check</span>` : ``);
+})();
+
 function signalHero(s){
   if(s.heroOverride) return s.heroOverride;
   for(const title of s.evidence){
@@ -500,13 +1276,26 @@ function signalHero(s){
 $("#signalsGrid").innerHTML = shownSignals.map((s,i) => {
   const hero = signalHero(s);
   const bgStyle = hero ? ` style="background-image:linear-gradient(180deg, rgba(7,9,9,.1) 0%, rgba(7,9,9,.62) 55%, rgba(7,9,9,.97) 100%), url('${hero}')"` : "";
+  const mom = momentumTag(s);
+  // The focus list in step 03 already links up to the signals it draws from; this is the same
+  // relationship read the other way, so a reader who starts here can find out whether anything
+  // is being done about this signal without scanning all three focus items for its name.
+  const actedOn = (typeof ZEBRA_PRIORITIES !== "undefined" ? ZEBRA_PRIORITIES : [])
+    .map((p, pi) => ({ p, pi }))
+    .filter(x => (x.p.relatedSignals || []).includes(s.keyword));
+  const actLine = actedOn.length
+    ? `<div class="sig-act">Becomes focus item ${actedOn.map(x =>
+        `<a href="#" data-prio="${x.pi}">${String(x.pi+1).padStart(2,"0")} · ${x.p.title}</a>`).join(" · ")}</div>`
+    : `<div class="sig-act">Not yet turned into a focus item — read as context.</div>`;
   return `
   <div class="signal reveal-init" data-i="${i}">
     <div class="signal-bg"${bgStyle}></div>
     <div class="signal-body">
-      <div class="eyebrow kicker">Top Signal</div>
+      <div class="eyebrow kicker">Top Signal <span class="momentum-badge ${mom.cls}">${mom.label}</span></div>
       <h2><strong>${s.keyword}.</strong> ${s.statement}</h2>
       <p class="detail">${s.detail}</p>
+      <div class="sig-time">${sparkWrap(s)}</div>
+      ${actLine}
     </div>
     <button class="expander" data-i="${i}" title="See the reports behind this signal"><span class="tri">▾</span></button>
     <div class="evidence" id="ev-${i}">
@@ -523,16 +1312,83 @@ $("#signalsGrid").innerHTML = shownSignals.map((s,i) => {
   </div>
 `;
 }).join("");
+
+// V4 TEST — Apple-style editorial layout (see the CSS comment above): a big clean photo beside a
+// large headline, alternating sides per entry, evidence as plain link chips instead of an
+// expandable drawer — deliberately a different anatomy from the Top Signal hero cards and the
+// Where-Zebra-Should-Focus roadmap rows, so all three "frame" sections read as distinct sections.
+// Still reuses momentumTag() as-is — it just reads .evidence, with no assumption about which
+// array an entry came from. Only 2 entries, shown in full rather than top-N'd — see the
+// honest-gap note in the section sub.
+// aesMedia builds the gallery. Curated `images` (one mechanism shot per evidence product) wins;
+// the evidence-hero derivation below is only a fallback for a trend that hasn't been curated yet,
+// and is weaker because report heroes are product beauty shots, not photos of the actual move
+// being claimed. Capped at 4 so the grid stays tidy.
+function aesMedia(s){
+  const imgs = [];
+  const seen = new Set();
+  const add = (src) => { if (src && !seen.has(src)) { seen.add(src); imgs.push(src); } };
+  if (s.images && s.images.length) { s.images.forEach(add); return imgs.slice(0, 4); }
+  add(s.heroOverride);
+  (s.evidence||[]).forEach(title => {
+    const r = ALL_REPORTS.find(x => x.title === title);
+    add(r && r.hero);
+  });
+  return imgs.slice(0, 4);
+}
+if (typeof AESTHETIC_TRENDS !== "undefined") {
+  $("#aestheticGrid").innerHTML = `<div class="aes-list">` + AESTHETIC_TRENDS.map((s,i) => {
+    const media = aesMedia(s).map(src => `<img src="${src}" alt="${s.keyword}">`).join("");
+    const mom = momentumTag(s);
+    const chips = s.evidence.map(title=>{
+      const r = ALL_REPORTS.find(x=>x.title===title);
+      if(!r) return "";
+      return `<a class="aes-ev-chip" href="report-viewer.html?src=${encodeURIComponent(r.file)}&amp;title=${encodeURIComponent(r.title)}&amp;back=index.html">${r.title}</a>`;
+    }).filter(Boolean).join(`<span class="aes-ev-sep"> · </span>`);
+    return `
+    <div class="aes-feature reveal-init ${i % 2 ? "rev" : ""}">
+      <div class="aes-media" style="--aes-ar:${s.mediaRatio || "4/3"}">${media}</div>
+      <div class="aes-copy">
+        <div class="aes-kicker">Aesthetic Signal <span class="momentum-badge ${mom.cls}">${mom.label}</span></div>
+        <div class="aes-time">${sparkWrap(s)}</div>
+        <h3 class="aes-title">${s.keyword}</h3>
+        <p class="aes-statement">${s.statement}</p>
+        <p class="aes-detail">${s.detail}</p>
+        <!-- The evidence list reads as a sentence now, not as a block of capsules. Six pills
+             took three rows and ~110px to carry six product names; as inline links under the
+             copy they take one or two lines, and the space that buys goes to the images. -->
+        <p class="aes-evidence"><span class="aes-ev-lbl">Seen in</span>${chips}</p>
+      </div>
+    </div>
+  `;
+  }).join("") + `</div>`;
+}
+
+// The 01→03 jump, mirroring the pulse the focus list already fires when it sends you down to a
+// keyword chip, so the chain behaves identically in both directions.
+$$(".sig-act a[data-prio]").forEach(a => a.addEventListener("click", (e) => {
+  e.preventDefault();
+  const row = $$("#priorityList .wz-row")[Number(a.dataset.prio)];
+  if (!row) return;
+  row.scrollIntoView({ behavior:"smooth", block:"center" });
+  row.classList.add("wz-pulse");
+  setTimeout(() => row.classList.remove("wz-pulse"), 2300);
+}));
+
+// Shared by both the Top Signals and Aesthetic Signals grids — looks up the evidence panel via
+// DOM relation rather than a reconstructed "#ev-"+index id, so two separate grids can each use
+// their own 0-based index without colliding on duplicate element ids.
 $$(".expander").forEach(btn => btn.addEventListener("click", ()=>{
   btn.classList.toggle("open");
-  $("#ev-"+btn.dataset.i).classList.toggle("open");
+  const signal = btn.closest(".signal");
+  const evidence = signal.querySelector(".evidence");
   // On mobile the detail paragraph is itself clamped to 2 lines (see CSS) — the same tap that
   // reveals the evidence cards also unclamps it, rather than adding a second "more" control.
   // The card also gets a "detail-open" class so .signal-body can grow past its normal fixed
   // height to fit the now-unclamped text instead of clipping it against the hero image.
-  const signal = btn.closest(".signal");
   const detail = signal.querySelector("p.detail");
   const isOpen = btn.classList.contains("open");
+  if (evidence) evidence.classList.toggle("open", isOpen);
   if (detail) detail.classList.toggle("expanded", isOpen);
   signal.classList.toggle("detail-open", isOpen);
 }));
@@ -579,12 +1435,174 @@ function interleaveByDomain(entries){
 }
 const positionOrder = interleaveByDomain(shownKeywords.slice());
 
-$("#chipCloud").innerHTML = shownKeywords.map(k =>
-  `<span class="chip ${heatClass(k.tier)}" data-kw="${escapeHtml(k.keyword)}" data-titles="${escapeHtml((k.evidence||[]).join("|"))}">${k.keyword}</span>`
-).join("");
+// V4 TEST — a chip is "claimed" by the highest-ranked (lowest number = most urgent) priority
+// whose evidence set it shares at least one report with. Evidence overlap, not keyword text,
+// is the link — a chip can come from a totally differently-worded DOMAIN_TRENDS entry and still
+// legitimately trace back to a priority built from a TOP_SIGNALS entry.
+const PRIORITY_RING_COLOR = { now:"#ff6b57", next:"#ffb020", watch:"#abb2af" };
+function claimingPriority(entry){
+  for (let i = 0; i < PRIORITY_EVIDENCE_SETS.length; i++){
+    if ((entry.evidence||[]).some(e => PRIORITY_EVIDENCE_SETS[i].has(e))) return i;
+  }
+  return -1;
+}
+$("#chipCloud").innerHTML = shownKeywords.map(k => {
+  const rank = claimingPriority(k);
+  const prio = rank > -1 ? ZEBRA_PRIORITIES[rank] : null;
+  const ringAttr = prio ? ` data-priority="${rank+1}" style="--p-ring:${PRIORITY_RING_COLOR[prio.urgency]||''}"` : "";
+  // Chip SIZE is a rank octile, not an evidence count, so it can't tell a reader how well-backed
+  // a keyword is. A dashed outline marks the single-report ones; the title carries the exact
+  // count and sources. Dashed vs solid keeps the same 2px border, so packing is unaffected.
+  const ev = k.evidence || [];
+  const thin = ev.length < 2 ? " thin" : "";
+  const tip = `${ev.length} report${ev.length === 1 ? "" : "s"}: ${ev.join(", ")}`;
+  return `<span class="chip ${heatClass(k.tier)}${thin}"${ringAttr} title="${escapeHtml(tip)}" data-kw="${escapeHtml(k.keyword)}" data-titles="${escapeHtml(ev.join("|"))}">${k.keyword}</span>`;
+}).join("");
 $$("#chipCloud .chip").forEach(el => el.addEventListener("click", ()=>
   location.href = "reports-overview.html?titles=" + encodeURIComponent(el.dataset.titles) + "&kw=" + encodeURIComponent(el.dataset.kw)
 ));
+/* ---------- keyword timeline view (see the .kw-timeline CSS block for why) ---------- */
+(function buildKeywordTimeline(){
+  // Reads the same WEEK_COLS / reportWeekCol map as every strip above — this view is just the
+  // same thing at full size, one row per keyword instead of one strip per card.
+  const cols = WEEK_COLS;
+  if (!cols.length) return;
+  const ROWS = 16;
+  const rows = allKeywordEntries.slice(0, Math.min(allKeywordEntries.length, ROWS));
+  const half = 50 / cols.length;
+  const trackCols = `grid-template-columns:repeat(${cols.length},1fr)`;
+  const dotPx = n => Math.min(20, 6 + n * 5);
+  const dotOp = n => Math.min(1, .42 + n * .18);
+
+  const head = `<div class="kt-row kt-head">
+    <span class="kt-name">Keyword</span>
+    <div class="kt-track" style="${trackCols}">${cols.map(w => `<span class="kt-tick">${w.label}</span>`).join("")}</div>
+    <span class="kt-total">Reports</span>
+  </div>`;
+
+  $("#kwTimeline").innerHTML = head + rows.map(k => {
+    const ev = k.evidence || [];
+    const { counts, active } = weekProfile(k);
+    const span = active.length > 1
+      ? `<div class="kt-span" style="left:${(active[0]+.5)/cols.length*100}%;right:${(cols.length-active[active.length-1]-.5)/cols.length*100}%"></div>`
+      : "";
+    const cells = counts.map((n, i) => n
+      ? `<div class="kt-cell" title="${escapeHtml(cols[i].label)}: ${n} report${n===1?"":"s"}"><span class="kt-dot" style="--d:${dotPx(n)}px;--o:${dotOp(n)}"></span></div>`
+      : `<div class="kt-cell"></div>`).join("");
+    const href = "reports-overview.html?titles=" + encodeURIComponent(ev.join("|")) + "&kw=" + encodeURIComponent(k.keyword);
+    return `<div class="kt-row">
+      <a class="kt-name" href="${href}" title="${escapeHtml(k.keyword)}">${k.keyword}</a>
+      <div class="kt-track" style="${trackCols}">
+        <div class="kt-rail" style="left:${half}%;right:${half}%"></div>${span}${cells}
+      </div>
+      <span class="kt-total${ev.length < 2 ? " thin" : ""}">${ev.length}</span>
+    </div>`;
+  }).join("");
+
+  $$("#kwModes .kw-mode").forEach(btn => btn.addEventListener("click", () => {
+    const timeline = btn.dataset.mode === "timeline";
+    $$("#kwModes .kw-mode").forEach(b => b.classList.toggle("active", b === btn));
+    $("#kwCloudView").hidden = timeline;
+    $("#kwTimelineView").hidden = !timeline;
+    // First time Timeline is opened, let its 17 rows arrive top-to-bottom instead of as one
+    // wall of dots — this view is a chronology, so it should assemble like one. Once only: a
+    // reader toggling back and forth doesn't want the list rebuilt under them every time.
+    const tl = $("#kwTimeline");
+    if (timeline && !REDUCED && !tl.dataset.played) {
+      tl.dataset.played = "1";
+      const rows = $$(".kt-row", tl);
+      stagger("#kwTimeline .kt-row", 42, rows.length);
+      rows.forEach(r => r.classList.add("fade-init"));
+      // Reading offsetHeight forces a synchronous style flush, which commits the opacity:0
+      // from-state so the class added on the next line actually transitions from it. Using
+      // requestAnimationFrame for this instead would tie the rows' visibility to a callback
+      // that never runs while the page's rendering is throttled — they would stay at opacity 0.
+      void tl.offsetHeight;
+      rows.forEach(r => r.classList.add("fade-in"));
+    }
+    // The cloud packer measures pill boxes, which are all zero-sized while the view is hidden —
+    // so a layout that ran during a hidden stretch has to be redone on the way back.
+    if (!timeline) { layoutKeywordCloud(); initMobileChipPan(); }
+  }));
+})();
+
+/* ---------- the period-read header: the chain, and the shared week axis ----------
+   Placed last only because its step cards quote live counts from all four blocks (how many
+   signals are tracked vs shown, how many keywords exist), so everything it counts has to be
+   built first. Every number here is read from the data, never typed in. */
+(function buildPeriodRead(){
+  // The masthead kicker carries all three pieces of edition metadata on one line — corpus size,
+  // the weeks it covers, the newest report in it — the way "OCTOVERSE REPORT 2026" does. It
+  // used to be split between the hero label and a second kicker inside the lede, which repeated
+  // the report count. Written here because the week range is only known once WEEK_COLS exists.
+  $("#genLabel").textContent = WEEK_COLS.length
+    ? `Generated from ${ALL_REPORTS.length} reports · ${WEEK_COLS[0].label}–${WEEK_COLS[LATEST_COL].label} · latest ${ALL_REPORTS[0].date}`
+    : `Generated from ${ALL_REPORTS.length} reports · latest ${ALL_REPORTS[0].date}`;
+  if (!WEEK_COLS.length) return;
+
+  const domainCount = Object.keys(DOMAIN_TRENDS).length;
+  // These four carried a sentence each explaining what the section contained — 81 words of
+  // navigation written as prose, sitting between the header and the first piece of evidence.
+  // The question line already says what the section is for, so the second line is now the
+  // count and nothing else: it is the only part that changes period to period, and the only
+  // part a reader deciding where to click actually needs.
+  const cut = (typeof DROPPED_PRIORITIES !== "undefined" && DROPPED_PRIORITIES.length) || 0;
+  const steps = [
+    { n:"01", href:"#step-1", q:"What's happening",
+      w:`${shownSignals.length} of ${TOP_SIGNALS.length} tracked signals` },
+    { n:"02", href:"#step-2", q:"What it looks like",
+      w:`${AESTHETIC_TRENDS.length} aesthetic signals` },
+    { n:"03", href:"#step-3", q:"What Zebra does about it",
+      w:`${ZEBRA_PRIORITIES.length} focus items${cut ? ` · ${cut} cut on the Zebra check` : ``}` },
+    { n:"04", href:"#step-4", q:"Everything underneath",
+      w:`${allKeywordEntries.length} keywords · ${domainCount} domains` }
+  ];
+  $("#prChain").innerHTML = steps.map(s =>
+    `<a class="pr-step-card reveal-init" href="${s.href}"><span class="n">${s.n}</span><span class="q">${s.q}</span><span class="w">${s.w}</span></a>`
+  ).join("");
+
+  // Sample strip for the legend: a quiet week, then a heavier latest week, so both the dot-size
+  // rule and the span bar are visible in the example rather than only described in words.
+  const sample = WEEK_COLS.map((w, i) => i === 1 ? 1 : i === LATEST_COL ? 3 : 0);
+  const maxWeek = Math.max(...WEEK_COLS.map(w => w.reports.length), 1);
+  const latest = WEEK_COLS[LATEST_COL].label;
+  $("#prAxis").innerHTML = `
+    <div class="pr-axis-label">The week axis every strip below is drawn against</div>
+    <div class="pr-ruler" style="grid-template-columns:repeat(${WEEK_COLS.length},1fr)">
+      ${WEEK_COLS.map((w, i) => `<div class="pr-wk${i === LATEST_COL ? " latest" : ""}" title="${escapeHtml(w.label)}: ${w.reports.length} reports">
+        <span class="bar" style="height:${Math.round(w.reports.length / maxWeek * 42) + 4}px"></span>
+        <span class="wl">${w.label}</span><span class="wn">${w.reports.length}</span>
+      </div>`).join("")}
+    </div>`;
+
+  // The legend was 51 words of chart instructions printed before the reader had seen a chart.
+  // It now lives beside section 01's heading, where the first strip actually is, and says the
+  // one thing the picture does not: oldest week on the left. What a dot and a bar mean is
+  // legible from the example strip itself.
+  $("#prLegend").innerHTML = `
+    <div class="pr-legend">
+      <span class="li wide">${sparkFromCounts(sample, "Example only")}<span>Oldest week on the left; dot size is how many reports that week fed in.</span></span>
+      <span class="li"><span class="momentum-badge new">New This Week</span><span>only ${latest}</span></span>
+      <span class="li"><span class="momentum-badge building">Building</span><span>${latest} plus earlier weeks</span></span>
+      <span class="li"><span class="momentum-badge holding">Holding</span><span>nothing new in ${latest}</span></span>
+    </div>`;
+
+  // The two view buttons are labelled Cloud and Timeline and sit directly under this line, so
+  // the sentence that described what each one does has gone with the rest of the UI narration.
+  $("#kwSub").textContent = `${allKeywordEntries.length} keywords across ${domainCount} domains — the inventory 01–03 were drawn from.`;
+})();
+
+$$(".p-viewcloud").forEach(btn => btn.addEventListener("click", () => {
+  const rank = btn.dataset.rank;
+  const chips = $$(`#chipCloud .chip[data-priority="${rank}"]`);
+  if (!chips.length) return;
+  // This link points at the cloud specifically; if the reader left the section on Timeline,
+  // switch back first — scrollIntoView on a hidden element does nothing.
+  const cloudBtn = $('#kwModes .kw-mode[data-mode="cloud"]');
+  if (cloudBtn && !cloudBtn.classList.contains("active")) cloudBtn.click();
+  chips[0].scrollIntoView({ behavior:"smooth", block:"center", inline:"center" });
+  chips.forEach(c => { c.classList.add("chip-pulse"); setTimeout(()=>c.classList.remove("chip-pulse"), 2300); });
+}));
 
 // Spiral collision-packing: walk outward from center along an expanding spiral and drop each
 // pill at the first free spot its actual (measured) box fits in, within a wide/short bounding
@@ -599,66 +1617,119 @@ function layoutKeywordCloud(){
   // .chip has no transition on `transform` — pills are placed directly at their final spot,
   // every time (initial load, resize, restored scroll position), with no slide/reveal motion.
   const elByEntry = new Map(shownKeywords.map((k,i) => [k, chips[i]]));
-  const w = cloud.clientWidth, h = cloud.clientHeight;
-  const cx = w/2, cy = h/2;
-  const halfW = w/2, halfH = h/2;
-  const margin = 8;
-  const placed = [];
-  const n = positionOrder.length;
-  positionOrder.forEach((k, idx) => {
-    const el = elByEntry.get(k);
-    if (!el) return;
-    const hw = el.offsetWidth/2 + margin, hh = el.offsetHeight/2 + margin;
-    // Scan a grid over the whole box — exhaustive (unlike a spiral search, it can't miss a
-    // gap that genuinely exists), which matters once the box is wide-and-short rather than
-    // square: an angle-based search runs out of in-bounds candidates near the top/bottom long
-    // before the box is actually full.
-    // Scoring blends two goals that are in tension: the first, highest-priority items should
-    // land near the center; later items should instead spread OUT to fill the box rather than
-    // also crowding the center (which is what left big empty margins before). rankPct ramps
-    // that blend from "pure center bias" to "pure fill-the-gaps" over the placement order.
-    // Distance is measured in BOX-NORMALIZED units (x/halfW, y/halfH), not raw pixels — the
-    // box is much wider than it is tall, so a raw-pixel circular distance made "near the top
-    // edge" look cheaper than "far to the side", which is exactly how high-heat pills ended up
-    // against the top/bottom edges while the sides sat empty. Normalizing makes every edge of
-    // the box equally "expensive" to reach, which keeps the heat gradient radiating outward in
-    // a proper ring instead of migrating to whichever axis is shorter.
-    // A same-tier alignment penalty additionally discourages same-size pills lining up in a
-    // straight row/column — strong enough this time to actually move the pick, not just nudge it.
-    const rankPct = n > 1 ? idx/(n-1) : 0;
-    const spreadWeight = rankPct*rankPct*2.4;
-    let best = null, bestScore = Infinity;
-    let fallback = null, fallbackOverlap = Infinity;
-    const gridStep = 6;
-    for (let y = hh; y <= h-hh; y += gridStep) {
-      for (let x = hw; x <= w-hw; x += gridStep) {
-        let overlapArea = 0, alignPenalty = 0, minDistNormSq = Infinity;
-        for (const p of placed) {
-          const ox = Math.max(0, (hw+p.hw) - Math.abs(x-p.x));
-          const oy = Math.max(0, (hh+p.hh) - Math.abs(y-p.y));
-          if (ox > 0 && oy > 0) { overlapArea += ox*oy; continue; }
-          const ndx = (x-p.x)/halfW, ndy = (y-p.y)/halfH;
-          const dNormSq = ndx*ndx + ndy*ndy;
-          if (dNormSq < minDistNormSq) minDistNormSq = dNormSq;
-          if (p.tier === k.tier && Math.abs(p.y-y) < 22 && Math.abs(p.x-x) < 260) alignPenalty += 3;
-          if (p.tier === k.tier && Math.abs(p.x-x) < 22 && Math.abs(p.y-y) < 120) alignPenalty += 3;
-        }
-        if (overlapArea === 0) {
-          const nx = (x-cx)/halfW, ny = (y-cy)/halfH;
-          const distNormSq = nx*nx + ny*ny;
-          const spreadTerm = placed.length ? Math.min(minDistNormSq, 0.65) : 0;
-          const score = distNormSq + alignPenalty - spreadTerm*spreadWeight;
-          if (score < bestScore) { bestScore = score; best = {x,y}; }
-        } else if (overlapArea < fallbackOverlap) {
-          fallbackOverlap = overlapArea; fallback = {x,y};
+  const w = cloud.clientWidth;
+  // Reset any height this function previously added before re-measuring the CSS base height —
+  // otherwise a resize would compound growth from the loop below onto an already-grown box.
+  cloud.style.height = "";
+  const baseH = cloud.clientHeight;
+
+  // Scan a grid over the whole box — exhaustive (unlike a spiral search, it can't miss a
+  // gap that genuinely exists), which matters once the box is wide-and-short rather than
+  // square: an angle-based search runs out of in-bounds candidates near the top/bottom long
+  // before the box is actually full.
+  // Scoring blends two goals that are in tension: the first, highest-priority items should
+  // land near the center; later items should instead spread OUT to fill the box rather than
+  // also crowding the center (which is what left big empty margins before). rankPct ramps
+  // that blend from "pure center bias" to "pure fill-the-gaps" over the placement order.
+  // Distance is measured in BOX-NORMALIZED units (x/halfW, y/halfH), not raw pixels — the
+  // box is much wider than it is tall, so a raw-pixel circular distance made "near the top
+  // edge" look cheaper than "far to the side", which is exactly how high-heat pills ended up
+  // against the top/bottom edges while the sides sat empty. Normalizing makes every edge of
+  // the box equally "expensive" to reach, which keeps the heat gradient radiating outward in
+  // a proper ring instead of migrating to whichever axis is shorter.
+  // A same-tier alignment penalty additionally discourages same-size pills lining up in a
+  // straight row/column — strong enough this time to actually move the pick, not just nudge it.
+  function packAttempt(h, skip){
+    const cx = w/2, cy = h/2;
+    const halfW = w/2, halfH = h/2;
+    const margin = 8;
+    const placed = [];
+    const positions = new Map();
+    let anyOverlap = false;
+    const n = positionOrder.length;
+    positionOrder.forEach((k, idx) => {
+      const el = elByEntry.get(k);
+      if (!el || (skip && skip.has(k))) return;
+      const hw = el.offsetWidth/2 + margin, hh = el.offsetHeight/2 + margin;
+      const rankPct = n > 1 ? idx/(n-1) : 0;
+      const spreadWeight = rankPct*rankPct*2.4;
+      let best = null, bestScore = Infinity;
+      let fallback = null, fallbackOverlap = Infinity;
+      const gridStep = 6;
+      for (let y = hh; y <= h-hh; y += gridStep) {
+        for (let x = hw; x <= w-hw; x += gridStep) {
+          let overlapArea = 0, alignPenalty = 0, minDistNormSq = Infinity;
+          for (const p of placed) {
+            const ox = Math.max(0, (hw+p.hw) - Math.abs(x-p.x));
+            const oy = Math.max(0, (hh+p.hh) - Math.abs(y-p.y));
+            if (ox > 0 && oy > 0) { overlapArea += ox*oy; continue; }
+            const ndx = (x-p.x)/halfW, ndy = (y-p.y)/halfH;
+            const dNormSq = ndx*ndx + ndy*ndy;
+            if (dNormSq < minDistNormSq) minDistNormSq = dNormSq;
+            if (p.tier === k.tier && Math.abs(p.y-y) < 22 && Math.abs(p.x-x) < 260) alignPenalty += 3;
+            if (p.tier === k.tier && Math.abs(p.x-x) < 22 && Math.abs(p.y-y) < 120) alignPenalty += 3;
+          }
+          if (overlapArea === 0) {
+            const nx = (x-cx)/halfW, ny = (y-cy)/halfH;
+            const distNormSq = nx*nx + ny*ny;
+            const spreadTerm = placed.length ? Math.min(minDistNormSq, 0.65) : 0;
+            const score = distNormSq + alignPenalty - spreadTerm*spreadWeight;
+            if (score < bestScore) { bestScore = score; best = {x,y}; }
+          } else if (overlapArea < fallbackOverlap) {
+            fallbackOverlap = overlapArea; fallback = {x,y};
+          }
         }
       }
-    }
-    if (!best) best = fallback || {x: cx, y: cy};
-    placed.push({x:best.x, y:best.y, hw, hh, tier:k.tier});
-    el.style.setProperty("--tx", (best.x-cx).toFixed(1) + "px");
-    el.style.setProperty("--ty", (best.y-cy).toFixed(1) + "px");
+      if (!best) { best = fallback || {x: cx, y: cy}; anyOverlap = true; }
+      placed.push({x:best.x, y:best.y, hw, hh, tier:k.tier});
+      positions.set(el, {tx: best.x-cx, ty: best.y-cy});
+    });
+    return { positions, anyOverlap };
+  }
+
+  // At 30 pills the box is sometimes too dense for every one to find a collision-free cell —
+  // when that happens, packAttempt falls back to the least-bad overlapping spot, which is the
+  // overlap bug this loop fixes: grow the box and repack from scratch until nothing overlaps
+  // (or a sane height cap is hit, so a pathological case can't grow the page forever).
+  // Was baseH + 400. At narrower widths 30 pills genuinely need more room than that, and when
+  // the cap bites, packAttempt starts dropping pills on overlapping spots — so the cap was
+  // buying a shorter box by paying in visible collisions. Growing is the cheaper currency:
+  // a taller cloud is still readable, two pills on top of each other are not.
+  const maxH = baseH + 900;
+  // Every chip starts visible: a previous run at a narrower width may have hidden some, and a
+  // hidden chip measures 0×0, which would corrupt this run's packing if it gets re-included.
+  chips.forEach(el => { el.style.display = ""; });
+  const skip = new Set();
+  function growUntilClean(){
+    let h = baseH, result = packAttempt(h, skip);
+    while (result.anyOverlap && h < maxH) { h += 60; result = packAttempt(h, skip); }
+    return { h, result };
+  }
+  let { h, result } = growUntilClean();
+  // 30 chips was a fixed guess tuned at one viewport width. Narrower than that, the box is
+  // genuinely over-full: no collision-free cell exists for the last few chips even at the height
+  // cap, and packAttempt then drops them on the least-bad overlapping spot — which is a visible
+  // collision, the exact thing the growth loop exists to prevent. So when growing has run out,
+  // retire the lowest-ranked chips (shownKeywords is already sorted by evidence count, so the
+  // weakest go first) until the rest pack cleanly, and say how many are on screen underneath.
+  // Floor of 12 so a very narrow window empties the cloud down to a stub rather than to nothing.
+  for (let i = shownKeywords.length - 1; result.anyOverlap && shownKeywords.length - skip.size > 12; i--) {
+    skip.add(shownKeywords[i]);
+    ({ h, result } = growUntilClean());
+  }
+  cloud.style.height = h !== baseH ? h + "px" : "";
+  result.positions.forEach((pos, el) => {
+    el.style.setProperty("--tx", pos.tx.toFixed(1) + "px");
+    el.style.setProperty("--ty", pos.ty.toFixed(1) + "px");
   });
+  skip.forEach(k => { const el = elByEntry.get(k); if (el) el.style.display = "none"; });
+  const countEl = $("#cloudCount");
+  if (countEl) {
+    const shown = shownKeywords.length - skip.size;
+    countEl.textContent = shown < allKeywordEntries.length
+      ? `Showing the ${shown} best-evidenced of ${allKeywordEntries.length} tracked keywords — Timeline view and the domain pages list the rest.`
+      : `All ${allKeywordEntries.length} tracked keywords.`;
+  }
 }
 // Mobile: the spiral layout above still runs (against the fixed canvas size set in CSS), but
 // the canvas is bigger than the visible "porthole" — drag to pan it, Apple Watch app-grid
@@ -667,7 +1738,13 @@ function layoutKeywordCloud(){
 function initMobileChipPan(){
   const viewport = $("#chipCloudViewport");
   const cloud = $("#chipCloud");
-  if (!viewport || !cloud || window.innerWidth >= 700) { if (cloud) cloud.style.transform = ""; return; }
+  // Also clear any leftover --mag lens-scale from a prior mobile-width pass (e.g. the preview
+  // pane settling from a transient narrow width right after load) — otherwise a chip stays
+  // visually scaled up past what layoutKeywordCloud measured it as, overlapping its neighbors.
+  if (!viewport || !cloud || window.innerWidth >= 700) {
+    if (cloud) { cloud.style.transform = ""; $$("#chipCloud .chip").forEach(c => c.style.removeProperty("--mag")); }
+    return;
+  }
   const vw = viewport.clientWidth, vh = viewport.clientHeight;
   const cw = cloud.offsetWidth, ch = cloud.offsetHeight;
   const clampX = x => Math.min(0, Math.max(vw - cw, x));
@@ -724,17 +1801,28 @@ initMobileChipPan();
 let kwResizeT;
 window.addEventListener("resize", ()=>{ clearTimeout(kwResizeT); kwResizeT = setTimeout(()=>{ layoutKeywordCloud(); initMobileChipPan(); }, 150); });
 
+// Chip widths are measured, so a language switch invalidates the packing — Chinese labels are
+// much narrower than the English ones and the cloud would otherwise sit at English spacing.
+document.addEventListener("i18n:change", ()=>{
+  if (!$("#kwCloudView").hidden) { layoutKeywordCloud(); initMobileChipPan(); }
+});
+
 /* ---------- domains this period (slider by default, "show all" switches to full grid) ---------- */
 $("#catGrid").innerHTML = DOMAINS.map(d => {
   const reportCount = ALL_REPORTS.filter(r=>r.domain===d.id).length;
-  const trendCount = Math.min((DOMAIN_TRENDS[d.id]||[]).length, 3);
+  // Was capped at 3, which reported "3 trends" for a domain holding 8 and hid exactly the
+  // thin-vs-rich difference between domains. Show the real count, plus how many of those are
+  // backed by more than one report.
+  const domTrends = DOMAIN_TRENDS[d.id] || [];
+  const trendCount = domTrends.length;
+  const multiCount = domTrends.filter(t => (t.evidence||[]).length >= 2).length;
   const repHero = d.cardImage || (ALL_REPORTS.find(r=>r.domain===d.id)||{}).hero || "";
-  return `<a class="cat-tile" href="domains/${DOMAIN_PAGE[d.id]}.html" style="--accent:${d.accent}">
+  return `<a class="cat-tile reveal-init" href="domains/${DOMAIN_PAGE[d.id]}.html" style="--accent:${d.accent}">
     <img class="cat-img" src="${repHero}" alt="${d.name}">
     <div class="cat-body">
       <div class="bar" style="background:${d.accent}"></div>
       <h3>${d.name}</h3>
-      <div class="meta-row"><span><b>${reportCount}</b> reports</span><span><b>${trendCount}</b> trends</span></div>
+      <div class="meta-row"><span><b>${reportCount}</b> report${reportCount===1?"":"s"}</span><span><b>${trendCount}</b> trend${trendCount===1?"":"s"}</span><span><b>${multiCount}</b> multi-source</span></div>
     </div>
     <div class="cat-overlay"><span>Go to domain dashboard →</span></div>
   </a>`;
@@ -759,7 +1847,11 @@ const SCROLL_KEY = "dashboardScrollY";
 const CAT_SCROLL_KEY = "dashboardCatScrollX";
 const savedScroll = sessionStorage.getItem(SCROLL_KEY);
 const savedCatScroll = sessionStorage.getItem(CAT_SCROLL_KEY);
-const isReturning = savedScroll !== null;
+// `beforeunload` writes the scroll position on every exit, including a plain reload — so a
+// reload used to count as "returning" and suppress every entrance animation, even when the
+// saved position was 0 and there was no content above the viewport to protect. Treat only a
+// genuine non-zero position as returning: at the top of the page the reveal can safely play.
+const isReturning = savedScroll !== null && parseInt(savedScroll, 10) > 0;
 if (isReturning) {
   // Skip the fade-in reveal so content above the restored position isn't sitting at opacity:0.
   $$(".reveal-init").forEach(el => el.classList.add("reveal-in"));
@@ -791,13 +1883,93 @@ window.addEventListener("beforeunload", ()=>{
   sessionStorage.setItem(CAT_SCROLL_KEY, $("#catGrid").scrollLeft);
 });
 
-/* ---------- scroll reveal (Apple-style) ---------- */
+/* ---------- scroll reveal + the rest of the motion layer (see the MOTION LAYER CSS) ---------- */
+const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Siblings that scroll into view together used to fade in as one slab — three identical
+// priority rows arriving at the same instant read as a single block rather than three items.
+// Each group gets an increasing transition-delay, capped so a long grid doesn't end on a lag
+// the reader is left waiting through.
+function stagger(sel, step = 80, cap = 5){
+  $$(sel).forEach((el, i) => el.style.setProperty("--d", Math.min(i, cap) * step + "ms"));
+}
+[ "#prChain .pr-step-card", "#signalsGrid .signal", "#aestheticGrid .aes-feature",
+  "#priorityList .wz-row", "#catGrid .cat-tile", "#feedGrid .fcard" ].forEach(s => stagger(s));
+
+// Reveal, then get out of the way: .reveal-in carries a 700ms transition on `transform`, and
+// leaving it on a card means its hover lift inherits that 700ms too. Dropping both classes once
+// the fade finishes hands the element back to its own (much faster) hover transition.
+function revealNow(el){
+  el.classList.add("reveal-in");
+  const done = () => { el.classList.remove("reveal-in", "reveal-init"); el.removeEventListener("transitionend", done); clearTimeout(t); };
+  el.addEventListener("transitionend", done);
+  // transitionend is not guaranteed — an interrupted or never-started transition never fires it,
+  // and leaving .reveal-in behind means the card's hover lift keeps the reveal's 700ms timing
+  // instead of its own. Clean up on a timer past the animation's own length as well.
+  const t = setTimeout(done, 1400 + parseFloat(el.style.getPropertyValue("--d") || 0));
+}
+
+// Releases whatever the element's own from-state is. Grouped into one observer so a single
+// scroll handler drives every entrance on the page.
+function playMotion(el){
+  if (el.classList.contains("reveal-init")) revealNow(el);
+  if (el.classList.contains("fade-init")) { el.classList.add("fade-in"); }
+  if (el.classList.contains("spark")) el.classList.add("spark-go");
+  if (el.id === "prAxis") el.classList.add("axis-go");
+  // The tension bar starts at an even 50/50 and leans to its real split here.
+  if (el.id === "tensionBar") $$(".tb-seg", el).forEach(s => { s.style.flexBasis = s.dataset.basis; });
+}
+// Tracks whether the observer has ever actually run, for the fail-safe at the bottom.
+let motionFired = false;
 const io = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("reveal-in"); io.unobserve(e.target); } });
+  entries.forEach(e=>{ if(e.isIntersecting){ motionFired = true; playMotion(e.target); io.unobserve(e.target); } });
 },{threshold:.12});
-if (!isReturning) {
-  $$(".reveal-init").forEach(el=>io.observe(el));
-  requestAnimationFrame(()=> $("#heroBlock").classList.add("reveal-in"));
+// Strips are small and often sit at the bottom edge of a tall card, so a 12% threshold on the
+// strip itself is effectively "fully on screen" — watch them with their own, looser observer
+// so the draw-in has already happened by the time the reader's eye reaches it.
+const ioSpark = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ motionFired = true; playMotion(e.target); ioSpark.unobserve(e.target); } });
+},{threshold:0, rootMargin:"0px 0px -40px 0px"});
+
+function observeMotion(root = document){
+  $$(".spark:not(.spark-go)", root).forEach(el => ioSpark.observe(el));
+  $$(".reveal-init, .fade-init:not(.fade-in), #prAxis, #tensionBar", root).forEach(el => io.observe(el));
+}
+
+// Clear every from-state outright, with no transition — used when motion is unwanted and as the
+// fail-safe below. Deliberately not "run the transitions at zero duration": that still depends
+// on the animation engine running at all, which is the exact thing the fail-safe cannot assume.
+function skipMotion(){
+  document.body.classList.add("motion-off");
+  $$(".reveal-init").forEach(el => el.classList.remove("reveal-init"));
+  $$(".fade-init").forEach(el => el.classList.remove("fade-init"));
+  $$(".spark:not(.spark-go)").forEach(el => el.classList.add("spark-go"));
+  $("#prAxis").classList.add("axis-go");
+  $$("#tensionBar .tb-seg").forEach(s => { if (s.dataset.basis) s.style.flexBasis = s.dataset.basis; });
+}
+
+if (isReturning || REDUCED) {
+  // The reader is either mid-session at a restored scroll position — where a fade would leave
+  // content above them sitting at opacity:0 — or has asked the OS for no motion.
+  skipMotion();
+} else {
+  $("#chipCloud").classList.add("fade-init");
+  observeMotion();
+  // The masthead itself carries no from-state — a page header that fades in is a header you
+  // cannot read on arrival — so the first thing released is the card directly under it.
+  requestAnimationFrame(()=> { const a = $(".lede-act"); if (a) revealNow(a); });
+
+  // Fail-safe. The from-states are applied by CSS and released only by the observers above, so
+  // if those never run the page would simply stay blank — which is a far worse failure than a
+  // missing fade. An IntersectionObserver does not report intersections while the page's
+  // rendering is suspended (opened in a background tab, or a preview pane that is hidden), and
+  // it is not worth betting the page's legibility on it waking up. If nothing at all has been
+  // released a few seconds in, drop every from-state; and release immediately if the page
+  // becomes visible having never fired. On a normally-visible page the observer fires within
+  // the first frame, so neither of these ever gets the chance to run.
+  const bail = () => { if (!motionFired) skipMotion(); };
+  setTimeout(bail, 4000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) setTimeout(bail, 400); });
 }
 
 /* ---------- fuzzy search ---------- */
@@ -869,4 +2041,7 @@ document.addEventListener("click", (e)=>{
 });
 document.addEventListener("keydown", (e)=>{ if (e.key==="Escape") $("#searchWrap").classList.remove("open"); });
 </script>
+
+<script src="i18n.zh.js"></script>
+<script src="i18n.js"></script>
 </body></html>
