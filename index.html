@@ -45,8 +45,7 @@ body:not(.sidebar-collapsed) .sb-backdrop{opacity:1;pointer-events:auto}
 .week-sub>div{overflow:hidden;min-height:0}
 .week-sub.content-hidden{content-visibility:hidden}
 .rep-mini{display:block;padding:6px 8px 6px 8px;font-size:12.5px;color:var(--muted);border-left:4px solid var(--line);margin-left:4px;transition:color .15s,border-color .15s}
-/* A launch event that belongs to a week is listed inside that week, accent-edged so it reads as a group, not a seventh report. */
-.ev-mini{border-left-style:dashed;color:#d8dcda;margin-top:7px}
+/* A launch event that belongs to a week is listed inside that week and renders exactly like that week's own report rows - no marker, no separate colour. The report count in its label is the only thing that sets it apart. */
 .rep-mini:hover{color:var(--ink);border-color:var(--accent)}
 .single-item{display:flex;align-items:center;gap:9px;padding:7px 8px 7px 17px;border-radius:8px;font-size:13px;color:#9aa3a0;transition:background .15s,color .15s}
 .single-item:hover{background:var(--panel);color:var(--ink)}
@@ -176,6 +175,8 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 .lede-delta span b{color:var(--ink);font-weight:850}
 .lede-delta span.on,.lede-delta span.on b{color:var(--accent)}
 .lede-delta span.on{border-color:rgba(185,255,67,.45)}
+.lede-delta span.aside{position:relative;margin-left:16px}
+.lede-delta span.aside::before{content:"";position:absolute;left:-9px;top:3px;bottom:3px;border-left:1px solid var(--line)}
 .lede-act{display:flex;gap:18px;align-items:flex-start;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:16px;background:var(--bg);padding:17px 19px;text-decoration:none;color:inherit;transition:border-color .18s,transform .18s}
 .lede-act:hover{border-color:var(--accent);transform:translateY(-2px)}
 .la-thumb{flex:0 0 136px;height:92px;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#030505}
@@ -1214,6 +1215,8 @@ if (typeof PERIOD_NARRATIVE !== "undefined") {
    all, were silently dropped from every momentum badge while still being counted in the
    Timeline. Two of them (Ferrari F80, Ferrari Luce) are cited by the aesthetic trends, so that
    was a live wrong answer, not a hypothetical one. One map, built once, used by everything. */
+// A week's count includes the launch event that belongs to it — see data.js (w.totalReports).
+const wkCount = (w) => (w.totalReports != null ? w.totalReports : w.reports.length);
 const WEEK_COLS = WEEKS.slice().reverse();                 // oldest week first
 const LATEST_COL = WEEK_COLS.length - 1;
 const reportWeekCol = {};
@@ -1412,14 +1415,21 @@ if (typeof ZEBRA_PRIORITIES !== "undefined") {
   const tally = { new:0, building:0, holding:0 };
   pool.forEach(e => { tally[momentumTag(e).cls]++; });
   const dropped = (typeof DROPPED_PRIORITIES !== "undefined") ? DROPPED_PRIORITIES.length : 0;
+  const latestWeekLabel = (typeof WEEK_COLS !== "undefined" && WEEK_COLS.length) ? WEEK_COLS[WEEK_COLS.length-1].label : "this week";
   $("#ledeDelta").innerHTML =
     // RELABELLED 2026-11-04 (V5) per review doc §7.2 — same change as momentumTag() above. The
     // chips used the bare words "building" and "holding", which read as market momentum when all
     // they count is which weeks of this corpus fed each entry.
-    `<span class="${tally.new ? "on" : ""}"><b>${tally.new}</b> new case this week</span>` +
-    `<span><b>${tally.building}</b> repeat across weeks</span>` +
-    `<span><b>${tally.holding}</b> no new case this week</span>` +
-    (dropped ? `<span><b>${dropped}</b> cut on the Zebra check</span>` : ``);
+    // REWRITTEN 2026-11-10 — "12 no new case this week" was unreadable. Three faults in one
+    // chip: "case" is our word, not the reader's; the number had no denominator, so 12 of what
+    // was unanswerable from the screen; and a large number attached to a negative reads as a
+    // fault count. It is also redundant - it is just the complement of the first chip. Now one
+    // sentence carries the whole thing, with the denominator in it and the week named, and the
+    // second chip appears only when a signal actually spans several weeks. The per-entry badges
+    // below still give the same status card by card.
+    `<span class="${tally.new ? "on" : ""}"><b>${tally.new}</b> of <b>${pool.length}</b> signals picked up a ${latestWeekLabel} report</span>` +
+    (tally.building ? `<span><b>${tally.building}</b> of them run across several weeks</span>` : ``) +
+    (dropped ? `<span class="aside"><b>${dropped}</b> cut on the Zebra check</span>` : ``);
 })();
 
 function signalHero(s){
@@ -1726,14 +1736,14 @@ $$("#chipCloud .chip").forEach(el => el.addEventListener("click", ()=>
   // Sample strip for the legend: a quiet week, then a heavier latest week, so both the dot-size
   // rule and the span bar are visible in the example rather than only described in words.
   const sample = WEEK_COLS.map((w, i) => i === 1 ? 1 : i === LATEST_COL ? 3 : 0);
-  const maxWeek = Math.max(...WEEK_COLS.map(w => w.reports.length), 1);
+  const maxWeek = Math.max(...WEEK_COLS.map(w => wkCount(w)), 1);
   const latest = WEEK_COLS[LATEST_COL].label;
   $("#prAxis").innerHTML = `
     <div class="pr-axis-label">The week axis every strip below is drawn against</div>
     <div class="pr-ruler" style="grid-template-columns:repeat(${WEEK_COLS.length},1fr)">
-      ${WEEK_COLS.map((w, i) => `<div class="pr-wk${i === LATEST_COL ? " latest" : ""}" title="${escapeHtml(w.label)}: ${w.reports.length} reports">
-        <span class="bar" style="height:${Math.round(w.reports.length / maxWeek * 42) + 4}px"></span>
-        <span class="wl">${w.label}</span><span class="wn">${w.reports.length}</span>
+      ${WEEK_COLS.map((w, i) => `<div class="pr-wk${i === LATEST_COL ? " latest" : ""}" title="${escapeHtml(w.label)}: ${wkCount(w)} reports">
+        <span class="bar" style="height:${Math.round(wkCount(w) / maxWeek * 42) + 4}px"></span>
+        <span class="wl">${w.label}</span><span class="wn">${wkCount(w)}</span>
       </div>`).join("")}
     </div>`;
 

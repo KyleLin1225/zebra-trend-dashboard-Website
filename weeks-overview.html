@@ -38,6 +38,8 @@ h1{font-size:clamp(36px,5vw,54px);font-weight:760;letter-spacing:-.035em;margin:
 </main>
 <script src="data.js"></script>
 <script>
+// Includes the week's launch event — see data.js (w.totalReports).
+const wkc = (w) => (w.totalReports != null ? w.totalReports : w.reports.length);
 const $=(s,el=document)=>el.querySelector(s);
 const $$=(s,el=document)=>Array.from(el.querySelectorAll(s));
 
@@ -50,8 +52,8 @@ $("#grid").innerHTML = WEEKS.map(w => {
     <div class="cc">
       <div class="ccmeta">${w.dateRange}</div>
       <h3>${w.label}</h3>
-      <p>${w.reports.length} report${w.reports.length===1?"":"s"} this week</p>
-      <div class="meta-row"><span><b>${w.reports.length}</b> reports</span></div>
+      <p>${wkc(w)} report${wkc(w)===1?"":"s"} this week</p>
+      <div class="meta-row"><span><b>${wkc(w)}</b> reports</span></div>
     </div>
   </a>`;
 }).join("");
