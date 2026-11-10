@@ -253,7 +253,7 @@
       if (!r) return "";
       const href = `../report-viewer.html?src=${encodeURIComponent(r.file)}&amp;title=${encodeURIComponent(r.title)}&amp;back=${encodeURIComponent(backPath)}`;
       return `<a class="t-card ${cs.layer}" href="${href}" title="${cs.layer.replace(/-/g," ")} · ${r.title}">
-        <img src="${r.hero}" alt="${r.title}" loading="lazy">
+        <img referrerpolicy="no-referrer" src="${r.hero}" alt="${r.title}" loading="lazy">
         <span class="tc-t">${r.title}</span>
         <span class="tc-a">${cs.at}</span>
       </a>`;
@@ -309,7 +309,7 @@
               const r = ALL_REPORTS.find(x=>x.title===title);
               if(!r) return "";
               return `<a class="ev-card" href="../report-viewer.html?src=${encodeURIComponent(r.file)}&amp;title=${encodeURIComponent(r.title)}&amp;back=${encodeURIComponent(backPath)}" style="text-decoration:none;color:inherit">
-                <img src="${r.hero}" alt="${r.title}"><div><div class="et">${r.title}</div><div class="ed">${r.date}</div></div>
+                <img referrerpolicy="no-referrer" src="${r.hero}" alt="${r.title}"><div><div class="et">${r.title}</div><div class="ed">${r.date}</div></div>
               </a>`;
             }).join("")}
             </div></div>
@@ -411,7 +411,7 @@
     const pageItems = reports.slice(start, start + REPORTS_PER_PAGE);
     $("#reportGrid").innerHTML = pageItems.map(r => `
       <a class="report-card" href="../report-viewer.html?src=${encodeURIComponent(r.file)}&title=${encodeURIComponent(r.title)}&back=${encodeURIComponent(backPath)}">
-        <img src="${r.hero}" alt="${r.title}">
+        <img referrerpolicy="no-referrer" src="${r.hero}" alt="${r.title}">
         <div class="rc"><div class="rcmeta"><span>${r.date}</span></div><h4>${r.title}</h4><p>${r.blurb}</p></div>
       </a>
     `).join("");

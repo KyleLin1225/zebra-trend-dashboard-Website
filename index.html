@@ -895,7 +895,7 @@ a.kt-name:hover{color:var(--accent)}
             <div class="tension-bar mast-tension" id="tensionBar"></div>
           </div>
           <figure class="mast-figure">
-            <img src="https://images.ctfassets.net/a3peezndovsu/7qZMZ80Qcs3jC1HicLoZvW/c20ea9b6d751bb7e42aaf116ea7b0892/ring_floodlight_cam_4k_plus_wired_lifestyle_atf_1500x1500.jpg?w=1100&amp;q=80"
+            <img referrerpolicy="no-referrer" src="https://images.ctfassets.net/a3peezndovsu/7qZMZ80Qcs3jC1HicLoZvW/c20ea9b6d751bb7e42aaf116ea7b0892/ring_floodlight_cam_4k_plus_wired_lifestyle_atf_1500x1500.jpg?w=1100&amp;q=80"
                  alt="A Ring floodlight camera mounted on a house wall at dusk with both lamps lit. The lens sits inside a moulded boundary on the white housing."
                  decoding="async">
             <figcaption>
@@ -1337,7 +1337,7 @@ if (typeof ZEBRA_PRIORITIES !== "undefined") {
       return `<a class="off" href="${href}" title="Tracked signal, not among the 3 shown in 01 this period — opens its ${ev.length} reports">${title} ↗</a>`;
     }).join(", ");
     const hero = priorityHero(p, i, usedPriorityHeroes);
-    const thumb = hero ? `<img src="${hero}" alt="">` : "";
+    const thumb = hero ? `<img referrerpolicy="no-referrer" src="${hero}" alt="">` : "";
     return `<div class="wz-row ${p.urgency} reveal-init">
       <div class="wz-thumb-wrap">${thumb}</div>
       <div class="wz-body">
@@ -1387,7 +1387,7 @@ if (typeof ZEBRA_PRIORITIES !== "undefined") {
   const lead = ZEBRA_PRIORITIES[0];
   $("#ledeAct").innerHTML = `
     <a class="lede-act reveal-init" href="#step-3">
-      ${lead.image ? `<span class="la-thumb"><img src="${lead.image}" alt=""></span>` : ``}
+      ${lead.image ? `<span class="la-thumb"><img referrerpolicy="no-referrer" src="${lead.image}" alt=""></span>` : ``}
       <span class="la-body">
         <span class="la-badge">What to find out · ${URGENCY_LABEL[lead.urgency] || lead.urgency}</span>
         <span class="la-title">${lead.title}</span>
@@ -1461,7 +1461,7 @@ $("#signalsGrid").innerHTML = shownSignals.map((s,i) => {
         const r = ALL_REPORTS.find(x=>x.title===title);
         if(!r) return "";
         return `<a class="ev-card" href="report-viewer.html?src=${encodeURIComponent(r.file)}&amp;title=${encodeURIComponent(r.title)}&amp;back=index.html" style="text-decoration:none;color:inherit">
-          <img src="${r.hero}" alt="${r.title}"><div><div class="et">${r.title}</div><div class="ed">${domainName(r.domain)} · ${r.date}</div></div>
+          <img referrerpolicy="no-referrer" src="${r.hero}" alt="${r.title}"><div><div class="et">${r.title}</div><div class="ed">${domainName(r.domain)} · ${r.date}</div></div>
         </a>`;
       }).join("")}
       </div></div>
@@ -1495,7 +1495,7 @@ function aesMedia(s){
 }
 if (typeof AESTHETIC_TRENDS !== "undefined") {
   $("#aestheticGrid").innerHTML = `<div class="aes-list">` + AESTHETIC_TRENDS.map((s,i) => {
-    const media = aesMedia(s).map(src => `<img src="${src}" alt="${s.keyword}">`).join("");
+    const media = aesMedia(s).map(src => `<img referrerpolicy="no-referrer" src="${src}" alt="${s.keyword}">`).join("");
     const mom = momentumTag(s);
     const chips = s.evidence.map(title=>{
       const r = ALL_REPORTS.find(x=>x.title===title);
@@ -1981,7 +1981,7 @@ $("#catGrid").innerHTML = DOMAINS.map(d => {
   const multiCount = domTrends.filter(t => (t.evidence||[]).length >= 2).length;
   const repHero = d.cardImage || (ALL_REPORTS.find(r=>r.domain===d.id)||{}).hero || "";
   return `<a class="cat-tile reveal-init" href="domains/${DOMAIN_PAGE[d.id]}.html" style="--accent:${d.accent}">
-    <img class="cat-img" src="${repHero}" alt="${d.name}">
+    <img referrerpolicy="no-referrer" class="cat-img" src="${repHero}" alt="${d.name}">
     <div class="cat-body">
       <div class="bar" style="background:${d.accent}"></div>
       <h3>${d.name}</h3>
@@ -1997,7 +1997,7 @@ $("#catNext").addEventListener("click", ()=> $("#catGrid").scrollBy({left:600, b
 /* ---------- latest reports feed ---------- */
 $("#feedGrid").innerHTML = ALL_REPORTS.slice(0,6).map(r => `
   <a class="fcard reveal-init" href="report-viewer.html?src=${encodeURIComponent(r.file)}&amp;title=${encodeURIComponent(r.title)}&amp;back=index.html">
-    <img src="${r.hero}" alt="${r.title}">
+    <img referrerpolicy="no-referrer" src="${r.hero}" alt="${r.title}">
     <div class="fc"><div class="fmeta"><span>${domainName(r.domain)}</span><span>${r.date}</span></div><h4>${r.title}</h4><p>${r.blurb}</p></div>
   </a>
 `).join("");
@@ -2179,7 +2179,7 @@ function runSearch(){
     <div class="kwchips">${kws.map(k=>`<span>${k}</span>`).join("")}</div>
     <div class="rlabel">Matching reports</div>
     ${top.map(r=>`<a class="rresult" href="report-viewer.html?src=${encodeURIComponent(r.file)}&amp;title=${encodeURIComponent(r.title)}&amp;back=index.html">
-      <img src="${r.hero}" alt="${r.title}"><div><div class="rt">${r.title}</div><div class="rd">${domainName(r.domain)} · ${r.date}</div></div>
+      <img referrerpolicy="no-referrer" src="${r.hero}" alt="${r.title}"><div><div class="rt">${r.title}</div><div class="rd">${domainName(r.domain)} · ${r.date}</div></div>
     </a>`).join("")}
     <a class="seeall" href="reports-overview.html?q=${encodeURIComponent(q)}">See all ${scored.length} results →</a>
   `;

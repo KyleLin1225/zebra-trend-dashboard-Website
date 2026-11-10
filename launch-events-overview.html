@@ -46,7 +46,7 @@ $("#emptyMsg").style.display = LAUNCH_EVENTS.length ? "none" : "block";
 $("#grid").innerHTML = LAUNCH_EVENTS.map(ev => {
   const hero = (ev.reports[0]||{}).hero || "";
   return `<a class="card" href="${ev.indexFile}">
-    <img src="${hero}" alt="${ev.name}">
+    <img referrerpolicy="no-referrer" src="${hero}" alt="${ev.name}">
     <div class="cc">
       <div class="ccmeta">${ev.dateRange}</div>
       <h3>${ev.shortName || ev.name}</h3>

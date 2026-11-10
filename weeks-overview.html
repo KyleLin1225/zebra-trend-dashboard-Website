@@ -46,7 +46,7 @@ $("#emptyMsg").style.display = WEEKS.length ? "none" : "block";
 $("#grid").innerHTML = WEEKS.map(w => {
   const hero = (w.reports[0]||{}).hero || "";
   return `<a class="card" href="${w.indexFile}">
-    <img src="${hero}" alt="${w.label}">
+    <img referrerpolicy="no-referrer" src="${hero}" alt="${w.label}">
     <div class="cc">
       <div class="ccmeta">${w.dateRange}</div>
       <h3>${w.label}</h3>

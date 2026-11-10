@@ -131,7 +131,7 @@ function renderGrid(list){
     return `<div class="card" data-file="${r.file}" style="--accent:${domainAccent(r.domain)}">
       <div class="cbwrap"><input type="checkbox" class="selbox" data-file="${r.file}" data-title="${r.title}" ${selected.has(r.file)?"checked":""}></div>
       <a href="${viewerUrl}" style="text-decoration:none;color:inherit">
-        <img src="${r.hero}" alt="${r.title}">
+        <img referrerpolicy="no-referrer" src="${r.hero}" alt="${r.title}">
         <div class="cc"><div class="ccmeta"><span>${domainName(r.domain)}</span><span>${r.date}</span></div><h3>${r.title}</h3><p>${r.blurb}</p></div>
       </a>
     </div>`;

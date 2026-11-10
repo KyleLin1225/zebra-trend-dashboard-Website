@@ -1277,7 +1277,7 @@ const AESTHETIC_TRENDS = [
     evidence: ["Yangwang Altior", "motorola signature 27"],
     mediaRatio: "16/9",
     images: [
-      "https://assets.motorola.com/global/zeus_2027/motorola_signature_27_pdp_cmf_texture_color1_d_.jpg",
+      "https://assets.motorola.com/global/zeus/moto_signature_27_zeus_pdp_page_design_desktop_2.png",
       "https://assets.motorola.com/global/zeus_2027/motorola_signature_27_pdp_highlights_03_d_.jpg",
       "https://paultan.org/image/2026/11/Yangwang-Altior-official-grille-1200x675.jpg",
       "https://paultan.org/image/2026/11/Yangwang-Altior-Shanhe-Dingyun-door-panel-1200x750.jpg"
@@ -1562,7 +1562,7 @@ const DOMAIN_TRENDS = {
   mobile: [
     // ===== W45 ADDED 2026-11-10. The domain-level half of the "Ruggedness Stopped Looking Rugged"
     // top signal; kept here as well because the keyword cloud reads DOMAIN_TRENDS, not TOP_SIGNALS.
-    { keyword: "Certification Held Inboard", statement: "Ingress and drop ratings are carried without any of the shape cues that used to announce them — no bumpers, no visible armour, just a textile back.", application: "Zebra has the engineering and withholds the vocabulary: no current spec sheet names a housing material or a colour standard, and no product carries IP69K. Naming them is the cheap half of this.", evidence: ["motorola signature 27"], heroOverride: "https://assets.motorola.com/global/zeus_2027/motorola_signature_27_pdp_cmf_texture_color1_d_.jpg" },
+    { keyword: "Certification Held Inboard", statement: "Ingress and drop ratings are carried without any of the shape cues that used to announce them — no bumpers, no visible armour, just a textile back.", application: "Zebra has the engineering and withholds the vocabulary: no current spec sheet names a housing material or a colour standard, and no product carries IP69K. Naming them is the cheap half of this.", evidence: ["motorola signature 27"], heroOverride: "https://assets.motorola.com/global/zeus/moto_signature_27_zeus_pdp_page_design_desktop_2.png" },
     { keyword: "AI Output Stays Inspectable Beside the Source", statement: "Automated suggestions are kept reviewable by staying visually next to the material they summarize, rather than replacing it.", application: "Show source text beside generated summaries before a Zebra worker accepts a field decision, and flag uncertain content rather than presenting it as fact.", evidence: ["Galaxy Tab S12 Ultra"] },
     { keyword: "Attachment Becomes a New Wear Point", statement: "An attachment props up a held device, and its hinge becomes a new wear point.", application: "Treat dock, cover and keyboard attachments as their own tested state — covering stability, gloved handling and the contact line's resistance to debris.", evidence: ["Galaxy Tab S12 Ultra", "Kindle 2026 Family"], heroOverride: "https://www.sammobile.com/wp-content/uploads/2026/09/Samsung-Galaxy-Tab-S12-Ultra-Screen-S-Pen-Keyboard-Cover-1920x1079.jpg" },
     { keyword: "Vulnerable Controls Move Away From the Hand", statement: "A frequently mis-pressed control is relocated away from where the support hand naturally rests, and edge controls are gathered into one reachable zone.", application: "Test power, trigger and recovery key placement against common one-handed and gloved grips before freezing a Zebra handheld's control layout.", evidence: ["Kindle 2026 Family", "Galaxy Tab S12 Ultra"], heroOverride: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/P1011578.jpg?w=800" },

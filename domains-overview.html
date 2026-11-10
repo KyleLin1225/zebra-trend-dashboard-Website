@@ -50,7 +50,7 @@ $("#grid").innerHTML = DOMAINS.map(d => {
   const trendCount = Math.min((DOMAIN_TRENDS[d.id]||[]).length, 3);
   const repHero = d.cardImage || (ALL_REPORTS.find(r=>r.domain===d.id)||{}).hero || "";
   return `<a class="card" href="domains/${DOMAIN_PAGE[d.id]}.html" style="--accent:${d.accent}">
-    <img src="${repHero}" alt="${d.name}">
+    <img referrerpolicy="no-referrer" src="${repHero}" alt="${d.name}">
     <div class="cc">
       <div class="bar" style="background:${d.accent}"></div>
       <h3>${d.name}</h3>

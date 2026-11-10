@@ -102,7 +102,7 @@ footer{padding:50px 0 70px;color:var(--muted);font-size:12px}
     const href = "report-viewer.html?src=" + encodeURIComponent(r.file)
       + "&title=" + encodeURIComponent(r.title) + "&back=" + encodeURIComponent("brief.html");
     return '<a class="t-card ' + cs.layer + '" href="' + href + '" title="' + cs.layer.replace(/-/g," ") + '">'
-      + '<img src="' + r.hero + '" alt="' + r.title + '" loading="lazy">'
+      + '<img referrerpolicy="no-referrer" src="' + r.hero + '" alt="' + r.title + '" loading="lazy">'
       + '<span class="tc-t">' + r.title + '</span>'
       + '<span class="tc-a">' + cs.at + '</span>'
       + '<span class="tc-d">' + r.domain + '</span></a>';
