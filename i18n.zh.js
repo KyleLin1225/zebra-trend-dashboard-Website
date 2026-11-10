@@ -177,6 +177,34 @@ window.I18N_ZH_RULES = [
     return a === k ? null : "<strong>" + a + "。</strong>";
   }],
 
+  /* ---- V5: themes, evidence strength, design briefs --------------------
+     All of these carry live counts, so they are rules rather than entries. */
+  [/^<b>(\d+)<\/b> brands? · (\d+) occasions?$/,
+    function (m) { return "<b>" + m[1] + "</b> 個品牌 · " + m[2] + " 個場合"; }],
+  [/^(\d+) brands? · (\d+) occasions?$/,
+    function (m) { return m[1] + " 個品牌 · " + m[2] + " 個場合"; }],
+  [/^\+(\d+) more in other domains$/,
+    function (m) { return "另有 " + m[1] + " 個散落在其他領域"; }],
+  // Case-card caption, "<evidence layer> · <brand>". Only the layer is translated: the brand is
+  // a product name, and the section heading the card quotes lives in an English-language report.
+  [/^(product fact|vendor claim|visible structure|analyst inference) · (.+)$/,
+    function (m, tr) { return tr(m[1]) + " · " + m[2]; }],
+  // V5 lede badges. The V4 "new this week / building / holding" forms are kept above.
+  [/^<b>(\d+)<\/b> new cases? this week$/,
+    function (m) { return "<b>" + m[1] + "</b> 條本週新增案例"; }],
+  [/^<b>(\d+)<\/b> repeats? across weeks$/,
+    function (m) { return "<b>" + m[1] + "</b> 條跨週重複出現"; }],
+  [/^<b>(\d+)<\/b> no new case this week$/,
+    function (m) { return "<b>" + m[1] + "</b> 條本週未新增案例"; }],
+  [/^(\d+) hypothes[ei]s · (\d+) cut on the Zebra check$/,
+    function (m) { return m[1] + " 個假設 · " + m[2] + " 個在基線查核被刪"; }],
+  [/^(\d+) hypothes[ei]s$/, function (m) { return m[1] + " 個假設"; }],
+  [/^(\d+) product briefs?$/, function (m) { return m[1] + " 份產品簡報"; }],
+  [/^nothing in (W\d+)$/, function (m) { return m[1] + " 沒有"; }],
+  [/^Design brief · (.+)$/, function (m) { return "設計簡報 · " + m[1]; }],
+  [/^What to find out · (.+)$/,
+    function (m, tr) { var a = tr(m[1]); return a === m[1] ? null : "要查清楚什麼 · " + a; }],
+
   /* ---- generic compounds (keep these last) ----------------------------- */
   [/^(.+) · (\d{4}-\d{2}-\d{2})$/, function (m, tr) { var t = tr(m[1]); return t === m[1] ? null : t + " · " + m[2]; }],
   [/^(.+) ↗$/, function (m, tr) { var t = tr(m[1]); return t === m[1] ? null : t + " ↗"; }],
@@ -189,6 +217,7 @@ window.I18N_ZH = {
   /* ======================= page chrome ================================== */
   "Trend Dashboard": "趨勢儀表板",
   "Trend Dashboard · V4": "趨勢儀表板 · V4",
+  "Trend Dashboard · V5": "趨勢儀表板 · V5",
   "Domains · Trend Dashboard": "領域 · 趨勢儀表板",
   "Weekly Trend Reports · Trend Dashboard": "每週趨勢報告 · 趨勢儀表板",
   "Launch Events · Trend Dashboard": "發表會 · 趨勢儀表板",
@@ -258,9 +287,18 @@ window.I18N_ZH = {
     "最舊的一週在左邊；圓點大小代表那一週餵進了幾篇報告。",
   "Read left to right, oldest week first. A dot marks a week whose reports fed that trend — the bigger the dot, the more of them. The bar runs from its first such week to its latest.":
     "由左至右，最舊的一週在前。有圓點的那一週代表該週的報告餵進了這個趨勢，點愈大代表報告愈多。橫條從它最早的那一週拉到最新的那一週。",
-  "New This Week": "本週新增",
-  "Building": "持續累積",
-  "Holding": "暫無新增",
+  // RELABELLED 2026-11-04 (V5), matching the English change in index.html and domains/_shared.js.
+  // "持續累積" and "暫無新增" implied the market was accumulating or stalling; the badge only ever
+  // described which weeks of this corpus fed a trend. The old keys are kept below so a page that
+  // still ships the previous wording does not fall back to English.
+  "New case this week": "本週新增案例",
+  "Repeats across weeks": "跨週重複出現",
+  "No new case this week": "本週未新增案例",
+  "These describe which weeks of this corpus fed each trend — they are not a reading of market growth.":
+    "這些標籤只說明本資料庫的哪幾週餵進了該趨勢，不代表市場成長與否。",
+  "New This Week": "本週新增案例",
+  "Building": "跨週重複出現",
+  "Holding": "本週未新增案例",
 
   /* ======================= 01 · top signals ============================= */
   "Top signals this period": "本期主要訊號",
@@ -282,21 +320,21 @@ window.I18N_ZH = {
   "Becomes focus item": "成為重點項目",
   "Not yet turned into a focus item — read as context.": "尚未轉成重點項目 —— 當作脈絡閱讀。",
 
-  "The Surviving Button Declares Mode": "存活下來的那顆按鍵，負責宣告模式",
+  "The Surviving Button Declares Mode": "留下來的那顆鍵，負責宣告模式",
   "Where one physical control survives a screen-first redesign, it is the one that declares which mode the product is in.":
-    "當只有一個實體控制件在螢幕優先的改款中存活下來，它就是負責宣告產品現在處於哪一種模式的那一個。",
+    "螢幕優先的改版裡只要還留著一顆實體控制件，那一顆一定是用來說明產品現在在哪個模式。",
   "Sigma's STILL/CINE switch, Ferrari's drive-mode rotary and Jetta's single remaining dial all do one narrow job: state the operating mode before any menu is involved. Kindle goes further and moves tactile input off the device into an optional cover. Apple's first touch Mac makes the point from the opposite direction — touch arrives on the panel and the keyboard, trackpad and Touch ID key all stay.":
     "Sigma 的 STILL/CINE 撥桿、Ferrari 的駕駛模式旋鈕、Jetta 只剩的那一顆旋鈕，都只做一件很窄的事：在選單介入之前先把模式講清楚。Kindle 走得更遠，乾脆把實體操作移出機身，放進一個選配保護殼。Apple 第一台觸控 Mac 則從反面印證了同一件事：觸控上了螢幕，鍵盤、觸控板和 Touch ID 鍵一個都沒少。",
 
   "Light Became a State Channel": "光變成一條狀態頻道",
   "Light is being specified as a channel that reports operating state — the inverse of its older job, carrying brand identity.":
-    "光正被規格化成一條回報運作狀態的頻道 —— 和它過去承載品牌識別的角色正好相反。",
+    "現在光是寫進規格、用來回報運作狀態的 —— 跟它過去撐門面、做品牌識別的老本行正好相反。",
   "Tesla's Roadster ties light cues to state, Alpine reveals its illuminated identity only on activation, and Teenage Engineering's hatch lights itself as it opens. Signode makes colour a configurable safety signal across a fleet.":
     "Tesla Roadster 把燈光提示綁定在狀態上，Alpine 只在啟動時才顯露發光的身分識別，Teenage Engineering 的置物艙則在打開時自己亮起來。Signode 更把顏色做成整個車隊都可設定的安全訊號。",
 
   "The Chassis Is a Mounting Platform": "機身本身就是一個安裝平台",
   "The body is being published as an attachment interface — threads, rails, pogo pins, clips — so accessories become product architecture.":
-    "機身正被當成一組對外公開的接附介面 —— 螺牙、導軌、pogo pin、卡扣 —— 讓配件變成產品架構的一部分。",
+    "機身現在是一組對外公開的接附介面 —— 螺牙、導軌、pogo pin、卡扣 —— 配件因此變成產品架構的一部分。",
   "Sigma covers the fp2 chassis in 1/4-20 threads, OPPO ships a factory Tilta rig where one mount accepts lens, light and fan, and Teenage Engineering's clips turn the case into a rack. Toyota scales the same idea to a vehicle: five Snowhunter concepts share one cargo, protection and access interface across different body sizes. The interface is documented, not left to third parties.":
     "Sigma 在 fp2 機身上鋪滿 1/4-20 螺牙，OPPO 出原廠 Tilta 外掛架，一個接口同時吃鏡頭、燈和風扇，Teenage Engineering 的卡扣則把機殼變成一組機架。Toyota 把同一個想法放大到整台車，五台 Snowhunter 概念車不管車身多大，都共用同一套載物、防護和取用的接口。這套接口是原廠寫成文件的，不是丟給第三方自己想辦法。",
 
@@ -341,11 +379,11 @@ window.I18N_ZH = {
   "Put an explicit review step in front of any Zebra action a worker cannot undo — a label printed, a pick confirmed, a shipment closed — and show what is about to be committed rather than only confirming afterwards that it happened.":
     "標籤印出去、揀貨確認、出貨結掉，這些作業員一旦做了就收不回來的動作，前面都該擺一道複查。重點是先顯示等一下會送出什麼，而不是等做完才回報已完成。",
 
-  "The Viewing Envelope Is a Published Dimension": "可視範圍要像尺寸一樣寫出來",
-  "A display's usable viewing distance, angle and ambient-light range are published as hard numbers up front, and the housing is then derived from them rather than styled first.":
-    "顯示器能用的觀看距離、角度和環境光範圍，一開始就用明確數字講清楚，外殼再照著這些數字做，不是先造型再說。",
-  "Publish the usable viewing envelope for Zebra vehicle-mount and kiosk displays the way a drop rating is published, then check actual mount positions and aisle lighting against it instead of assuming the screen works wherever it fits.":
-    "Zebra 車載和自助機的顯示器，應該像標落摔等級那樣把可視範圍標出來，然後拿實際的安裝位置和走道照明去對，不要以為裝得下就看得清楚。",
+  // REMOVED 2026-11-08 — the three entries here translated "The Viewing Envelope Is a Published
+  // Dimension", a fabricated Sony specification deleted from data.js on the same day. The source
+  // report publishes no viewing distance, angle or ambient-light range, so there is nothing to
+  // translate. Deleting rather than leaving them dead: a fabricated claim sitting in a shipped
+  // file can be re-adopted by a later sync.
 
   "One Input Model, Two Working Postures": "一種操作方式，兩種工作姿勢",
   "The same direct-touch input is being designed for two different body postures — device in hand, and device on a surface — with the control set that survives differing between them.":
@@ -356,8 +394,8 @@ window.I18N_ZH = {
   /* W44 report blurbs (week index cards and the searchable report pool). */
   "The hand-held iPad and the touch-enabled MacBook Pro expose two different physical postures for the same direct input, and the controls that survive in each.":
     "單手拿的 iPad 和支援觸控的 MacBook Pro，把同一種直接操作拆成兩種姿勢，也看得出各自留下了哪些控制件。",
-  "A six-inch glasses-free spatial display turns a 3D object into a compact, single-viewer desk tool, with the optical envelope published as a dimension.":
-    "六吋裸視空間顯示器把 3D 物件變成一台小巧的單人桌上工具，而且把光學可視範圍當成規格直接寫出來。",
+  "A six-inch glasses-free spatial display turns a 3D object into a compact, single-viewer desk tool by steering light to each eye and tracking the observer.":
+    "六吋裸視空間顯示器分別把光送進左右眼，再跟著觀看者的位置調整，把 3D 物件變成一台小巧的單人桌上工具。",
   "A light optical display and a separate compute puck move spatial work off the face, with the cable between them published as part of the product.":
     "輕量光學顯示加上獨立的運算盒，把空間運算搬離臉部，中間那條線也當成產品的一部分一起交代。",
   "Five tracked SEMA concepts carry one winter-expedition equipment language across different vehicle sizes, organising cargo, protection and access the same way on each.":
@@ -383,7 +421,7 @@ window.I18N_ZH = {
     "Renault 用顏色分座艙區域；Ferrari F80 標出主駕駛的位置。Signode 讓 AMR 的顏色變成可以設定的安全訊號，Teenage Engineering 用顏色分線材的用途，Antigravity 則只在手錶上留一個顏色提示。",
   "Seams Are Drawn Now, Not Erased": "接縫現在用畫的，不是用藏的",
   "Brands spent two decades hiding the joins. Now the component boundary is styled back onto the outside, because the part behind it is meant to come off.":
-    "接合處廠商藏了二十年。現在零件的分界又刻意畫回外殼表面，因為後面那個零件本來就該拆得下來。",
+    "廠商把接縫藏了二十年。現在零件的分界又刻意畫回外殼上，因為後面那個零件本來就該拆得下來。",
   "Citroën gives the 2 CV's bumper its own visible border and FIAT's spoiler declares where it reconfigures; Logitech publishes Rally Bar 2's split lines and Zone Vibe Pro's spare parts; adidas marks the wear zones with finish changes.":
     "Citroën 給 2 CV 的保險桿一條看得見的邊；FIAT 的尾翼直接標出它會從哪裡變形。Logitech 公開 Rally Bar 2 的分件線，也公開 Zone Vibe Pro 有哪些備品；adidas 則用換表面處理的方式標出會磨損的地方。",
 
@@ -450,29 +488,29 @@ window.I18N_ZH = {
   "Light Reports State": "光負責回報狀態",
   "Moving Hardware Needs a State Model": "會動的硬體需要一套狀態模型",
   "Control Authority Reaches the Second Row": "控制權延伸到第二排",
-  "Declared Service Boundaries": "被明示出來的維修邊界",
+  "Declared Service Boundaries": "維修邊界直接標在外面",
   "Viewing Zone Split From Reaching Zone": "觀看區與伸手可及區被拆開",
-  "Concealed Active Systems Need Unmistakable State": "被隱藏的主動系統需要不會認錯的狀態",
+  "Concealed Active Systems Need Unmistakable State": "藏起來的主動系統，狀態更不能讓人看錯",
   "Price Tiers Gated by Software, Not Shell": "價格級距由軟體決定，不是外殼",
-  "Visible Sensing State, Physical Not Just Software": "可見的感測狀態，要實體的而不只是軟體的",
+  "Visible Sensing State, Physical Not Just Software": "感測狀態要看得見，而且得靠實體，不只是軟體",
   "Fit, Hinge & Service Parts": "配戴貼合、轉軸與維修零件",
   "Compute Moves Off the Primary Surface": "運算移出主要機身",
   "One Head Shape Can't Be the Default": "不能只用一種頭型當預設",
   "Fit Is Part of Display Performance": "配戴貼合是顯示效能的一部分",
   "Redundant Capture Needs a Visible Confirmation": "備援錄製需要一個看得見的確認",
   "Two Solar Surfaces, Two Charging Moments": "兩片太陽能面，兩個充電時刻",
-  "Power Scarcity as a Named Workflow State": "電力不足是一個被命名的工作流程狀態",
+  "Power Scarcity as a Named Workflow State": "電力不足，也該是一種有名字的工作狀態",
   "The Pairing Dongle Is a Designed Part": "配對接收器是一個被設計過的零件",
   "Gesture Control Keeps a Hardware Fallback": "手勢控制保留實體備援",
-  "Credentialed Access Made Legible at the Threshold": "通行授權在門口就被看懂",
-  "Zone-Matched Sensing": "依區域匹配的感測精度",
+  "Credentialed Access Made Legible at the Threshold": "通行授權，在門口就看得懂",
+  "Zone-Matched Sensing": "感測精度依區域分配",
   "Haptics Explain the Task": "觸覺回饋說明任務狀態",
   "Fleet Status Stays Visible Without a Dashboard": "不靠儀表板也看得到機隊狀態",
   "Battery Swap Is a Workflow State": "換電池是一個工作流程狀態",
   "Modular + Unmistakable States": "模組化，加上不會認錯的狀態",
   "Service Access Designed Into the Mount": "維修通道直接設計進安裝座",
   "The Room Becomes a Managed Object": "會議空間本身變成一個受管理的物件",
-  "Threshold Status Made Public": "空間狀態公開在門外",
+  "Threshold Status Made Public": "狀態先亮在門外",
   "Shared Screens Adapt to Distance and Identity": "共用螢幕依距離與身分調整",
   "A Physical Control Becomes the Primary Interface": "實體控制件成為主要介面",
   "Reachable Micro-Adjustment Mid-Task": "任務進行中伸手就能做的微調",
@@ -486,14 +524,20 @@ window.I18N_ZH = {
   "Factory-Official Modular Rig, Not a Third-Party Workaround": "原廠官方模組化外掛架，而不是第三方的變通方案",
 
   /* ======================= domain names + chrome ======================== */
-  "Automotive & Mobility": "汽車與移動",
+  // Domain names are the most-repeated strings on the site, so they get the most care.
+  // "汽車與移動" left 移動 dangling as a bare verb; a Chinese reader needs the noun. 載具 also
+  // keeps the concept cars and the Snowhunter range inside the name, which "汽車" alone does not.
+  "Automotive & Mobility": "汽車與移動載具",
+  // 影像擷取 was wrong here — this domain includes Sony's wireless mic kit, so capture is not
+  // only visual. 機器人 stays as-is rather than growing into 機器人與自主機具: the English is one
+  // word, and widening a domain name is an editorial change, not a translation.
   "Sensing & Capture Devices": "感測與擷取裝置",
-  "Wearable Devices": "穿戴裝置",
+  "Wearable Devices": "穿戴式裝置",
   "Robotics": "機器人",
   "Rugged Devices": "強固型裝置",
   "Sports Industry": "運動產業",
   "Mobile & Handheld Devices": "行動與手持裝置",
-  "Consumer Electronics": "消費性電子",
+  "Consumer Electronics": "消費性電子產品",
   "All domains": "所有領域",
   "Go to domain dashboard →": "前往領域儀表板 →",
   "Every domain, one place.": "所有領域，集中一處。",
@@ -527,8 +571,8 @@ window.I18N_ZH = {
   "Previous": "上一個",
 
   /* ======================= domain blurbs (In focus) ===================== */
-  "Sixteen 2026 launches — from Ferrari's first EV to six Stellantis concept cars, Renault, Alpine and Tesla's Paris Motor Show reveals, Jetta's first EV sedan and Toyota's five tracked Snowhunter concepts at SEMA — converge on keeping tactile, locatable controls legible in digital cabins, while Citroën, FIAT and Toyota mark repair, reconfiguration and dirty-versus-clean boundaries right on the body, and both Jetta's three-trim platform and Toyota's five-vehicle equipment language show one system can scale across a whole range.":
-    "2026 年有十六場發表講的其實是同一件事：數位座艙裡還是得留住摸得到、找得到的實體控制件。從 Ferrari 第一輛電動車、六輛 Stellantis 概念車、Renault、Alpine 和 Tesla 的巴黎車展亮相、Jetta 第一款電動轎車，到 Toyota 在 SEMA 推出的五台履帶式 Snowhunter，都是如此。Citroën、FIAT 和 Toyota 則乾脆把維修、重組、髒區與乾淨區的界線直接畫在車身上。Jetta 的三級距平台和 Toyota 橫跨五款車的裝備語言也證明，同一套系統撐得起一整條產品線。",
+  "Fifteen 2026 launches — from Ferrari's first EV to six Stellantis concept cars, Renault, Alpine and Tesla's Paris Motor Show reveals, Jetta's first EV sedan and Toyota's five tracked Snowhunter concepts at SEMA — converge on keeping tactile, locatable controls legible in digital cabins, while Citroën, FIAT and Toyota mark repair, reconfiguration and dirty-versus-clean boundaries right on the body, and both Jetta's three-trim platform and Toyota's five-vehicle equipment language show one system can scale across a whole range.":
+    "2026 年有十五場發表講的其實是同一件事：數位座艙裡還是得留住摸得到、找得到的實體控制件。從 Ferrari 第一輛電動車、六輛 Stellantis 概念車、Renault、Alpine 和 Tesla 的巴黎車展亮相、Jetta 第一款電動轎車，到 Toyota 在 SEMA 推出的五台履帶式 Snowhunter，都是如此。Citroën、FIAT 和 Toyota 則乾脆把維修、重組、髒區與乾淨區的界線直接畫在車身上。Jetta 的三級距平台和 Toyota 橫跨五款車的裝備語言也證明，同一套系統撐得起一整條產品線。",
   "Ray-Ban's audio and capture-enabled glasses, Meta's VR headset, Ring's camera family, XREAL's spatial displays and AURA eyewear, and Sony's wireless mic kit all treat sensing state, fit and point-of-use confirmation as explicit design problems — and increasingly treat the cable to an off-body compute pack as product architecture rather than a compromise.":
     "Ray-Ban 的音訊與拍攝眼鏡、Meta 的 VR 頭戴裝置、Ring 的相機家族、XREAL 的空間顯示器和 AURA 眼鏡，還有 Sony 的無線麥克風組，都把感測狀態、配戴貼合、使用當下的確認當成正式的設計題目在處理。而且愈來愈多產品把連到體外運算盒的那條線當成產品架構的一部分，不再當成妥協。",
   "Amazfit's dual-solar watch, Logitech's Zone Vibe Pro headset and Antigravity's Watch and Ring Remotes treat power recovery, serviceable wear parts and gesture-control fallback as visible, deliberate product features.":
@@ -545,9 +589,9 @@ window.I18N_ZH = {
     "Logitech 的 Rally Bar 2 和 Rally System 2 Pro 把空間硬體變成可維修、受管理的模組，人還沒走進去就看得到狀態。Apple 的 HomeView 把共用螢幕的邏輯延伸到家裡。Sigma 的 fp2 和 Teenage Engineering 的 EP-35 則證明一顆實體撥桿或一支提把就能取代層層選單，當成主要介面。Sony 的 ELF-MN1 和 Fujifilm 的 instax mini Evo 2 又帶來兩個新做法：把光學可視範圍當成規格寫出來，以及在拍和印之間刻意插一道預覽。",
 
   /* ======================= domain key takeaways ========================= */
-  "Physical controls survive even as automotive cabins go fully digital": "即使汽車座艙全面數位化，實體控制件依然存活下來",
-  "Ferrari, Tesla, BRABUS, Red Bull and the Alfa Romeo, Peugeot and DS concepts all keep real, distinctly shaped buttons and dials for the actions that matter most, while Renault, Alpine and the Roadster extend the same discipline to cabin layout, repeated identity cues and concealed active systems. Citroën's 2 CV Concept, FIAT Multiplay and Toyota's Snowhunter family mark a separate thread: repair, reconfiguration and dirty-versus-clean boundaries are declared right on the body instead of hidden inside one shell. Scale is the third thread — Jetta's M6 shows one shell can gate a range in software across three trims, and Snowhunter shows one cargo, protection and access language can carry unchanged across five vehicle sizes. Zebra can apply all three — distinctly shaped, glove-tested physical controls; a visibly separate impact-versus-reconfiguration boundary a gloved hand can read in bad weather; and one chassis and mounting language held consistent across price tiers and across truck, forklift and van installations alike.":
-    "Ferrari、Tesla、BRABUS、Red Bull，還有 Alfa Romeo、Peugeot 和 DS 的概念車，都替最要緊的操作留下了真的按鍵和旋鈕，而且形狀明顯不一樣。Renault、Alpine 和 Roadster 把同一套紀律用到座艙佈局、重複出現的識別元素，以及藏起來的主動系統上。Citroën 2 CV Concept、FIAT Multiplay 和 Toyota 的 Snowhunter 家族走的是另一條線：維修、重組、髒區和乾淨區的界線，直接畫在車身上，不藏進同一塊外殼裡。第三條線是規模。Jetta M6 證明同一塊外殼可以用軟體分成三個級距，Snowhunter 則證明同一套載物、防護、取用的做法可以原封不動用在五種車身尺寸上。這三件事 Zebra 都用得上：形狀明顯不同、戴手套實測過的實體控制件；一條戴著手套在惡劣天候也看得出來的抗撞與重組界線；還有一套不分價格級距，卡車、堆高機、廂型車也都一致的機身與安裝語言。",
+  "Physical controls survive even as automotive cabins go fully digital": "汽車座艙全面數位化之後，實體控制件還是留了下來",
+  "Ferrari, Tesla's Model Y and the Alfa Romeo, Peugeot and Citroën concepts all keep real, distinctly shaped controls for the actions that matter most — and Alfa states the rule outright, keeping analogue cues after removing the mechanical steering linkage. Renault, Alpine and the Roadster extend a related discipline to cabin layout, repeated identity cues and concealed active systems. Citroën's 2 CV Concept, FIAT Multiplay and Toyota's Snowhunter family mark a separate thread: repair, reconfiguration and dirty-versus-clean boundaries are declared right on the body instead of hidden inside one shell. Scale is the third thread — Jetta's M6 shows one shell can gate a range in software across three trims, and Snowhunter shows one cargo, protection and access language can carry unchanged across five vehicle sizes. Zebra can apply all three — distinctly shaped, glove-tested physical controls; a visibly separate impact-versus-reconfiguration boundary a gloved hand can read in bad weather; and one chassis and mounting language held consistent across price tiers and across truck, forklift and van installations alike.":
+    "Ferrari、Tesla Model Y，加上 Alfa Romeo、Peugeot 和 Citroën 的概念車，都替最要緊的那幾個操作留下了形狀明顯不同、摸得出來的實體控制件。Alfa 講得最直白：機械轉向連桿都拿掉了，類比的手感回饋還是留著。Renault、Alpine 和 Roadster 把同一套紀律延伸到座艙佈局、反覆出現的識別元素，以及藏起來的主動系統。Citroën 2 CV Concept、FIAT Multiplay 和 Toyota 的 Snowhunter 家族走的是另一條線：維修、重組、髒區和乾淨區的界線，直接畫在車身上，不藏進同一塊外殼裡。第三條線是規模。Jetta M6 證明同一塊外殼可以用軟體分成三個級距，Snowhunter 則證明同一套載物、防護、取用的做法可以原封不動用在五種車身尺寸上。這三件事 Zebra 都用得上：形狀明顯不同、戴手套實測過的實體控制件；一條戴著手套在惡劣天候也看得出來的抗撞與重組界線；還有一套不分價格級距，卡車、堆高機、廂型車也都一致的機身與安裝語言。",
   "Sensing state has to be unmistakable to the wearer and everyone nearby": "感測狀態對配戴者與附近每一個人都必須不會認錯",
   "Ray-Ban Meta's camera lines and Ring's camera family pair a physical capture cue with swappable fit parts, while XREAL and Sony show that fit calibration and point-of-use state confirmation matter just as much. AURA adds a fourth thread: once compute, battery and heat move to a waistband puck, the lead between them is published as a standard, user-replaceable USB-C part rather than a captive assembly. Zebra can apply the same unmistakable sensing indicator, tactile fallback and visible state confirmation to its worker-worn hardware — and make the most-flexed cable in any tethered system a stock line it can replace on site instead of a warranty event.":
     "Ray-Ban Meta 的相機系列和 Ring 的相機家族，把實體的拍攝提示和可更換的貼合零件配成一套。XREAL 和 Sony 則說明貼合校正、使用當下的狀態確認一樣重要。AURA 再加上第四條線：運算、電池和發熱都搬到腰間的盒子以後，中間那條線就當成標準的 USB-C 零件公開，使用者自己換得掉，不做成拆不開的整組。Zebra 可以把同一套不會看錯的感測指示、觸覺備援和看得見的狀態確認，用在作業員配戴的硬體上，再把外接系統裡彎折最兇的那條線做成常備料號，現場直接換掉，不必走保固。",
@@ -572,31 +616,34 @@ window.I18N_ZH = {
 
   /* ======================= domain trend statements ====================== */
   "The physical control that survives a screen-first cabin is specifically the one that declares which mode is active — not the one that is merely convenient.":
-    "在螢幕優先的座艙裡能存活下來的實體控制件，正是宣告哪一個模式啟用中的那一個 —— 不是那個只是比較方便的。",
+    "螢幕優先的座艙裡留得下來的實體控制件，一定是負責宣告目前模式的那一顆，而不是單純比較順手的那一顆。",
   "Give vehicle-mounted computers and cradles one distinctly shaped physical control that states the device's operating mode, rather than a touch target that has to be woken and read before the mode is known.":
-    "給車載電腦與座架一個外形明顯有別的實體控制件，用它說出裝置的運作模式，而不是一個得先喚醒、先讀過才知道模式的觸控目標。",
+    "車載電腦和座架都該有一顆外形明顯不同的實體控制件，直接說出裝置現在的運作模式；不要用一塊得先喚醒、再讀一眼才知道模式的觸控區。",
   "Exterior and cabin lighting is being tied to operating state rather than used purely as a recognition signature.":
-    "外部與座艙照明正被綁定到運作狀態上，而不再只是當作辨識用的簽名。",
+    // Dead entry — V5 deleted the "Light Reports State" trend this translated. Kept rather than
+    // removed in case an older page is still served from this dictionary; rewritten anyway so a
+    // 正被…上 passive is not sitting in the file waiting to be revived.
+    "車外與座艙的照明正在跟運作狀態掛勾，不再只是用來讓人認出這是哪個品牌。",
   "Use one engineered optical signal to report dock, charge and managed-state on cradles, instead of an LED cluster that only distinguishes powered from unpowered.":
     "在座架上用一組經過設計的光訊號回報停靠、充電與受管理狀態，取代只能分辨通電與否的 LED 群。",
   "Moving aerodynamic and body geometry is engineered as a stateful control system with declared locked, transitional and failed states — not a styling flourish.":
-    "會動的空力與車體幾何是以帶狀態的控制系統來設計的，明確定義鎖定、過渡與失效狀態 —— 不是造型上的點綴。",
+    "會動的空力件和車體幾何，是當成一套有狀態的控制系統在設計的：鎖定、過渡、失效都明確定義過，不是造型上的裝飾。",
   "Define locked, transitional and failed states as explicitly as an active wing for auto-release dock latches and adjustable mounts.":
     "為自動鬆脫的座架卡榫與可調安裝座定義鎖定、過渡與失效狀態，要和主動尾翼一樣明確。",
   "Non-primary occupants are being given real control surfaces rather than more space — role is now expressed as authority over the system.":
-    "非主要乘員拿到的是真正的控制介面，而不是更多空間 —— 角色現在是用對系統的控制權來表達的。",
+    "不是主駕的那些乘員，拿到的是真正的控制介面，而不是更多空間 —— 現在「你是什麼角色」，是用你能控制系統多少來定義的。",
   "In multi-operator vehicle computing, assign actual control authority per role (driver versus dock worker) instead of giving the second role a read-only screen.":
     "在多人操作的車載運算裡，依角色（駕駛與碼頭作業員）分配真正的控制權，而不是給第二個角色一塊唯讀螢幕。",
   "Concepts make repair and reconfiguration boundaries visible on the body, instead of hiding every seam inside one shell.":
-    "概念車把維修與重組的邊界直接做在車身上看得見，而不是把每一道接縫都藏進同一塊外殼裡。",
+    "概念車把維修和重組的邊界直接畫在車身上，不再把每一道接縫都塞進同一塊外殼裡。",
   "Give rugged handhelds and vehicle-mounted computers a visibly distinct, independently replaceable impact boundary, separate from a legible accessory-reconfiguration boundary, so a technician can read repair scope versus reconfiguration scope directly from the housing without full teardown. Toyota's Snowhunter extends the same logic to a dirty/clean zone split a gloved hand can read in bad weather.":
     "給強固型手持機和車載電腦一圈外觀上就分得出來、可以單獨換掉的抗撞邊界，跟配件重組的邊界分開。技師不用整機拆開，光看機殼就知道哪邊是維修範圍、哪邊是重組範圍。Toyota Snowhunter 把同一套邏輯延伸到髒區和乾淨區的分界，戴著手套、天氣再差也看得出來。",
   "Where information is displayed is being separated from where it is touched, instead of assuming one screen serves both jobs.":
-    "資訊顯示的位置正在和被觸碰的位置分開，不再假設同一塊螢幕可以同時勝任兩件事。",
+    "資訊顯示在哪裡，和手伸去碰哪裡，正在分開處理，不再假設同一塊螢幕能同時兼顧兩件事。",
   "On vehicle mounts, put the readable display where the eyes already go and the controls where the hand already rests — as screens grow, these stop being the same surface.":
     "在車載安裝座上，把可讀的顯示放在視線本來就會去的地方，把控制件放在手本來就擱著的地方 —— 螢幕愈大，這兩個位置就愈不會是同一個面。",
   "Hiding complex, active or high-energy hardware behind a calm shell raises the bar for making that hardware's real state obvious before and during activation.":
-    "把複雜、主動或高能量的硬體藏在一副冷靜的外殼後面，反而拉高了在啟動之前與啟動期間把它真實狀態講清楚的門檻。",
+    "把複雜、會動、高能量的硬體藏進一副安靜的外殼，反而讓「啟動前和啟動中要把真實狀態講清楚」這件事更不能馬虎。",
   "Any concealed sensor, emitter or high-energy accessory on Zebra hardware needs an explicit arm, active and fault signal, with decorative lighting kept visually distinct from a genuine warning.":
     "Zebra 硬體上任何被隱藏的感測器、發射器或高能量配件，都需要明確的待命、作動與故障訊號，而且裝飾性燈光必須在視覺上和真正的警示清楚區隔。",
   "An entire trim range now shares one shell, with the tier boundary drawn in software and compute instead of in sheet metal.":
@@ -605,19 +652,19 @@ window.I18N_ZH = {
     "讓同一個機身在 Zebra 各產品級距之間維持視覺與機構上的一致，用軟體與運算來分級能力，而不是每一級重新設計機殼。",
 
   "Sensing and recording state must be unmistakable, confirmed by a physical cue, not software.":
-    "感測與錄製狀態必須不會被認錯，而且要由實體提示確認，不能只靠軟體。",
+    "感測和錄製的狀態不能讓人看錯，而且要有實體提示來確認，不能只靠軟體。",
   "Give mute, listening and capture states the same physical, bystander-legible treatment — a lens cover, mechanical indicator or hardware cue — on any Zebra wearable or camera-equipped device with a mic or camera, so capture state reads without opening an app.":
     "在任何帶麥克風或相機的 Zebra 穿戴或攝影裝置上，讓靜音、聆聽與擷取狀態獲得同樣實體、旁人也讀得懂的處理 —— 鏡頭蓋、機構式指示或硬體提示 —— 讓擷取狀態不必開 app 就讀得出來。",
   "Fit and contact surfaces are being redesigned as a serviceable, swappable system rather than one fixed shape.":
-    "貼合與接觸面正被重新設計成可維修、可更換的系統，而不是一個固定形狀。",
+    "貼合面和接觸面現在是當成一套可維修、可更換的系統在重做，不再是一個固定形狀。",
   "Design swappable straps, pads and hinge adjustments as first-class service parts.":
     "把可更換的頭帶、襯墊與轉軸調整，當成一等的維修零件來設計。",
   "Power and compute budgets are becoming an explicit, designed workflow state instead of a background spec.":
-    "電力與運算預算正變成一個明確、被設計過的工作流程狀態，而不是背景規格。",
+    "電力和運算的額度，正在從一條背景規格，變成一個明確、設計過的工作狀態。",
   "Offload battery and processing to a belt pack or cradle rather than the head- or hand-worn unit, and measure neck and wrist load across a full shift against a self-contained unit rather than at first fitting.":
     "電池和運算搬到腰包或座架上，不要壓在頭戴或手持的那一端。頸部和手腕的負荷要用一整個班次去跟一體機比，不能只在剛戴上時量一次。",
   "Fit variation is being treated as a product-line requirement rather than an accessory size chart — one platform ships in several head-matched silhouettes.":
-    "貼合差異正被當成產品線層級的需求，而不是配件尺寸表 —— 同一個平台會以數種對應頭型的外形出貨。",
+    "貼合差異現在是產品線層級的需求，不是一張配件尺寸表 —— 同一個平台會出好幾種對應不同頭型的外形。",
   "Ship head- and hand-worn Zebra devices as genuine fit variants off one platform, instead of one average size corrected with padding.":
     "讓 Zebra 的頭戴與手持裝置以同一平台出真正的貼合版本，而不是出一個平均尺寸再用襯墊補救。",
   "For a worn display, fit adjustments are a calibration step, not a cosmetic afterthought.":
@@ -625,7 +672,7 @@ window.I18N_ZH = {
   "Document nose pad, temple and IPD-style fit adjustments as part of a wearable display's setup and validation process, and test text recognition after a full-shift wear trial, not just at first fitting.":
     "把鼻墊、鏡腳與瞳距類的貼合調整，寫進穿戴式顯示器的設定與驗證流程，並且在完整一個班次的配戴試驗之後再測一次文字辨識度，而不是只在初次配戴時測。",
   "A backup recording path only earns trust when its state — present, charged, recording — is visible at the point where the operator is already holding the kit.":
-    "備援錄製路徑只有在它的狀態 —— 存在、已充電、錄製中 —— 就顯示在操作者本來就握著的位置時，才值得信任。",
+    "備援錄製要讓人信得過，前提是它的狀態 —— 在不在、充飽沒、正在錄沒 —— 就顯示在操作者本來就握著的那個位置上。",
   "Pair any Zebra field-audio or evidence-capture accessory with a local backup path and a small, glanceable display showing pairing, recording and remaining capacity at the component the worker is handling.":
     "為任何 Zebra 的現場收音或證據擷取配件配上本機備份路徑，以及一塊就在作業員實際拿著的那個元件上、一眼就看得到的小顯示，顯示配對、錄製與剩餘容量。",
 
@@ -634,11 +681,11 @@ window.I18N_ZH = {
   "A dual-surface or dock-plus-body charging path can replace a single charging contact point.":
     "雙面或底座加本體的充電路徑，可以取代單一個充電接點。",
   "Running low on power becomes a named workflow state, not a failure the product tries to hide.":
-    "電力不足變成一個被命名的工作流程狀態，而不是產品試圖掩蓋的失敗。",
+    "電力快沒了，變成一個有名字的工作狀態，而不是產品想遮掉的一次失敗。",
   "A defined \"recoverable minimum\" mode can preserve scan confirmation and location before a device goes fully dark.":
     "一個定義明確的「可復原最低限度」模式，可以在裝置完全斷電之前保住掃描確認與位置資訊。",
   "The receiver that establishes a connection is being designed as a first-class system part with its own state readout, not a bundled afterthought.":
-    "負責建立連線的接收器正被設計成具備自身狀態顯示的一等系統零件，而不是隨附的附帶品。",
+    "負責建立連線的接收器，現在是一個有自己狀態顯示的正式系統零件，不再是隨機附送、想到才管的小東西。",
   "Treat scanner and headset pairing hardware as a designed, losable, replaceable part that reports its own state, with a recovery path when pairing fails.":
     "把掃描器與耳機的配對硬體當成一個被設計過、會弄丟、可更換、而且會回報自身狀態的零件，並在配對失敗時提供復原路徑。",
   "Wrist- and finger-worn gesture control ships alongside a manual hardware button as backup.":
@@ -647,15 +694,15 @@ window.I18N_ZH = {
     "在腕戴與戒指型掃描器上保留一個不依賴手勢的實體扳機，並且在戴手套與低光環境下實測，而不是從一段乾淨的展示影片推論。",
 
   "Robots are gaining managed digital identity to cross existing secured infrastructure, with authorization state visible at the point of action.":
-    "機器人正取得受管理的數位身分以通過既有的安全設施，而授權狀態在動作發生的那一點就看得見。",
+    "機器人開始擁有受管理的數位身分，用來通過原本就有的門禁設施，而且授權狀態就顯示在動作發生的那一點上。",
   "Give autonomous mobile robots the same managed, revocable digital identity to move through badge-controlled doors, gates and elevators, using consistent request/grant/deny/fallback states with a human-escalation path at every robot-operated threshold.":
     "給自主移動機器人同一套受管理、可撤銷的數位身分，用來通過刷卡門禁、閘門與電梯，並在每一個由機器人操作的出入口使用一致的請求／核准／拒絕／退場狀態，以及一條轉交給人的升級路徑。",
   "Contact and perceptual sensing resolution is matched to the zone, with fingertip precision only where it matters.":
-    "接觸與感知的解析度是依區域匹配的，只有在真正需要的地方才用到指尖等級的精度。",
+    "接觸和感知的精度是依區域分配的，只有真正需要的地方才做到指尖等級。",
   "Design scan-confirmation feedback like fingertip haptics — distinguishing a clean read, a low-confidence read and a required retry.":
     "把掃描確認的回饋設計得像指尖觸覺一樣 —— 分辨乾淨的讀取、低信心的讀取，以及必須重試。",
   "Haptic feedback is being designed to communicate a task state — success, uncertainty, retry — not just confirm contact happened.":
-    "觸覺回饋正被設計來傳達任務狀態 —— 成功、不確定、重試 —— 而不只是確認有接觸發生。",
+    "觸覺回饋現在是用來傳達任務狀態的 —— 成功、不確定、要重試 —— 而不只是告訴你碰到了。",
   "Design vibration patterns around task state, not a single undifferentiated buzz.":
     "依任務狀態設計震動模式，而不是一種沒有分別的嗡嗡聲。",
   "A fleet's status stays visible through the dock itself or a shared status light.":
@@ -664,24 +711,24 @@ window.I18N_ZH = {
     "把多機充電與任務交接當成同一個可檢視的系統，並在每一個交接點標準化同一套狀態燈與標示區語言，讓作業員不必另開儀表板，也不管面對的是哪一類機型，都能認出就緒的那一台與正確的掃描點。",
 
   "Maintenance actions like battery exchange are being designed as named, legible workflow states rather than interruptions to hide.":
-    "換電池這類維護動作，正被設計成被命名、可讀的工作流程狀態，而不是需要掩蓋的中斷。",
+    "換電池這類維護動作，現在是當成有名字、讀得懂的工作狀態在設計，而不是一段要遮起來的中斷。",
   "Design hot-swap and charging transitions as explicit device states that both the worker and the fleet dashboard can read, instead of treating them as downtime.":
     "把熱抽換與充電的轉換設計成作業員與機隊儀表板都讀得到的明確裝置狀態，而不是當成停機時間。",
   "Durable core structure is separated from modular interface zones, with every attachment state made unmistakable.":
-    "耐用的核心結構與模組化的介面區被分開，而且每一個接附狀態都做到不會認錯。",
+    "耐用的核心結構和模組化的介面區分開處理，而且每一個接上去的狀態都做到不會看錯。",
   "Define service bays with explicit access tools, and pair every dock/cradle state with a confirming visual or tactile cue.":
     "為維修艙定義明確的開啟工具，並讓每一個底座／座架狀態都配上一個確認用的視覺或觸覺提示。",
 
   "Fixed enterprise hardware is designed so its mount itself provides serviceable access.":
-    "固定式的企業硬體，被設計成由它的安裝座本身提供維修通道。",
+    "固定安裝的企業硬體，維修通道直接由安裝座本身提供。",
   "Give vehicle-mounted terminals and fixed scanners a controlled service swing or access panel, and measure maintenance time and reach from the actual mounting height.":
     "給車載終端與固定式掃描器一個可控的維修翻轉或維修蓋，並且從實際安裝高度去量測維修時間與伸手距離。",
   "A physical space is being represented as one managed asset with its own readiness state, rather than as a list of the devices inside it.":
-    "一個實體空間正被表述為具有自身就緒狀態的單一受管理資產，而不是裡面那一串裝置的清單。",
+    "一個實體空間，現在是用「一項有自己就緒狀態的受管資產」來看待，而不是裡面那一長串裝置的清單。",
   "Model a work cell or vehicle bay as a single managed object with its own readiness state, instead of as separate device records a supervisor has to reassemble.":
-    "把一個工作單元或車輛工位模型化為具有自身就緒狀態的單一受管理物件，而不是一堆要由主管自行拼湊的裝置紀錄。",
+    "把一個工作單元或車輛工位當成一個有自己就緒狀態的受管物件來建模，而不是一堆要主管自己拼湊的裝置紀錄。",
   "Availability state is pushed outside the room itself, readable before someone commits to walking in and interrupting.":
-    "可用狀態被推到空間之外，在有人決定走進去打斷之前就讀得到。",
+    "可用狀態被挪到空間外面，有人還沒決定要不要推門進去打斷，就已經讀得到。",
   "Give shared Zebra kiosks and mounted terminals the same red/green, distance-readable availability signal instead of hiding status behind a login screen.":
     "給共用的 Zebra 服務機與壁掛終端同樣一套紅／綠、遠距可讀的可用狀態訊號，而不是把狀態藏在登入畫面後面。",
   "A fixed shared screen changes its information density and access based on who is approaching and from how far, not one generic state for everyone.":
@@ -689,12 +736,12 @@ window.I18N_ZH = {
   "Give shared Zebra kiosks and wall terminals a large glanceable state at a distance and a detailed, identity-confirmed control set up close, with every identity switch explicit and reversible.":
     "給共用的 Zebra 服務機與壁面終端一個遠看就懂的大型狀態，以及近看才出現、經身分確認的詳細控制組，而且每一次身分切換都要明確且可還原。",
   "An existing switch or grip carries the full interface, replacing menu depth.":
-    "既有的一顆撥桿或一支握把承擔整個介面，取代選單深度。",
+    "原本就有的一顆撥桿或一支握把，扛下了整個介面，取代層層選單。",
   "Give a Zebra handheld's major mode changes a dedicated physical switch position, and ring its carry handle or grip with the controls a worker reaches for first — so lifting the device out of a holster is already most of the setup, without a menu to navigate.":
     "給 Zebra 手持機的主要模式切換一個專屬的實體撥桿位置，並把作業員最先會去摸的控制件環繞在提把或握把上 —— 讓把裝置從槍套抽出來這個動作，本身就完成了大部分的設定，不必再進選單。",
 
   "Micro-adjustment is placed where a rider can actually reach it mid-task, with the resulting range made measurable.":
-    "微調被放在騎乘者在任務進行中真的伸手就能構到的位置，而且調整範圍是可量測的。",
+    "微調放在騎乘中真的伸手構得到的位置，而且可調的範圍是量得出來的。",
   "Quick-adjust dials or buckles should be tested with gloves, mid-task, with the usable range documented.":
     "快調旋鈕或扣具應該在戴手套、任務進行中實測，並且把可用範圍寫成文件。",
   "Friction and impact zones are engineered as separate systems rather than one uniform surface.":
@@ -703,7 +750,7 @@ window.I18N_ZH = {
     "在任何穿戴式安裝座上，把抓握、衝擊與接附區各自獨立規劃，並使用可檢查、可清潔的磨耗面。",
 
   "Automated suggestions are kept reviewable by staying visually next to the material they summarize, rather than replacing it.":
-    "自動產生的建議被保持在可複查的狀態，做法是讓它在視覺上緊鄰它所摘要的素材，而不是取代素材。",
+    "自動產生的建議要留得住複查的空間，所以它就擺在被摘要的原文旁邊，而不是把原文取代掉。",
   "Show source text beside generated summaries before a Zebra worker accepts a field decision, and flag uncertain content rather than presenting it as fact.":
     "在 Zebra 作業員接受一個現場決策之前，把原文顯示在生成摘要旁邊，並且把不確定的內容標示出來，而不是當成事實呈現。",
   "An attachment props up a held device, and its hinge becomes a new wear point.":
@@ -715,7 +762,7 @@ window.I18N_ZH = {
   "Test power, trigger and recovery key placement against common one-handed and gloved grips before freezing a Zebra handheld's control layout.":
     "在凍結 Zebra 手持機的控制件配置之前，先用常見的單手與戴手套握法，測試電源鍵、扳機與復原鍵的位置。",
   "Finish and colour differentiate tiers only where they cannot be mistaken for status meaning — the two colour systems are being kept deliberately separate.":
-    "表面處理與顏色只在不會被誤讀為狀態意義的地方用來區分等級 —— 這兩套顏色系統正被刻意分開。",
+    "表面處理和顏色只在不會被讀成狀態的地方用來分等級 —— 這兩套顏色系統是刻意分開的。",
   "Keep device-tier colour and status-indicator colour on separate palettes, so a premium finish never reads as an alert and a safety signal never reads as trim.":
     "把裝置等級用色與狀態指示用色放在不同的色票上，讓高階質感的表面永遠不會被讀成警示，安全訊號也永遠不會被讀成外觀配色。",
   "Products make an input-mode transition — pen, keyboard, touch — physically obvious, and this period the mechanism itself does the declaring rather than a cue beside it.":
@@ -811,5 +858,299 @@ window.I18N_ZH = {
   "The breakthrough is not a new robot body but the permission to cross a controlled threshold.":
     "突破不在於新的機器人本體，而在於通過受控門禁的那份許可。",
   "The redesigned Roadster combines a restrained outer envelope with increasingly complex active systems, explaining capability, operating state and configuration boundaries as modes multiply.":
-    "重新設計的 Roadster 把克制的外部輪廓與日益複雜的主動系統結合，在模式愈來愈多時解釋能力、運作狀態與組態邊界。"
+    "重新設計的 Roadster 把克制的外部輪廓與日益複雜的主動系統結合，在模式愈來愈多時解釋能力、運作狀態與組態邊界。",
+
+  /* =====================================================================
+     V5 — themes, the evidence-strength chart and the design-brief page
+     Added 2026-11-08. Everything V5 introduced was falling through to
+     English; __i18nMissing() across all 13 pages reported 238 real strings
+     once report titles, brand names, week codes and .zip filenames were
+     excluded. Those excluded ones stay English on purpose.
+
+     ONE DELIBERATE EXCEPTION, further down: the case-card captions. Each
+     one quotes a section heading out of an English-language report, and
+     the card links straight to that report. They ARE translated here,
+     because a grid of English captions is unreadable to the audience this
+     toggle exists for — but the reader lands on the English heading, so
+     each translation is kept close enough to be matched by eye.
+     ===================================================================== */
+
+  /* ---- evidence layers and small labels -------------------------------- */
+  "product fact": "產品事實",
+  "vendor claim": "廠商說法",
+  "visible structure": "可見結構",
+  "analyst inference": "分析推論",
+  "brands": "個品牌",
+  "source": "來源",
+  // Reading test: "為什麼在這裡" is a sentence, and as a chip label sitting hard against the
+  // text it introduces, it read as a run-on. "為何入選" is the same meaning at label length.
+  "Why here": "為何入選",
+  "Weakest point": "最弱的一環",
+  "Does not apply here": "這裡用不上",
+  "Verified on zebra.com": "已在 zebra.com 查證",
+  "automotive": "汽車",
+  "mobile": "行動裝置",
+  "consumer": "消費電子",
+  "robotics": "機器人",
+  "industrial": "工業",
+  "sports": "運動",
+
+  /* ---- urgency labels (V5 wording) ------------------------------------- */
+  "Test This Cycle": "這一輪就測",
+  "Sharpen First": "先磨利再說",
+  "Watch Only": "只先觀察",
+
+  /* ---- the design-brief page ------------------------------------------- */
+  "What does this period<br>mean for my project?": "這一期對我的專案<br>代表什麼？",
+  "What it means for my project": "這對我的專案代表什麼",
+  "What to look at, and why it is here": "要看什麼，又為什麼在這裡",
+  "What Zebra already ships here": "Zebra 在這裡已經出貨什麼",
+  "Questions to take into the project": "帶進專案的問題",
+  "Research themes this domain feeds": "這個領域餵進了哪些研究主題",
+  "Reports here that feed no theme": "這裡沒有歸進任何主題的報告",
+  "What Zebra should test": "Zebra 該測什麼",
+  "Handheld computer": "手持電腦",
+  "Wearable scanner": "穿戴式掃描器",
+  "Fixed scanning & machine vision": "固定式掃描與機器視覺",
+  "Vehicle-mount computer": "車載電腦",
+  "Rugged tablet": "強固型平板",
+  "Self-service kiosk": "自助服務機",
+  "Remote compute mass": "遠端運算的重量",
+  "Grip mass and clearance": "握持重量與餘隙",
+  "Each card links to the report · caption is that report's own section heading":
+    "每張圖卡都連到該篇報告 · 圖說就是那篇報告自己的章節標題",
+  "A brief that matched every theme would be filtering nothing":
+    "如果每條主題都適用，那就等於沒有篩選",
+  "Checked first, so nothing below recommends something that exists":
+    "先查過，所以下面不會建議一個早就存在的東西",
+  "Questions, not features — the corpus cannot tell you what to build":
+    "這裡給的是問題，不是功能 —— 這批資料沒辦法告訴你該做什麼",
+  "Listed rather than absorbed — a good report need not evidence a pattern":
+    "列出來，而不是硬塞進去 —— 一篇好報告不一定要替某個模式作證",
+  "Cross-domain. Product fact, our reading and the Zebra question are shown as separate things.":
+    "跨領域。產品事實、我們的解讀，以及給 Zebra 的提問，是分開呈現的。",
+  "Not validated — 4 questions to answer before building this":
+    "尚未驗證 —— 動手做之前有 4 個問題要先回答",
+  "Not validated — 5 questions to answer before building this":
+    "尚未驗證 —— 動手做之前有 5 個問題要先回答",
+  "Every case shown is a verified case on a research theme; this page re-points them, it does not add any. Full evidence, counts, limits and non-supporting cases: <code>V5_CHANGES.md</code>.":
+    "這裡出現的每一個案例，都是某條研究主題上已經查證過的案例；這一頁只是換個角度重新指向它們，沒有新增任何東西。完整的證據、計數、限制與不成立的案例，請見 <code>V5_CHANGES.md</code>。",
+
+  /* ---- theme names and their framing ----------------------------------- */
+  "Feedback Is Specified by Who Has to Read It": "回饋怎麼設計，看的是誰要讀它",
+  "Which Actions Earn a Physical Control": "哪些動作值得留一顆實體鍵",
+  "Mass and Fit Are Specified Before the Feature Set": "先定重量與貼合，再談功能表",
+  "The Body Is Published as an Attachment Interface": "機身被當成一組公開的接附介面",
+  "Where the Product Comes Apart Is Designed, Not Hidden": "產品從哪裡拆開，是設計出來的，不是藏起來的",
+  "Material Is Spent Where the Body Lands": "材質花在身體真正落下的地方",
+  "Every physical control costs money, space and sealing. So which actions are worth keeping off the glass?":
+    "每一顆實體控制件都要花錢、佔空間、增加密封難度。那到底哪些動作值得留在玻璃以外？",
+  "Worn all shift. Where does the weight sit, what touches the body, and which posture is it really designed for?":
+    "整個班次都戴在身上。重量落在哪裡、什麼貼著身體、它真正是為哪一種姿勢設計的？",
+  "Parts wear out and get swapped mid-shift. Is that access hidden behind a panel, or part of the exterior design?":
+    "零件會磨耗，也會在班中被換掉。那個取用口是藏在蓋板後面，還是本來就屬於外觀設計？",
+  "One device, several jobs. Build variants, or publish the interface and let accessories carry the difference?":
+    "一台裝置要做好幾種工作。是做不同版本，還是把介面公開，讓配件去吸收差異？",
+  "Not whether a product shows its state, but who the cue is for: the operator, a bystander, or a remote supervisor.":
+    "重點不是產品有沒有顯示狀態，而是這個提示是給誰看的：操作者、旁邊的人，還是遠端的主管。",
+  "<strong>An interface can be defended against the rest of the design.</strong>":
+    "<strong>一個介面，是可以在整個設計裡被守下來的。</strong>",
+  "<strong>Permission, readiness and visibility are becoming as designed as the motion itself.</strong>":
+    "<strong>授權、就緒與可見性，現在和動作本身一樣是被設計出來的。</strong>",
+  "<strong>What touches the body and what carries the load are being designed as separate parts.</strong>":
+    "<strong>貼著身體的那一塊，和承重的那一塊，現在是分開設計的兩個零件。</strong>",
+
+  /* ---- limits (the caveat line under each theme) ----------------------- */
+  "Nine of thirteen are consumer or automotive, where a physical control is also a premium cue — some of this may be priced rather than reasoned.":
+    "十三個裡有九個是消費性或汽車產品，在那裡一顆實體控制件同時也是高級感的來源 —— 其中有些恐怕是定價考量，不是設計推論。",
+  "The three-reader split is our reading, not one any report draws. And none of them tests whether a cue is actually read correctly under workload.":
+    "三種讀者的分法是我們自己的解讀，沒有任何一篇報告這樣分。而且沒有一篇測過：在工作壓力下，這個提示到底有沒有被正確讀懂。",
+  "Eleven of thirteen are worn by choice for an hour or two. Nothing here is measured over a full shift, including the claim that geometry beats weight.":
+    "十三個裡有十一個是自己願意戴、戴一兩個小時的產品。這裡沒有任何一項是用完整一個班次量出來的，包括「幾何比重量重要」這個說法。",
+  "Defined service bays are category baseline for rugged and conferencing hardware, not a change — and EU repair law requires none of this to be visible.":
+    "明確的維修艙在強固型與會議硬體這兩個品類本來就是基本盤，不是變化 —— 而且歐盟維修法規也沒有要求這些東西必須看得見。",
+  "Only three of the ten genuinely publish anything. The rest are proprietary mounts the maker alone supplies, which is an accessory business and decades old.":
+    "十個裡只有三個真的公開了規格。其餘都是只有原廠供應的專屬支架，那是配件生意，而且已經做了幾十年。",
+
+  /* ---- cases that do NOT support a theme ------------------------------- */
+  "Exterior identity, proportion and a rear light signature. No interaction, service or posture argument.":
+    "談的是外觀識別、比例和尾燈的識別符號。沒有互動、維修或姿勢方面的論點。",
+  "Volume, light architecture and finish. Its 'optical depth depends on a physical architecture' is a surface-craft observation.":
+    "談的是量體、光的架構和表面處理。它那句「光學深度取決於實體架構」是表面工藝層次的觀察。",
+  "Entirely about identity and illumination as recognition — actively argues against the state-channel reading it was cited for in V3/V4.":
+    "通篇都在談識別，以及把照明當成辨識手段 —— 它其實正好反駁了 V3/V4 引用它時所說的「光是一條狀態頻道」。",
+  "Interior volume and spatial organisation. 'Position information separately from touch' is close to the controls theme but is about screen architecture, not about which action keeps a control.":
+    "談的是內部量體與空間安排。「把資訊的位置和觸碰的位置分開」雖然很接近控制件那條主題，但講的是螢幕架構，不是哪一個動作值得留下一顆控制件。",
+  "Exterior crease, aero target and packaging. Its two interior headings are screen layout, not control selection. Cited in V3/V4 for a dial that only exists in an apply card.":
+    "談的是外觀折線、空力目標與空間配置。內裝只有兩個小節，講的都是螢幕佈局，不是控制件的取捨。V3/V4 引用它時指的那顆旋鈕，只存在於建議卡裡。",
+  "Relevant but thin here — the corpus is about worn products, and a handheld is set down. Use it for the wearable brief instead.":
+    "有關，但放在這裡太薄 —— 這條主題談的是穿在身上的產品，而手持機是會放下的。這一條留給穿戴那份簡報。",
+  "Zebra already ships hot-swap, and the corpus's strongest case is a direct competitor doing the same thing. Nothing here is a lead. The rugged-tablet brief takes it further.":
+    "Zebra 本來就有熱抽換，而這批資料裡最強的案例是直接競品在做同一件事。這裡沒有任何領先可言。強固型平板那份簡報把它再往前推了一步。",
+
+  /* ---- masthead thesis and the evidence-strength chart ----------------- */
+  "The cue aimed at a bystander is moving into hardware — a moulded boundary, a deleted feature. Firmware cannot switch those off.":
+    "針對旁觀者的提示，正在搬進硬體裡 —— 一道模出來的界線，一個被拿掉的功能。這些東西，韌體關不掉。",
+  // Added 2026-11-09 with the masthead picture. The caption is the only place on the page that
+  // says what the picture is doing there, so it has to carry the claim, not just the product
+  // name. 對面那個人 rather than a literal "bystander" — Chinese wants the person, not the role.
+  "— a moulded boundary around the lens, not an app toggle. It is in the housing, so it cannot be switched off.":
+    "—— 鏡頭外圍那圈界線是模出來的，不是 App 裡的一個開關。它長在機殼上，所以關不掉。",
+  "Read the report →":
+    "看這篇報告 →",
+  "A Ring floodlight camera mounted on a house wall at dusk with both lamps lit. The lens sits inside a moulded boundary on the white housing.":
+    "一台 Ring 投射燈攝影機裝在住宅外牆上，兩盞燈都亮著，天色接近傍晚。鏡頭嵌在白色機殼上一圈模出來的界線裡。",
+  // Added 2026-11-09 with the chart's own label. 紮實 rather than a literal "well sourced" —
+  // the question the label answers is 這條能不能信, and 取材紮不紮實 is how a Chinese reader
+  // asks it. 獨立品牌數 keeps the unit explicit, which is the whole point of the label.
+  "How well sourced each theme is · bars are independent brands":
+    "每條主題的取材有多紮實 · 橫條是獨立品牌數",
+  "Independent brands behind each theme — not report counts. Six Stellantis marques from one press day is one occasion, not six datapoints.":
+    "算的是每條主題背後有幾個獨立品牌 —— 不是報告篇數。同一個發表日上的六個 Stellantis 品牌算一次場合，不是六筆數據。",
+  "This measures how well sourced each theme is in our own reading, not how widely adopted it is in the market. We write up what we choose to write up.":
+    "這裡量的是每條主題在我們自己的閱讀裡來源有多紮實，不是它在市場上被採用得多廣。我們寫的，就是我們自己挑來寫的東西。",
+
+  /* ---- aesthetic signals rewritten in V5 ------------------------------- */
+  "The premium cue used to be the absence of a seam. Now the component boundary is styled back onto the outside, because the part behind it is meant to come off.":
+    "以前高級感來自看不到接縫。現在零件的分界又被刻意做回外觀上，因為後面那個零件本來就該拆得下來。",
+  "Renault colour-codes cabin zones; Ferrari F80 marks the primary operator's seat. Signode makes AMR colour a configurable safety signal, and Antigravity leaves the watch one colour cue.":
+    "Renault 用顏色區分座艙區域；Ferrari F80 標出主駕的位置。Signode 把 AMR 的顏色做成可設定的安全訊號，Antigravity 則只在手錶上留一個顏色提示。",
+  "Alfa Romeo concentrates its tactile richness at the points of contact and leaves the rest machined. Peugeot keeps soft and machined materials visibly distinct rather than blending them. Tesla reserves its premium expression for where the body meets the cabin. Logitech carries a soft band on a structure that is deliberately not soft, and adidas separates how a surface feels from what it has to do mechanically.":
+    "Alfa Romeo 把觸感的厚度集中在身體碰得到的幾個點上，其餘維持機械加工的樣子。Peugeot 讓軟質與加工面在視覺上保持清楚的分界，不去調合它們。Tesla 把高級感留給身體與座艙相接的地方。Logitech 在一個刻意做得不柔軟的結構上掛了一條軟帶；adidas 則把「摸起來如何」和「機械上要做到什麼」分開規格。",
+
+  /* ---- the focus-item action card -------------------------------------- */
+  "Find out whether workers lose track of the active capture profile — and what it costs":
+    "先查清楚作業員會不會搞不清楚現在是哪個擷取 profile —— 以及這件事的代價是什麼",
+  "Six remappable keys already. Every one is momentary, so none of them declares anything.":
+    "已經有六顆可重新映射的鍵。但每一顆都是瞬時的，所以沒有任何一顆在宣告什麼。",
+  "Every cue a Zebra handheld gives faces the hand holding it. Nothing is aimed at anyone else.":
+    "Zebra 手持機給出的每一個提示，都朝向握著它的那隻手。沒有一個是給別人看的。",
+  "You are not short of physical controls. The open question is what each one is spent on, and who — besides the operator — can tell what the device is doing.":
+    "你不缺實體控制件。真正沒解決的問題是：每一顆各花在什麼上，以及除了操作者以外，還有誰看得出這台裝置正在做什麼。",
+  "Trigger Handle, Boot, hand strap and cradle all mount to one body that was never published as an interface.":
+    "Trigger Handle、保護套、手帶和座架全都裝在同一個機身上，而這個機身從來沒有被當成介面公開過。",
+  "Which of your existing keys is spent on a MODE rather than a momentary action? On the evidence here, that is the one worth having.":
+    "你現有的按鍵裡，哪一顆是花在「模式」上，而不是瞬時動作上？照這批證據看，那一顆才是值得留的。",
+  "Can anyone other than the operator tell what the device is doing? If not, is that a problem in your deployment — or not one at all?":
+    "除了操作者，還有誰看得出這台裝置在做什麼？如果沒有，這在你的部署場景裡算是問題嗎 —— 還是根本不算？",
+  "What does one occurrence cost — a re-scan, a mis-pick, a returned shipment? If it is a re-scan, this whole item is not worth an LED.":
+    "發生一次的代價是什麼 —— 重掃一次、揀錯一件，還是一整批退貨？如果只是重掃，那整件事根本不值得動用一顆 LED。",
+  "When it goes wrong, what does the worker see? Establish whether they discover it at the trigger pull, at the next scan, or not until a downstream exception.":
+    "出錯的時候，作業員看到的是什麼？要確認他們是在扣下扳機當下發現、下一次掃描才發現，還是要等下游跳出異常才知道。",
+  "If a cue is justified, is an LED the right channel at all? It competes with the decode LED, the beeper and the haptic already firing on the same event.":
+    "就算確定該給提示，LED 真的是對的管道嗎？同一個事件上，解碼 LED、蜂鳴器和震動已經同時在響了。",
+  "Is this already governed by site signage or regional notice requirements rather than by product design? If so the product cue is redundant and the real work is elsewhere.":
+    "這件事會不會本來就由現場標示或當地的告示規定在管，而不是由產品設計在管？如果是，產品上的提示就是多餘的，真正該做的事在別的地方。",
+  "Which workflows switch profile without the worker initiating it, and how often does the wrong one end up active? Obtainable from DataWedge profile-switch logs against task logs — no new hardware.":
+    "哪些流程會在作業員沒有主動操作的情況下切換 profile？切錯的比例又有多高？把 DataWedge 的 profile 切換紀錄和任務紀錄對起來就查得到，不需要新硬體。",
+  "Re-verify the premise before any build: this analysis did not re-check the Get Active Profile intent's current behaviour or per-model application-LED capability against Zebra's live documentation.":
+    "動工之前要先重新驗證前提：這份分析並沒有拿 Zebra 現行文件重新查核 Get Active Profile intent 目前的行為，也沒有逐機型確認 application LED 的能力。",
+  "Structural beats electronic per this period's strongest finding — so ask first whether a moulded or mechanical indication of the sensing envelope would serve better than another LED.":
+    "這一期最強的發現是結構勝過電子 —— 所以先問：用模出來的形狀或機構來指出感測範圍，會不會比再加一顆 LED 更有用。",
+
+  /* ---- case-card captions ----------------------------------------------
+     See the exception noted at the top of this V5 block: each of these is a
+     section heading quoted out of an English report the card links to, so
+     they are translated tightly rather than freely. */
+  "Rotary choice": "用旋鈕選擇",
+  "Read two modes": "兩種模式一眼讀出",
+  "Preview on device": "機上預覽",
+  "Modes are visible": "模式看得見",
+  "External storage": "外接儲存",
+  "No lens-corner camera eye": "鏡片角落沒有相機眼",
+  "Opening is an operating state": "開啟本身就是一種運作狀態",
+  "Make attachment states obvious": "讓接附狀態一目瞭然",
+  "Readiness is a fleet property": "就緒與否是整個機隊的屬性",
+  "Show whose experience is active": "顯示現在是誰的使用階段",
+  "A lens with a physical boundary": "鏡頭有一圈實體界線",
+  "Color becomes a configurable safety signal": "顏色變成可設定的安全訊號",
+  "Keep feedback in the working position": "回饋就放在工作位置上",
+  "Keep feedback close to the wearer": "回饋貼近配戴者",
+  "Put critical information near the sightline": "關鍵資訊放在視線附近",
+  "The room appears as a managed object": "會議空間以一個受管物件的樣子出現",
+  "Battery exchange is a workflow state": "換電池是一種工作狀態",
+  "Clips turn the case into a rack": "卡扣把機殼變成一組機架",
+  "Pogo pins expose modular intent": "pogo pin 把模組化的意圖攤開來",
+  "Replacement is a designed action": "更換本身是被設計過的動作",
+  "Keyboard changes working posture": "鍵盤改變了工作姿勢",
+  "Buttons live in an optional cover": "按鍵住在一個選配保護殼裡",
+  "Chassis becomes a rigging platform": "機身變成一個外掛平台",
+  "A spoiler can become a carrying tool": "尾翼也可以變成載物工具",
+  "The bumper announces its separate job": "保險桿宣告自己是獨立的一塊",
+  "One mount accepts lens, light and fan": "一個接口同時吃鏡頭、燈和風扇",
+  "Structure carries a soft contact band": "結構上掛著一條柔軟的接觸帶",
+  "A switch states intent before menus do": "撥桿在選單之前就先講清楚意圖",
+  "Let the data interface follow the hand": "讓資料介面跟著手走",
+  "Design the contact patch intentionally": "接觸面要刻意設計",
+  "Geometry matters more than weight alone": "幾何比單看重量更要緊",
+  "A hinge changes the shooting silhouette": "轉軸改變了拍攝時的外形",
+  "Gloves belong in the primary interaction": "手套屬於主要互動的一部分",
+  "Place adjustment where it can be reached": "調整要放在搆得到的地方",
+  "Treat optical fit as product architecture": "把光學貼合當成產品架構",
+  "Return critical actions to physical buttons": "把關鍵動作還給實體按鍵",
+  "Extend capability through a clear interface": "用一個清楚的介面延伸能力",
+  "Mass moves away from the bridge of the nose": "重量從鼻樑上移開",
+  "Minimal surfaces still need a tactile anchor": "再極簡的表面，也需要一個觸覺定錨",
+  "The opened product reads as a held workspace": "打開後的產品，讀起來像一個捧在手上的工作面",
+  "Reserve geometry for the mechanical connection": "把幾何留給機械連接",
+  "Keep frequent driving actions under the fingers": "常用的駕駛動作要留在手指下",
+  "A visible handle keeps the action understandable": "看得見的把手，讓動作維持可理解",
+  "Important settings keep distinguishable hardware": "重要設定保留分得出來的硬體",
+  "Steer-by-wire does not remove every analogue cue": "線傳轉向並沒有拿掉所有類比提示",
+  "Each module has a clear job": "每個模組都有明確的工作",
+  "The handle is the dashboard": "提把就是儀表板",
+  "Parts are designed to separate": "零件本來就設計成會分開",
+  "Thickness shifts grip load": "厚度會改變握持負荷",
+  "Wearability is the real specification": "可穿戴性才是真正的規格",
+  "Concentrate change in defined modules": "把變化集中在界定好的模組裡",
+  "Retain physical control paths": "保留實體控制路徑",
+  "One Button, Even With Gloves": "一顆按鍵，戴手套也按得到",
+  "A Kit Built From Swappable Parts": "一組由可換零件組成的套件",
+  "Proportion and aero at the body boundary.": "車身邊界上的比例與空力。",
+
+  /* ---- second pass: strings V5 reworded after the first pass ----------- */
+  "Stellantis Mondial 2026": "Stellantis 2026 巴黎車展",
+  "The soft, the warm and the finely textured are being concentrated on the few square inches a person actually touches, and withheld everywhere else — so the surface map now follows the body rather than the sightline.":
+    "柔軟的、溫暖的、紋理細緻的，全都集中到人真正摸得到的那幾平方吋上，其他地方一律不給 —— 於是表面的分布，現在跟的是身體，不是視線。",
+  "Ring moulds a boundary around the lens instead of offering an app toggle; Meta ships a whole camera-free Ray-Ban line whose argument is the absent lens corner; Ferrari lets body geometry report that a system is open. Different industries, one conclusion: a cue that software can disable is a weaker promise than one built into the shape. Note the scope — this is one of five themes below, and two of them have nothing to do with proving state.":
+    "Ring 在鏡頭周圍模出一圈界線，而不是在 app 裡放一個開關；Meta 乾脆出一整條沒有相機的 Ray-Ban，整個賣點就是鏡片角落空著；Ferrari 則讓車身幾何自己說出系統已經打開。不同產業，同一個結論：軟體關得掉的提示，承諾力就是比做進形狀裡的弱。但也要看清範圍 —— 這只是下面五條主題的其中一條，而其中有兩條跟「證明狀態」完全無關。",
+  "Sigma's STILL/CINE switch and Ferrari's drive-mode rotary both do one narrow job: state the operating mode before any menu is involved. Kindle goes further and moves tactile input off the device into an optional cover. Apple's first touch Mac makes the point from the opposite direction — touch arrives on the panel and the keyboard, trackpad and Touch ID key all stay.":
+    "Sigma 的 STILL/CINE 撥桿和 Ferrari 的駕駛模式旋鈕，都只做一件很窄的事：在選單介入之前先把模式講清楚。Kindle 走得更遠，乾脆把實體操作移出機身，放進一個選配保護殼。Apple 第一台觸控 Mac 則從反面印證了同一件事：觸控上了螢幕，鍵盤、觸控板和 Touch ID 鍵一個都沒少。",
+  "Turtle Beach's stick modules flip over bodily, so the controller's outline — not a light or a label — tells you which thumb-input mode is live. The iPhone Duo's hinge turns a fold into its own standing posture.":
+    "Turtle Beach 的搖桿模組整塊翻過去，所以告訴你現在是哪一種拇指操作的是外形，不是燈號，也不是標籤。iPhone Duo 的轉軸則讓對折本身變成一種站立姿勢。",
+  "Citroën gives the 2 CV's bumper its own visible border and FIAT's spoiler declares where it reconfigures; Logitech draws Rally Bar 2's split lines on the outside; adidas marks the wear zones with finish changes.":
+    "Citroën 給 2 CV 的保險桿一條看得見的邊；FIAT 的尾翼直接標出它會從哪裡變形。Logitech 把 Rally Bar 2 的分件線畫在外面；adidas 則用換表面處理的方式標出會磨損的地方。",
+  "Ray-Ban's capture LED answers a consumer-privacy question in a public setting. Test whether the same cue reads as reassurance or as surveillance in a workplace, where the person in frame cannot walk away.":
+    "Ray-Ban 的拍攝 LED 回答的是公共場合裡的消費者隱私問題。同一個提示放到職場 —— 鏡頭前的人走不開 —— 要先測它讀起來是安心，還是監視。",
+  "Who is actually in frame of a fixed Zebra scanner or machine-vision camera — staff, customers, or nobody for most of the shift? The answer decides whether this is a design question or a compliance one.":
+    "固定式 Zebra 掃描器或機器視覺相機，鏡頭前實際上是誰 —— 員工、顧客，還是一整個班次大部分時間根本沒人？答案會決定這是一個設計問題，還是一個法遵問題。",
+
+  /* ---- third pass: the long domain takeaways and brief lead ------------
+     "TC53 / TC58 · MC9400 · EDA-class" is intentionally left English: it is
+     a list of Zebra model numbers. */
+  "ai": "感測擷取",
+  "Pick what you are working on. The same evidence, re-indexed by Zebra product type instead of by where it came from — so a handheld brief surfaces the camera and the car, which is where the useful answers turned out to be.":
+    "先選你手上在做的東西。同一批證據，改以 Zebra 的產品類型重新編排，不再照它原本來自哪裡分類 —— 所以手持機那份簡報會把相機和汽車翻出來，而真正有用的答案，剛好就在那裡。",
+  "The Kindle question, and it is commercial not technical: is a control still worth keeping if it ships in an accessory rather than in the box?":
+    "這是 Kindle 丟出來的問題，而且是商業問題，不是技術問題：如果一顆控制件是放在配件裡出貨、而不是放在盒子裡，它還值得留嗎？",
+  "A fixed single-viewer desk display. Was wrongly cited under compute-offload in V3/V4; its report argues the opposite ('without a headset'). Genuinely interesting and genuinely unlike anything else in the corpus.":
+    "一台固定在桌上的單人顯示器。V3/V4 把它錯放在「運算外移」那條，但它的報告講的正好相反（「不必戴頭顯」）。確實有意思，也確實和這批資料裡任何東西都不一樣。",
+  "CANDIDATE SIXTH THEME, not a miss. Its real subject — a robot designed around installed plant infrastructure rather than the reverse — rhymes with Logitech's 'Mount geometry reduces labor' and Ring's 'Power choice changes installation'. Three cases across three brands is enough to watch and not enough to declare. Revisit next period rather than forcing it into one of the five.":
+    "這是候選的第六條主題，不是漏掉的。它真正的題目 —— 機器人是繞著既有廠房設施設計的，而不是反過來 —— 和 Logitech 的「安裝幾何能省掉人工」與 Ring 的「電源選擇會改變安裝方式」是同一個調。三個案例、三個品牌，足以列入觀察，還不足以宣告成立。下一期再看，不要硬塞進現有的五條裡。",
+  "Amazfit's dual-solar watch, Logitech's Zone Vibe Pro headset and Antigravity's Watch and Ring Remotes treat power recovery, body contact and a hardware fallback as deliberate product decisions rather than specification lines.":
+    "Amazfit 的雙面太陽能手錶、Logitech 的 Zone Vibe Pro 耳機，以及 Antigravity 的手錶與戒指遙控器，都把電力回復、身體接觸和硬體備援當成刻意做出的產品決策，而不是規格表上的一行字。",
+  "ANYmal's credentialed door access, Sharpa's haptic manipulation hardware, Skydio's docked F10 drone and Signode's five-class AMR portfolio all push autonomy past capability — into identity, readiness and shared-space signalling.":
+    "ANYmal 的憑證式門禁、Sharpa 的觸覺操作硬體、Skydio 可停靠的 F10 無人機，還有 Signode 五種車型的 AMR 產品線，都把自主性推過了「能力」這一關，往身分、就緒狀態，以及共用空間裡的訊號傳達走。",
+  "The TOUGHBOOK 34 treats glove operation as the primary input case rather than an accommodation, exposes a defined service bay instead of hidden disassembly, treats battery exchange as a state the workflow passes through, and protects existing accessory and connector investments even as it adopts new standards. Zebra can apply the same dedicated buttons, explicit service access, and genuine structural (not decorative) expression of both legacy compatibility and durability to its next rugged tablet.":
+    "TOUGHBOOK 34 把戴手套操作當成主要的輸入情境，而不是一種遷就；它開出一個明確的維修艙，而不是藏起來的拆機路徑；它把換電池當成工作流程會經過的一個狀態；而且在採用新標準的同時，仍保住既有配件與接頭的投資。Zebra 下一台強固型平板也可以這樣做：專屬按鍵、明確的維修入口，以及用真正的結構（而不是裝飾）同時表達相容與耐用。",
+  "Logitech's Rally Bar 2 and Rally System 2 Pro turn room hardware into serviceable, managed modules with status visible before anyone walks in; Apple's HomeView extends shared-screen logic into the home; Sigma's fp2 and Teenage Engineering's EP-35 show a physical switch or handle can replace menu depth as the primary interface; and Sony's ELF-MN1 and Fujifilm's instax mini Evo 2 add two newer moves — delivering depth to one viewer with no worn optics at all, by steering light to each eye and tracking the observer, and placing a deliberate preview between capture and an irreversible print.":
+    "Logitech 的 Rally Bar 2 和 Rally System 2 Pro 把空間硬體變成可維修、受管理的模組，人還沒走進去就看得到狀態。Apple 的 HomeView 把共用螢幕的邏輯延伸到家裡。Sigma 的 fp2 和 Teenage Engineering 的 EP-35 則證明一顆實體撥桿或一支提把就能取代層層選單，當成主要介面。Sony 的 ELF-MN1 和 Fujifilm 的 instax mini Evo 2 又帶來兩個新做法：分別把光送進左右眼、再跟著觀看者的位置調整，讓一個人不戴任何光學裝置就看得到深度；以及在拍和印之間刻意插進一道預覽。",
+  "They also increasingly surface room status before someone has to walk in to check it — Rally Bar 2's pivoting mount exposes service access, Rally System 2 Pro's modular components support central management while its own distance-readable availability signal is visible before someone commits to entering, HomeView adapts a shared screen to who's approaching, and Sigma's STILL/CINE switch and Teenage Engineering's carry handle turn an existing control into the main interface instead of adding menus. Two further threads arrive with the ELF-MN1 and the instax mini Evo 2: Sony builds a single-viewer desk display that delivers depth with no headset and no worn hardware at all, directing light to each eye and tracking the observer rather than asking them to wear the optics, and Fujifilm puts a preview step between capture and the irreversible act of spending film. Zebra can apply the same swing-access mount, modular configuration, outside-the-room availability signal, identity-aware interface, and dedicated-switch-over-menu logic across its kiosks, terminals and handhelds — and put an explicit review step in front of anything a worker cannot undo.":
+    "它們也愈來愈習慣在人走進去確認之前，就先把空間的狀態亮出來。Rally Bar 2 可翻轉的安裝座把維修通道露出來；Rally System 2 Pro 的模組化元件支援集中管理，而它遠距就讀得到的可用狀態訊號，在人決定要不要進去之前就看得見；HomeView 會看誰在靠近而調整共用螢幕；Sigma 的 STILL/CINE 撥桿和 Teenage Engineering 的提把，則把既有的控制件變成主要介面，而不是再多加選單。ELF-MN1 和 instax mini Evo 2 又帶來兩條線：Sony 做了一台桌上的單人顯示器，分別把光送進左右眼、再跟著觀看者的位置調整，不必戴頭顯、也不必戴任何東西就看得到深度；Fujifilm 則在拍和「用掉一張底片」這個收不回來的動作之間，插了一道預覽。Zebra 的服務機、終端和手持機也可以這樣做：可翻轉的維修座、模組化組態、房間外就讀得到的可用狀態訊號、看得出身分的介面，以及用專屬撥桿取代選單；而且在任何作業員收不回來的動作前面，都該擺一道複查。",
+  "adidas reserves geometry for the mechanical binding connection, so the one surface that has to mate with another product is not available to styling — the clearest statement in this corpus that an interface needs protecting. The same family splits into task-matched variants, places its adjustment where a hand can actually reach it on a slope, and treats grip, impact and attachment as separate engineered zones with finish changes used to explain the structure rather than decorate it. For Zebra's wearable-scanner mounts the open question is which interface geometry is currently negotiable in a styling review and should not be, and whether adjustment is reachable in the posture the work is done in rather than the one it is specified in.":
+    "adidas 把幾何留給機械固定的那個連接處，所以唯一必須和另一個產品咬合的表面，造型部門動不了 —— 這是這批資料裡「介面需要被守住」講得最清楚的一次。同一個家族再拆成依任務匹配的版本，把調整點放在人在坡上真的伸得到手的位置，並且把抓握、衝擊、接附當成三個各自工程化的區域，用表面處理的變化去解釋結構，而不是拿來裝飾。對 Zebra 的穿戴式掃描器支架來說，真正要問的是：現在有哪些介面幾何在造型審查上是可以被動的，而其實不該被動；以及調整點在實際工作的姿勢下搆不搆得到，而不是在規格書上寫的那個姿勢。",
+  "Logitech splits them explicitly — a load-bearing structure carrying a soft contact band — which lets each be tuned without compromising the other, and its pairing sequence is treated as a system part rather than a setup step. Amazfit makes power recovery continuous rather than an event, charging both on and off the wrist, and makes mode and state readable in direct sun, which is the only place in this corpus where the reading environment is part of the feedback specification. Antigravity keeps one gloved-operable hardware button in reserve behind its gesture and wrist-screen control. For Zebra: whether its current wrist mount asks one part to do both the load and the contact job, whether its state cues survive the lighting its workers actually stand in, and whether every gesture path still has a hardware fallback a gloved hand can find.":
+    "Logitech 把兩件事明確分開 —— 一個承重的結構，上面掛一條柔軟的接觸帶 —— 這樣兩邊都可以各自調整而不互相犧牲；而它的配對流程是當成系統的一部分在設計，不是當成一道安裝步驟。Amazfit 讓充電變成持續發生的事，而不是一個事件：戴在手上和放下來都能充；它還讓模式和狀態在大太陽底下讀得出來，這是整批資料裡唯一把「閱讀環境」寫進回饋規格的例子。Antigravity 則在手勢和腕上螢幕之外，保留了一顆戴手套也按得動的實體鍵。給 Zebra 的三個問題：現在的腕戴座是不是讓同一個零件同時扛承重和貼身兩件事；狀態提示在工人實際站著的那個光線下還讀不讀得到；以及每一條手勢路徑，是不是都還留著一個戴手套的手找得到的實體備援。",
+  "ANYmal's door access is the clearest case: credential, access policy and door motor are described as one audited interaction running on installed dormakaba hardware, so the robot joins the building's existing identity system rather than getting its own. Skydio treats readiness as something the dock establishes and verifies before a mission may start, and Signode is the one case here where light genuinely does state work — a lit mast strip, a multi-angle dome LED and hazard striping as one language for a shared human/robot aisle. Sharpa belongs to a different question: it specifies five LRA motors with 256 levels per fingertip, and its own report warns that resolution is not the same as interpretability. For Zebra the testable items are a request/grant/deny path that reuses existing site access control, a cradle that can establish shift-readiness rather than display it, and — before adding any haptic vocabulary — evidence that the cues already shipping are read correctly under load.":
+    "ANYmal 的門禁是最清楚的案例：憑證、通行政策和門機馬達被寫成同一段可稽核的互動，跑在現場既有的 dormakaba 硬體上 —— 機器人是加入這棟建築原本的身分系統，而不是另外拉一套。Skydio 把「就緒」當成任務開始前由停靠座建立並驗證的東西。Signode 則是這裡唯一真的讓光去做狀態工作的案例：發光的桅桿燈條、多角度的半球 LED，加上危險警示斜紋，共同組成人機共用走道上的一套語言。Sharpa 屬於另一個問題：它規格上是每根指尖五顆 LRA 馬達、256 階，而它自己的報告就警告過，解析度不等於讀得懂。對 Zebra 來說可以測的有三件事：一條沿用現場既有門禁的請求／核准／拒絕路徑；一個能「建立」而不只是「顯示」換班就緒狀態的座架；還有 —— 在加任何觸覺語彙之前 —— 先拿出證據證明現在出貨的提示，在工作負荷下真的被讀懂了。"
 };

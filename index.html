@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Trend Dashboard · V4</title><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Trend Dashboard · V5</title><style>
 :root{--bg:#070909;--panel:#111515;--panel2:#15191a;--line:#2a3030;--ink:#f5f6f1;--muted:#abb2af;--accent:#b9ff43;--sbw:280px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.58 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;overflow-x:hidden}
@@ -45,6 +45,8 @@ body:not(.sidebar-collapsed) .sb-backdrop{opacity:1;pointer-events:auto}
 .week-sub>div{overflow:hidden;min-height:0}
 .week-sub.content-hidden{content-visibility:hidden}
 .rep-mini{display:block;padding:6px 8px 6px 8px;font-size:12.5px;color:var(--muted);border-left:4px solid var(--line);margin-left:4px;transition:color .15s,border-color .15s}
+/* A launch event that belongs to a week is listed inside that week, accent-edged so it reads as a group, not a seventh report. */
+.ev-mini{border-left-style:dashed;color:#d8dcda;margin-top:7px}
 .rep-mini:hover{color:var(--ink);border-color:var(--accent)}
 .single-item{display:flex;align-items:center;gap:9px;padding:7px 8px 7px 17px;border-radius:8px;font-size:13px;color:#9aa3a0;transition:background .15s,color .15s}
 .single-item:hover{background:var(--panel);color:var(--ink)}
@@ -164,7 +166,12 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
    thesis at display size, the tension that leaves it open, then the figures as the solid band
    it ends on. The old "A trend site that keeps updating." is not restored — that is the site
    describing itself, which is exactly the slot Octoverse spends on the finding. */
-.lede-delta{margin-left:auto;display:flex;flex-wrap:wrap;gap:7px}
+/* LEFT-ALIGNED 2026-11-08. This was `margin-left:auto`, which pushed the badge row to the right
+   edge of .mast-meta — and once it wrapped onto its own line it stayed right-aligned there,
+   leaving the two header rows hanging off opposite margins. `flex:0 0 100%` puts it on its own
+   row deliberately instead of by accident, flush with the kicker above it and the headline
+   below. The 760px override that used to undo margin-left is gone with it. */
+.lede-delta{flex:0 0 100%;display:flex;flex-wrap:wrap;gap:7px}
 .lede-delta span{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:750;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
 .lede-delta span b{color:var(--ink);font-weight:850}
 .lede-delta span.on,.lede-delta span.on b{color:var(--accent)}
@@ -185,7 +192,7 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 .la-gap b{color:var(--accent);font-weight:780}
 .la-more{font-size:12.5px;color:var(--muted)}
 .lede-act:hover .la-more{color:var(--accent)}
-@media(max-width:760px){.lede-act{flex-direction:column}.la-thumb{flex:0 0 auto;width:100%;height:150px}.lede-delta{margin-left:0;width:100%}}
+@media(max-width:760px){.lede-act{flex-direction:column}.la-thumb{flex:0 0 auto;width:100%;height:150px}}
 /* Once the cards wrap, a "→" pointing into empty space at the end of a row is worse than none:
    it implies a step that isn't there. The numbers still carry the order. */
 @media(max-width:860px){.pr-head{padding:22px 18px 20px}.pr-step-card::after{content:none}}
@@ -199,10 +206,57 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
    it has is the rule it ends on, and a soft accent wash that fades out before the body starts. */
 .masthead{position:relative;margin:0 0 26px;padding:2px 0 30px;border-bottom:1px solid var(--line);background:radial-gradient(980px 340px at 8% -18%,rgba(185,255,67,.10),transparent 68%)}
 .mast-meta{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 20px;margin-bottom:24px}
+/* The V5 DRAFT chip that used to sit here was removed 2026-11-08. It was a working aid for
+   telling the three local builds apart, never part of the design, and the browser tab title
+   ("Trend Dashboard · V5") still does that job. */
 /* Display size, because this line is the edition's claim — the slot Octoverse gives "Developer
    activity reaches new highs on GitHub". It was 43px inside a panel, which is a card title. */
 .mast-thesis{font-size:clamp(31px,4.5vw,55px);font-weight:775;line-height:1.05;letter-spacing:-.038em;margin:0 0 28px;max-width:15.5em}
-.mast-tension{margin:0 0 32px;max-width:700px}
+/* WIDENED 2026-11-08. This carried max-width:700px and the base .tension-bar rule below it
+   carried 640px, which won. Both were inherited from the two-segment bar this chart replaced —
+   that bar was ONE track and had no use for more width. The five-row ranked chart does: at 640
+   it left the right 492px of a 1132px header empty for the chart's full 271px height, a dead
+   rectangle sitting between the headline above it and the figures band below, in the first
+   screen of the home page. It now spans the header, and the note below .es-row hands the slack
+   to the track rather than to the labels. */
+/* 2026-11-09 — the 32px bottom margin that used to sit here has moved to .mast-lede. Inside the
+   left column it counted towards that column's height, the figure beside it stretches to the row
+   height, and so the picture's bottom edge finished 32px below the last line of text next to it.
+   The margin belongs to the row, not to the thing at the bottom of one of its columns. */
+.mast-tension{margin:0;max-width:none}
+/* 2026-11-09 — the headline and the chart sit in the left column of this row and the period's
+   defining artefact sits in the right. Three passes tried to resolve the open right side of the
+   header by moving the chart around (§14–16); the answer was that the header was missing a
+   picture, not that its chart was the wrong width. The chart therefore keeps its 700px measure
+   untouched — 380 + 44 leaves 708 for it at the widest content column. */
+.mast-lede{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:0 44px;align-items:stretch;margin:0 0 32px}
+/* The figure stretches to the row height rather than carrying a fixed one, so it is as tall as
+   the headline and chart beside it whatever the headline wraps to — which is the whole point of
+   putting it here.
+   The crop does almost nothing now, which is the point — the picture was chosen to survive this
+   column rather than cropped to fit it. A 1:1 source in a 380x601 window keeps 63% of its width
+   and all of its height, and the camera is centred in the frame, so a centred window holds the
+   whole product with the wall around it. The y value is inert in this state (a portrait window
+   over a square or landscape source crops width only) and is kept for the stacked one. */
+.mast-figure{margin:0;position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#0b0d0c;min-height:320px}
+.mast-figure img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+.mast-figure figcaption{position:absolute;left:0;right:0;bottom:0;padding:48px 16px 14px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.78) 46%,rgba(0,0,0,.93));font-size:11.5px;line-height:1.5;color:#cfd4d1}
+.mast-figure figcaption b{color:var(--ink);font-weight:800}
+/* display:block, not inline-block: the Chinese caption is shorter than the English one and left
+   room on the last line, so the link sat at the end of a sentence in 中 and on its own line in EN.
+   The same element should not be a different thing in the two languages. */
+.mast-figure figcaption a{display:block;width:fit-content;margin-top:7px;color:var(--accent);text-decoration:none;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:800}
+.mast-figure figcaption a:hover{text-decoration:underline}
+/* Below this the left column can no longer give the chart its measure with 380px taken out of the
+   row, so the picture goes under it at the chart's own width instead of beside it. */
+/* Stacked, 3:2 rather than 16:9. The source is square now, and a 1.78 box would show only 56% of
+   its height — enough to clip the base of the camera while the caption covers the rest of it.
+   3:2 shows 67% and holds the whole product, which is the same rule the portrait state is
+   selected on. */
+/* margin-top, not margin-bottom: the gap below the row is .mast-lede's now, and the chart lost its
+   own bottom margin when that moved, so stacked the picture would otherwise butt against the
+   caption above it. */
+@media(max-width:1024px){.mast-lede{grid-template-columns:minmax(0,1fr)}.mast-figure{max-width:700px;aspect-ratio:3/2;min-height:0;margin-top:30px}.mast-figure img{object-position:50% 50%}}
 /* The band the header ends on. Full width, tiles left, ruler right, so the measured half of the
    header fills the width the headline leaves open on the right. */
 .mast-band{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px 40px;align-items:start;border-top:1px solid var(--line);padding-top:26px}
@@ -222,7 +276,9 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 /* Below this the ruler's own label no longer fits one line beside the tiles, which is the
    point where side by side stops being tidier than stacked. */
 @media(max-width:1180px){.mast-band{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:760px){.masthead{padding-bottom:24px}.mast-thesis{margin-bottom:22px}.mast-tension{margin-bottom:24px}}
+/* .mast-tension's override here became .mast-lede's on 2026-11-09, with the margin itself; leaving
+   it on the chart would have put 24px back inside the left column, which is the bug this moved. */
+@media(max-width:760px){.masthead{padding-bottom:24px}.mast-thesis{margin-bottom:22px}.mast-lede{margin-bottom:24px}}
 .pr-axis{border-top:none;padding-top:0}
 .pr-axis-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--muted);margin-bottom:14px}
 .pr-ruler{display:grid;gap:10px;align-items:end;max-width:460px}
@@ -328,17 +384,63 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 .period-narrative .pn-kicker{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--accent);margin-bottom:8px}
 .pn-thesis{color:var(--ink);font-size:22px;font-weight:730;letter-spacing:-.01em;line-height:1.32;margin:0 0 10px}
 .pn-detail{color:#9aa19e;font-size:14px;line-height:1.58;margin:0;max-width:720px}
-.tension-bar{margin-top:18px;max-width:560px}
+/* 2026-11-08 — the 560px cap here was the oldest of the three on this element and, sitting after
+   .mast-tension in source order at equal specificity, it was the one actually in force. Removed
+   with the other two; see the note on .mast-tension.
+   2026-11-09 — stretching the chart to the full header was the wrong half of the fix. It filled
+   the space but made every row a 1130px journey: label at the far left, bar, then the figure it
+   labels a thousand pixels away at the far right, with the eye crossing the whole page five
+   times. The chart went back to a 700px reading measure.
+   2026-11-09, second pass — the caption was briefly promoted into a margin note in the space that
+   freed up on the right. Removed at the user's instruction: a sidebar of explanatory text next to
+   a five-row chart is another thing competing for the reader's eye in the first screen, and the
+   open space on the right of a 700px measure is not a fault that needs filling. One block, one
+   left edge, one measure: label, rows, then the two caption lines under them, all to 700px. */
+.tension-bar{margin-top:18px;max-width:700px}
+/* The chart had no title at all — it simply appeared under the headline, and a bar labelled
+   "14 brands" cannot tell you what counts as a brand. Same label style as .pr-axis-label, which
+   does this job for the week axis directly below it. */
+.es-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--muted);margin-bottom:13px}
+/* The two caption lines, grouped so they read as one footnote rather than two stray lines. They
+   take the measure from .tension-bar above — no cap of their own, so they end flush with the
+   chart's right edge instead of stopping short of it. */
+.tb-notes{margin-top:13px}
 .tension-bar .tb-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:7px}
 .tension-bar .tb-labels b{color:var(--ink);font-weight:800}
-.tension-bar .tb-track{display:flex;height:10px;border-radius:999px;overflow:hidden;background:var(--line)}
-.tension-bar .tb-seg{height:100%;transition:flex-basis .6s ease}
-.tension-bar .tb-seg.a{background:var(--accent)}
-.tension-bar .tb-seg.b{background:#58d0ff}
+/* .tb-track / .tb-seg deleted in V5 along with the two-sided tension bar they drew. .tb-labels,
+   .tb-foot and .tb-scope are kept — the replacement chart still uses the foot and scope lines. */
+/* 2026-11-08 — both caption lines were given a 660px measure of their own when the chart above
+   them spanned the full header; at 1100px a line of 11px type runs past 180 characters and the eye
+   loses the return. 2026-11-09 — dropped again. The chart is back to 700px and the lines inherit
+   that, which is both a sound measure and the same right edge as the rows above them. */
 .tension-bar .tb-foot{font-size:11px;color:var(--muted);margin-top:7px}
 /* The scope line is deliberately quieter than the verdict above it: it is the caveat that
    stops "17 reports" being read as 17 of the 46 in the masthead, not a second headline. */
 .tension-bar .tb-scope{font-size:10.5px;color:var(--muted);opacity:.7;margin-top:3px}
+/* V5 — evidence-strength rows, replacing the two-segment tension track. Horizontal bars rather
+   than one split bar, because the point is no longer "which side wins" but "how well sourced is
+   each of these". The brand figure is the bar; the report count rides along in small type so the
+   two can never be confused for each other again. */
+/* 2026-11-08 — was max-width:640px; see the note on .mast-tension for why it is gone. The chart
+   is used in the masthead only, so it takes the width of whatever holds it. */
+/* 2026-11-09 — margin-bottom:11px removed; .tb-notes sets the gap to the caption now, and the two
+   together were stacking 24px of space into the middle of one block. */
+.es-rows{display:grid;gap:9px}
+/* 2026-11-08 — the columns were `minmax(0,1fr) 92px 74px`: the label took every spare pixel and
+   the bar stayed a 92px stub, so widening the chart would only have stretched five lines of 12px
+   type. Inverted. The label gets a fixed measure wide enough for the longest theme name in the
+   set at 12.5px ("Where the Product Comes Apart Is Designed, Not Hidden", ~310px) so none of them
+   ellipsis, and the TRACK takes the slack — the bar is the part the reader measures by eye, and
+   the whole reason to draw this as a chart instead of a list is that bar lengths can be compared
+   at a glance. Bars share a left baseline, which is what makes that comparison legitimate. */
+.es-row{display:grid;grid-template-columns:minmax(0,340px) minmax(90px,1fr) 74px;align-items:center;gap:12px}
+.es-name{font-size:12.5px;color:#d8dcda;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.es-track{height:8px;border-radius:999px;background:var(--line);overflow:hidden}
+.es-fill{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .7s cubic-bezier(.2,.7,.3,1)}
+.es-num{font-size:10.5px;color:var(--muted);line-height:1.25}
+.es-num b{color:var(--ink);font-size:14px;font-weight:800}
+.es-sub{display:block;opacity:.65}
+@media(max-width:620px){.es-row{grid-template-columns:minmax(0,1fr) 64px 66px;gap:8px}.es-name{font-size:11.5px}}
 .signals{display:flex;flex-direction:column;gap:16px}
 
 /* V4 TEST — prescriptive, ranked, more compact than the Top Signal cards on purpose: this
@@ -386,6 +488,18 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 .p-badge.watch{color:var(--muted)}
 .p-title{font-size:18.5px;line-height:1.3;margin:0;font-weight:720;color:var(--ink)}
 .p-rationale{color:#cbd0ce;font-size:13.5px;line-height:1.55;margin:0}
+/* V5 — the validation questions. The first draft printed all of them open, which put 277 words
+   of caveat on the home page. The warning is what must not be skippable, not the questions
+   themselves — so the summary line carries "Not validated" and the questions are one click away.
+   Styled as a warning rather than a neutral disclosure so it does not read as optional detail. */
+.p-validate{background:rgba(255,107,87,.07);border:1px solid rgba(255,107,87,.26);border-radius:11px;padding:9px 14px;margin-top:4px}
+.p-validate>summary{cursor:pointer;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;font-weight:800;color:#ff8a78;list-style:none}
+.p-validate>summary::-webkit-details-marker{display:none}
+.p-validate>summary:before{content:'▸ '}
+.p-validate[open]>summary:before{content:'▾ '}
+.p-validate[open]>summary{margin-bottom:8px}
+.p-validate ol{margin:0;padding-left:18px;font-size:12.5px;line-height:1.5;color:#cbd0ce}
+.p-validate li{margin-bottom:5px}
 .p-links{font-size:11.5px;color:var(--muted);margin-top:2px}
 .p-links a{color:var(--accent);text-decoration:none}
 .p-links a:hover{text-decoration:underline}
@@ -611,7 +725,7 @@ a.kt-name:hover{color:var(--accent)}
 /* skipMotion() also has to stop the tension bar's own flex-basis transition, or setting the
    real split would merely start an animation that a suspended page never advances. */
 .motion-off .reveal-init{opacity:1;transform:none}
-.motion-off .tb-seg{transition:none}
+.motion-off .es-fill{transition:none}
 
 @media (prefers-reduced-motion: no-preference){
   /* The week strip draws itself in the direction of time: the span bar grows from its left
@@ -748,8 +862,48 @@ a.kt-name:hover{color:var(--accent)}
           <div class="kicker" id="genLabel"></div>
           <div class="lede-delta" id="ledeDelta"></div>
         </div>
-        <h1 class="mast-thesis" id="periodThesis"></h1>
-        <div class="tension-bar mast-tension" id="tensionBar"></div>
+        <!-- 2026-11-09 — the headline and the chart now share a row with a picture, so the header
+             balances instead of hanging off the left margin. The picture is not decoration and is
+             not chosen for looks: the thesis names two artefacts, "a moulded boundary" and "a
+             deleted feature", and this is the second of them. THEMES records the case as
+             Ray-Ban Meta Audio · "No lens-corner camera eye" · "the capability is removed so the
+             cue is the absence of hardware". The shot is from the Ray-Ban Meta Audio report's own
+             image set, worn rather than on a plinth, and it shows the empty lens corner the claim
+             rests on. Nothing new was sourced for this and the image appears nowhere else on the
+             page — checked before it was added.
+             IMAGE CHANGED TWICE on 2026-11-09, and the second change was a change of criterion.
+             Both earlier attempts were Ray-Ban Meta Audio frames — the thesis's second artefact —
+             and both failed the same way: THE COLUMN IS PORTRAIT AND THE SOURCES ARE 16:9. A tall
+             window over a 1.78 frame keeps 36% of its width, so any subject that spans the frame
+             is cut, and a pair of glasses spans the frame by definition. Meta's worn shot also
+             carried a burned-in voice-UI chip on the exact corner the composition needed.
+             The rule now is the one to select on, not to crop around: the picture has to carry
+             its point WHOLE in the portrait state. That points at square sources, and the Ring
+             report publishes its set at 1500x1500 — a 1:1 frame keeps 63% of its width in this
+             column, and the product is centred in it. Ring is also the thesis's FIRST artefact,
+             "a moulded boundary", recorded in THEMES as Ring 2026 Camera Family · "A lens with a
+             physical boundary" · "the boundary is moulded, not rendered, so it cannot be switched
+             off" — which is the sentence the headline ends on.
+             Six Ring frames were compared at the true 380x601. The two white-background renders
+             show the boundary best and were still rejected on the hero-image rule. The kitchen
+             pan-tilt shot was rejected because it is ALREADY the Sensing & Capture Devices tile
+             further down this page; this one is used nowhere else, checked against the rendered
+             DOM before the swap. -->
+        <div class="mast-lede">
+          <div class="mast-lede-main">
+            <h1 class="mast-thesis" id="periodThesis"></h1>
+            <div class="tension-bar mast-tension" id="tensionBar"></div>
+          </div>
+          <figure class="mast-figure">
+            <img src="https://images.ctfassets.net/a3peezndovsu/7qZMZ80Qcs3jC1HicLoZvW/c20ea9b6d751bb7e42aaf116ea7b0892/ring_floodlight_cam_4k_plus_wired_lifestyle_atf_1500x1500.jpg?w=1100&amp;q=80"
+                 alt="A Ring floodlight camera mounted on a house wall at dusk with both lamps lit. The lens sits inside a moulded boundary on the white housing."
+                 decoding="async">
+            <figcaption>
+              <b>Ring 2026 Camera Family</b> — a moulded boundary around the lens, not an app toggle. It is in the housing, so it cannot be switched off.
+              <a href="weeks/W41/02_Ring_Camera_Family.html">Read the report →</a>
+            </figcaption>
+          </figure>
+        </div>
         <div class="mast-band">
           <div class="stat-row" id="statRow"></div>
           <div class="pr-axis" id="prAxis"></div>
@@ -891,6 +1045,7 @@ $("#yearChildren").innerHTML = `<div>${WEEKS.slice(0,8).map(w => `
     </div>
     <div class="week-sub content-hidden" id="sub-${w.id}"><div>
       ${w.reports.map(r=>`<a class="rep-mini" href="report-viewer.html?src=${encodeURIComponent(r.file)}&amp;title=${encodeURIComponent(r.title)}&amp;back=${encodeURIComponent(w.indexFile)}">${r.title}</a>`).join("")}
+      ${LAUNCH_EVENTS.filter(ev=>ev.week===w.id).map(ev=>`<a class="rep-mini ev-mini" href="${ev.indexFile}">${ev.shortName||ev.name} <span style="color:var(--muted);font-size:11px">&middot; ${ev.reports.length} reports</span></a>`).join("")}
     </div></div>
   </div>
 `).join("")}</div>`;
@@ -1010,55 +1165,43 @@ function pickTopSignals(all, n){
 }
 const shownSignals = pickTopSignals(TOP_SIGNALS, MAX_TOP_SIGNALS);
 
-// V4 TEST — narrative is now {text, tension}; the tension bar's evidence counts are summed
-// live from TOP_SIGNALS so the number on screen can never drift from the actual data.
+// V5 — the two-sided tension bar is gone (see the long note on its removal in data.js). What
+// stands here instead is an evidence-strength chart over THEMES, drawn in INDEPENDENT BRANDS
+// rather than report count, because report count measures our editorial choices and brand count
+// is the closest thing in this corpus to a real signal. Every number is read live from THEMES,
+// so the chart cannot drift from the themes it summarises — the same discipline the old bar had,
+// pointed at a question worth asking.
 if (typeof PERIOD_NARRATIVE !== "undefined") {
   $("#periodThesis").textContent = PERIOD_NARRATIVE.thesis || "";
   $("#periodDetail").textContent = PERIOD_NARRATIVE.detail || "";
-  const tension = PERIOD_NARRATIVE.tension;
-  if (tension && tension.length === 2) {
-    // Each side is the union of its signals' evidence, so a report cited by two signals on the
-    // same side counts once. A report cited on BOTH sides genuinely evidences both, so it is
-    // kept on each and disclosed in the scope line — which is why the two counts can sum to
-    // more than the distinct total. Silently dropping it would understate one side.
-    const sets = tension.map(side => {
-      const uniqueEvidence = new Set();
-      side.signals.forEach(kw => {
-        const sig = TOP_SIGNALS.find(s => s.keyword === kw);
-        (sig && sig.evidence || []).forEach(e => uniqueEvidence.add(e));
-      });
-      return uniqueEvidence;
-    });
-    const counts = sets.map(s => s.size);
-    const distinct = new Set([...sets[0], ...sets[1]]).size;
-    const overlap = counts[0] + counts[1] - distinct;
-    const usedSignals = tension[0].signals.length + tension[1].signals.length;
-    const total = counts[0] + counts[1] || 1;
-    const pctA = Math.round(counts[0]/total*100);
-    // The verdict was hard-coded ("Neither side is winning") while the numbers beside it were
-    // computed live, so once W44 pushed the split to 17:6 the sentence contradicted its own
-    // bar. Derive it from the same counts the bar is drawn from.
-    const lead = counts[0] >= counts[1] ? 0 : 1;
-    const leadPct = Math.max(pctA, 100 - pctA);
-    const leadLabel = tension[lead].label.charAt(0).toLowerCase() + tension[lead].label.slice(1);
-    const verdict =
-      leadPct <= 58 ? "Neither side is winning. Design for both."
-      : leadPct <= 67 ? `The evidence leans toward ${leadLabel}, but not decisively.`
-      : `This period runs ${counts[lead]} to ${counts[1 - lead]} toward ${leadLabel}.`;
-    // "17 reports" sitting under a 46-report masthead reads as a split of the whole corpus.
-    // It is not: only the signals named in `tension` are on the axis at all.
-    const scope = `${distinct} of ${ALL_REPORTS.length} reports, cited by ${usedSignals} of ${TOP_SIGNALS.length} top signals`
-      + (overlap ? ` · ${overlap} counted on both sides` : "");
-    // .tb-seg has carried `transition:flex-basis .6s` from the start, but the bar was rendered
-    // straight at its final split so the transition had nothing to run from. Starting it at an
-    // even 50/50 and letting the observer release it (see the motion layer) means the bar
-    // visibly leans — which is the whole claim this section is making — instead of simply being
-    // a static ratio the reader has to measure by eye.
+  const scale = PERIOD_NARRATIVE.evidenceScale;
+  if (scale && typeof THEMES !== "undefined" && THEMES.length) {
+    const rows = THEMES.map(t => ({ name: t.name, brands: t.counts.brands, reports: t.counts.reports }))
+                       .sort((a,b) => b.brands - a.brands || b.reports - a.reports);
+    const max = Math.max(...rows.map(r => r.brands)) || 1;
+    // The bars start at zero width and are released by the motion observer below, the same way
+    // the old bar started at an even split — so the ranking arrives as a movement rather than as
+    // a static picture the reader has to measure by eye. Falls back to full width if the
+    // observer never runs; see skipMotion().
+    // 2026-11-09 — the chart now carries its own label. A reader asked of the live page what a
+    // "brand" is here, and the chart could not answer: it had no title at all, and the caption
+    // that defines the unit sat below it in 11px grey. The label states the unit where the
+    // number is read. The two caption lines are wrapped only so they read as one footnote; they
+    // were briefly a margin note beside the chart and are deliberately back underneath it.
     $("#tensionBar").innerHTML = `
-      <div class="tb-labels"><span><b>${counts[0]}</b> reports · ${tension[0].label}</span><span><b>${counts[1]}</b> reports · ${tension[1].label}</span></div>
-      <div class="tb-track"><div class="tb-seg a" style="flex-basis:50%" data-basis="${pctA}%"></div><div class="tb-seg b" style="flex-basis:50%" data-basis="${100-pctA}%"></div></div>
-      <div class="tb-foot">${verdict}</div>
-      <div class="tb-scope">${scope}</div>`;
+      <div class="es-label">How well sourced each theme is · bars are independent brands</div>
+      <div class="es-rows">
+        ${rows.map(r => `
+          <div class="es-row">
+            <span class="es-name">${r.name}</span>
+            <span class="es-track"><span class="es-fill" style="width:0%" data-basis="${Math.round(r.brands/max*100)}%"></span></span>
+            <span class="es-num"><b>${r.brands}</b> brands<span class="es-sub">${r.reports} reports</span></span>
+          </div>`).join("")}
+      </div>
+      <div class="tb-notes">
+        <div class="tb-foot">${scale.caption}</div>
+        <div class="tb-scope">${scale.disclaimer}</div>
+      </div>`;
   }
 }
 
@@ -1102,13 +1245,16 @@ function weekProfile(entry){
   const active = counts.reduce((a, n, i) => (n ? a.concat(i) : a), []);
   return { counts, active, total: ev.length };
 }
-// V4 TEST — momentum tag: did this entry's evidence grow in the latest week, or is it holding
-// steady on older evidence? Derived from the shared map above, so it stays correct automatically
-// as new weeks get added and counts standalone reports like any other evidence.
+// LABELS REWRITTEN 2026-11-04 (V5), per review doc §7.2 — and the same change is made in
+// domains/_shared.js, which has its own copy of this function. "Building" and "Holding" read as
+// market growth and market stall, and this function cannot see the market. It can only see which
+// weeks OF OUR OWN CORPUS an entry's cited reports fall in, so the labels now say that literally.
+// "No new case this week" is a statement about our coverage: the market may have moved in a week
+// we did not cover. Keep the cls values — they are CSS hooks and feed MOMENTUM_RANK.
 function momentumTag(entry){
   const { active } = weekProfile(entry);
-  if (!active.length || active[active.length-1] !== LATEST_COL) return { cls:"holding", label:"Holding" };
-  return active.length === 1 ? { cls:"new", label:"New This Week" } : { cls:"building", label:"Building" };
+  if (!active.length || active[active.length-1] !== LATEST_COL) return { cls:"holding", label:"No new case this week" };
+  return active.length === 1 ? { cls:"new", label:"New case this week" } : { cls:"building", label:"Repeats across weeks" };
 }
 // The badge gives a verdict; this gives the span in plain words, because "Building" alone can't
 // distinguish a trend running since W39 from one that started last week and grew once.
@@ -1141,7 +1287,11 @@ function sparkWrap(entry){
 // V4 TEST — priority list render. Each relatedSignals title links to its card above (by index
 // in the currently-shown top 3) when it's actually on-screen there; otherwise it renders as
 // plain text rather than a dead link, since TOP_SIGNALS is a larger pool than what's shown.
-const URGENCY_LABEL = { now: "Act Now", next: "Next Cycle", watch: "Watch" };
+// V5 — these described how soon to BUILD ("Act Now", "Next Cycle"). Per review doc §8.1 these
+// items are hypotheses that have not had their underlying problem demonstrated, so the labels now
+// describe how ready each is to be TESTED. "Act Now" in particular was asserting a decision the
+// evidence does not support.
+const URGENCY_LABEL = { now: "Test This Cycle", next: "Sharpen First", watch: "Watch Only" };
 // V4 TEST — evidence set per priority (union of its relatedSignals' TOP_SIGNALS evidence),
 // computed once here and reused below to cross-highlight keyword-cloud chips that trace back
 // to each priority — the link between "what to act on" and "the full keyword landscape" is a
@@ -1203,6 +1353,10 @@ if (typeof ZEBRA_PRIORITIES !== "undefined") {
             ? `<a href="${p.zebraBaseline.source}" target="_blank" rel="noopener">zebra.com ↗</a>` : ``}</p>
           <p><b>The gap.</b> ${p.zebraBaseline.gap}</p>
         </details>` : ``}
+        ${p.validate ? `<details class="p-validate">
+          <summary>Not validated — ${p.validate.length} questions to answer before building this</summary>
+          <ol>${p.validate.map(v => `<li>${v}</li>`).join("")}</ol>
+        </details>` : ``}
         <div class="p-links">Draws from: ${links} · <button class="p-viewcloud" data-rank="${i+1}">see it in the keyword cloud ↓</button></div>
       </div>
     </div>`;
@@ -1235,7 +1389,7 @@ if (typeof ZEBRA_PRIORITIES !== "undefined") {
     <a class="lede-act reveal-init" href="#step-3">
       ${lead.image ? `<span class="la-thumb"><img src="${lead.image}" alt=""></span>` : ``}
       <span class="la-body">
-        <span class="la-badge">What to do about it · ${URGENCY_LABEL[lead.urgency] || lead.urgency}</span>
+        <span class="la-badge">What to find out · ${URGENCY_LABEL[lead.urgency] || lead.urgency}</span>
         <span class="la-title">${lead.title}</span>
         <span class="la-gap">${lead.zebraBaseline
           ? `<b>The gap.</b> ${lead.zebraBaseline.gap}`
@@ -1259,9 +1413,12 @@ if (typeof ZEBRA_PRIORITIES !== "undefined") {
   pool.forEach(e => { tally[momentumTag(e).cls]++; });
   const dropped = (typeof DROPPED_PRIORITIES !== "undefined") ? DROPPED_PRIORITIES.length : 0;
   $("#ledeDelta").innerHTML =
-    `<span class="${tally.new ? "on" : ""}"><b>${tally.new}</b> new this week</span>` +
-    `<span><b>${tally.building}</b> building</span>` +
-    `<span><b>${tally.holding}</b> holding</span>` +
+    // RELABELLED 2026-11-04 (V5) per review doc §7.2 — same change as momentumTag() above. The
+    // chips used the bare words "building" and "holding", which read as market momentum when all
+    // they count is which weeks of this corpus fed each entry.
+    `<span class="${tally.new ? "on" : ""}"><b>${tally.new}</b> new case this week</span>` +
+    `<span><b>${tally.building}</b> repeat across weeks</span>` +
+    `<span><b>${tally.holding}</b> no new case this week</span>` +
     (dropped ? `<span><b>${dropped}</b> cut on the Zebra check</span>` : ``);
 })();
 
@@ -1552,10 +1709,15 @@ $$("#chipCloud .chip").forEach(el => el.addEventListener("click", ()=>
       w:`${shownSignals.length} of ${TOP_SIGNALS.length} tracked signals` },
     { n:"02", href:"#step-2", q:"What it looks like",
       w:`${AESTHETIC_TRENDS.length} aesthetic signals` },
-    { n:"03", href:"#step-3", q:"What Zebra does about it",
-      w:`${ZEBRA_PRIORITIES.length} focus items${cut ? ` · ${cut} cut on the Zebra check` : ``}` },
+    { n:"03", href:"#step-3", q:"What Zebra should test",
+      w:`${ZEBRA_PRIORITIES.length} hypotheses${cut ? ` · ${cut} cut on the Zebra check` : ``}` },
     { n:"04", href:"#step-4", q:"Everything underneath",
-      w:`${allKeywordEntries.length} keywords · ${domainCount} domains` }
+      w:`${allKeywordEntries.length} keywords · ${domainCount} domains` },
+    // V5 — the only card that leaves this page. Everything above is organised by where the
+    // evidence came from; this one re-indexes it by what the reader is actually building, which
+    // is the index a designer starting a project needs and the site did not have.
+    { n:"05", href:"brief.html", q:"What it means for my project",
+      w:`${typeof DESIGN_BRIEFS !== "undefined" ? DESIGN_BRIEFS.length : 0} product briefs ↗` }
   ];
   $("#prChain").innerHTML = steps.map(s =>
     `<a class="pr-step-card reveal-init" href="${s.href}"><span class="n">${s.n}</span><span class="q">${s.q}</span><span class="w">${s.w}</span></a>`
@@ -1582,9 +1744,10 @@ $$("#chipCloud .chip").forEach(el => el.addEventListener("click", ()=>
   $("#prLegend").innerHTML = `
     <div class="pr-legend">
       <span class="li wide">${sparkFromCounts(sample, "Example only")}<span>Oldest week on the left; dot size is how many reports that week fed in.</span></span>
-      <span class="li"><span class="momentum-badge new">New This Week</span><span>only ${latest}</span></span>
-      <span class="li"><span class="momentum-badge building">Building</span><span>${latest} plus earlier weeks</span></span>
-      <span class="li"><span class="momentum-badge holding">Holding</span><span>nothing new in ${latest}</span></span>
+      <span class="li"><span class="momentum-badge new">New case this week</span><span>only ${latest}</span></span>
+      <span class="li"><span class="momentum-badge building">Repeats across weeks</span><span>${latest} plus earlier weeks</span></span>
+      <span class="li"><span class="momentum-badge holding">No new case this week</span><span>nothing in ${latest}</span></span>
+      <span class="li wide"><span>These describe which weeks of this corpus fed each trend — they are not a reading of market growth.</span></span>
     </div>`;
 
   // The two view buttons are labelled Cloud and Timeline and sit directly under this line, so
@@ -1916,8 +2079,9 @@ function playMotion(el){
   if (el.classList.contains("fade-init")) { el.classList.add("fade-in"); }
   if (el.classList.contains("spark")) el.classList.add("spark-go");
   if (el.id === "prAxis") el.classList.add("axis-go");
-  // The tension bar starts at an even 50/50 and leans to its real split here.
-  if (el.id === "tensionBar") $$(".tb-seg", el).forEach(s => { s.style.flexBasis = s.dataset.basis; });
+  // V5 — the evidence-strength rows start at zero width and grow to their real length here.
+  // (This used to release the old two-segment tension bar off an even 50/50 split.)
+  if (el.id === "tensionBar") $$(".es-fill", el).forEach(s => { s.style.width = s.dataset.basis; });
 }
 // Tracks whether the observer has ever actually run, for the fail-safe at the bottom.
 let motionFired = false;
@@ -1945,7 +2109,7 @@ function skipMotion(){
   $$(".fade-init").forEach(el => el.classList.remove("fade-init"));
   $$(".spark:not(.spark-go)").forEach(el => el.classList.add("spark-go"));
   $("#prAxis").classList.add("axis-go");
-  $$("#tensionBar .tb-seg").forEach(s => { if (s.dataset.basis) s.style.flexBasis = s.dataset.basis; });
+  $$("#tensionBar .es-fill").forEach(s => { if (s.dataset.basis) s.style.width = s.dataset.basis; });
 }
 
 if (isReturning || REDUCED) {

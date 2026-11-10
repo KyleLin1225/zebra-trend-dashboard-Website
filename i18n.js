@@ -39,7 +39,11 @@
      is always descended into and translated on its own. */
   var KEEP = { B: 1, I: 1, EM: 1, STRONG: 1, BR: 1, CODE: 1, SUP: 1, SUB: 1, U: 1, SMALL: 1, MARK: 1 };
   var SKIP_TAG = { SCRIPT: 1, STYLE: 1, NOSCRIPT: 1, TEXTAREA: 1, SVG: 1, CANVAS: 1, IFRAME: 1 };
-  var ATTRS = ["placeholder", "title", "aria-label"];
+  /* "alt" added 2026-11-09 with the masthead picture, whose alt text describes the one thing the
+     claim rests on — an empty lens corner — and was the first alt on the site worth reading. The
+     three attributes here were already handled identically, so this is the same code path; an alt
+     with no dictionary entry stays English, which is the designed fallback everywhere else. */
+  var ATTRS = ["placeholder", "title", "aria-label", "alt"];
 
   var ORIG = new WeakMap();          // Text node -> original English string
   var missing = Object.create(null); // strings seen with no translation

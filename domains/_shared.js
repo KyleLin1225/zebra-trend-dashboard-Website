@@ -56,7 +56,38 @@
   // Trend Signal cards show whether an entry grew with fresh evidence this week or is holding
   // steady on older evidence. Injects its own CSS since domain pages don't share index.html's.
   const styleTag = document.createElement("style");
-  styleTag.textContent = ".momentum-badge{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;padding:3px 9px;border-radius:999px;border:1px solid currentColor}.momentum-badge.new{color:var(--accent)}.momentum-badge.building{color:#ffb020}.momentum-badge.holding{color:var(--muted);opacity:.7}";
+  styleTag.textContent = ".momentum-badge{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;padding:3px 9px;border-radius:999px;border:1px solid currentColor}.momentum-badge.new{color:var(--accent)}.momentum-badge.building{color:#ffb020}.momentum-badge.holding{color:var(--muted);opacity:.7}"
+  // V5 — styles for the research-theme block below. Deliberately plainer than the signal cards:
+  // no hero image, no overlay. A theme is a piece of reasoning with its sources attached, and
+  // dressing it as a hero card is what let the old trend cards read as conclusions.
+  + ".themes{display:grid;gap:10px;margin-bottom:8px}"
+  + ".theme{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:17px 20px}"
+  + ".t-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap}"
+  + ".theme h3{font-size:clamp(17px,1.9vw,21px);line-height:1.2;letter-spacing:-.015em;margin:0;font-weight:720}"
+  + ".t-strength{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);white-space:nowrap}"
+  + ".t-strength b{color:var(--accent);font-size:14px}"
+  + ".theme .t-problem{color:#b9c0bd;margin:7px 0 12px;font-size:13.5px;line-height:1.5}"
+  /* Image-led case cards. The layer is the card's top edge — no pill, no dot, no legend row. */
+  + ".t-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px;margin-top:13px}"
+  + ".t-card{display:block;text-decoration:none;background:var(--bg);border:1px solid var(--line);border-top:2px solid var(--line);border-radius:10px;overflow:hidden;transition:border-color .15s,transform .15s}"
+  + ".t-card:hover{transform:translateY(-2px)}"
+  + ".t-card.product-fact{border-top-color:var(--accent)}.t-card.visible-structure{border-top-color:#7fd1ff}"
+  + ".t-card.vendor-claim{border-top-color:#ffb020}.t-card.analyst-inference{border-top-color:#c89bff}"
+  + ".t-card:hover{border-color:var(--accent)}"
+  + ".t-card img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;background:#030505;border-bottom:1px solid var(--line)}"
+  + ".tc-t{display:block;padding:8px 10px 0;font-size:12px;font-weight:700;color:var(--ink);line-height:1.25}"
+  + ".tc-a{display:block;padding:3px 10px 10px;font-size:11px;color:var(--muted);line-height:1.35}"
+  /* The one remaining line of prose per theme. */
+  + ".t-caveat{font-size:12px;line-height:1.5;margin:11px 0 0;padding-left:11px;border-left:2px solid #ffb020;color:#cbbfa6}"
+  + ".t-caveat>span{display:inline-block;font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;margin-right:8px;vertical-align:1px;color:#ffb020}"
+  + ".t-else{display:block;font-style:normal;font-size:11px;color:var(--muted);margin-top:4px}"
+  /* Unclustered list keeps the old text rows — there is no claim to picture there. */
+  + ".t-rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}"
+  + ".t-row{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:12.5px}"
+  + ".t-row a,.t-row>span{font-weight:650;text-decoration:none;flex:0 0 auto;max-width:38%}"
+  + ".t-row a:hover{color:var(--accent)}"
+  + ".t-row .t-at{flex:1;min-width:0;font-style:normal;color:var(--muted);font-size:12px;line-height:1.45;display:block;margin:0}"
+  + "@media(max-width:620px){.t-cards{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}.t-row{flex-wrap:wrap;gap:3px 8px}.t-row a,.t-row>span{max-width:100%}.t-row .t-at{flex:1 0 100%}}";
   document.head.appendChild(styleTag);
   // Same week map as the dashboard's (see index.html): WEEKS membership is authoritative, and the
   // standalone/launch-event reports that appear in ALL_REPORTS but in no week are placed by date
@@ -87,10 +118,19 @@
     (entry.evidence||[]).forEach(t => { const c = reportWeekCol[t]; if (c !== undefined) counts[c]++; });
     return { counts, active: counts.reduce((a,n,i) => (n ? a.concat(i) : a), []) };
   }
+  // LABELS REWRITTEN 2026-11-04 (V5), per review doc §7.2. The old labels were "Building" and
+  // "Holding", which read as market growth and market stall. They never meant that. All this
+  // function can see is WHICH WEEKS OF OUR OWN CORPUS a trend's cited reports fall in, so the
+  // labels now say exactly that and nothing more:
+  //   Building → "Repeats across weeks"  (cases in the latest week AND earlier ones)
+  //   Holding  → "No new case this week" (nothing in the latest week — about our coverage, not
+  //              about the market, which may well have moved while we did not cover it)
+  //   New      → "New case this week"    (first appearance, latest week only)
+  // Keep the cls values: they are CSS hooks and are referenced by MOMENTUM_RANK above.
   function momentumTag(entry){
     const { active } = weekProfile(entry);
-    if (!active.length || active[active.length-1] !== LATEST_COL) return { cls:"holding", label:"Holding" };
-    return active.length === 1 ? { cls:"new", label:"New This Week" } : { cls:"building", label:"Building" };
+    if (!active.length || active[active.length-1] !== LATEST_COL) return { cls:"holding", label:"No new case this week" };
+    return active.length === 1 ? { cls:"new", label:"New case this week" } : { cls:"building", label:"Repeats across weeks" };
   }
   // The dashboard prints a week strip beside every trend; the domain pages get the same strip, so
   // a trend reads the same way whichever page you meet it on.
@@ -172,6 +212,71 @@
   const tracked = trends.concat(contenders).slice(0, MAX_TRACKED);
   const droppedCount = allDomainTrends.length - tracked.length;
 
+  /* ---------- V5: cross-domain research themes -------------------------------------------------
+     The trend cards above answer "what is happening in this domain". They cannot answer "what is
+     this evidence actually strong enough to claim", because a trend card is one keyword plus one
+     statement — the shape that let a Zebra recommendation be printed as a product fact in V3/V4.
+     THEMES carries the separated layers, so this block renders them directly: each case keeps the
+     report's own section heading as its anchor, each case is tagged with which layer it is, and
+     the limits and the unanswered Zebra questions are shown alongside rather than omitted.
+     A theme appears on this page when at least one of its cases is a report in this domain; only
+     that domain's cases are listed, with the cross-domain totals shown beneath so the reader can
+     see how much of the theme sits outside this page. */
+  const domainTitles = new Set(reports.map(r => r.title));
+  const domainThemes = (typeof THEMES !== "undefined" ? THEMES : [])
+    .map(t => ({ t, local: t.cases.filter(c => domainTitles.has(c.report)) }))
+    .filter(x => x.local.length)
+    .sort((a,b) => b.local.length - a.local.length);
+  const unclusteredHere = (typeof UNCLUSTERED !== "undefined" ? UNCLUSTERED : [])
+    .filter(u => domainTitles.has(u.report));
+
+  /* DENSITY REWRITE 2026-11-05. The first version of this block printed every §10.2 field open on
+     the page at once. Measured on the automotive page that came to 2,226 words — 69% of the whole
+     page — and pushed it to ~9,000px. The review document requires those fields to be KEPT, not
+     to be on screen simultaneously, and a wall of text defeats the purpose: nobody audits
+     evidence they scrolled past.
+     So the split is by reading job, not by importance:
+       Always visible — the theme, the problem it answers, the case list as one scannable row per
+         report (report · the heading that anchors it · layer), and the brand count.
+       Behind one disclosure — our reading, the full counts, the per-case notes, the limits, the
+         non-supporting cases and the Zebra questions. All still here, all still auditable, none
+         of it in the way of a skim.
+     Nothing was deleted from the data to achieve this. */
+  function themeBlock(x){
+    const t = x.t, c = t.counts;
+    // Each case is a picture of the product, its name, and the section heading that anchors the
+    // claim — the same image-led anatomy the rest of this page already uses for evidence cards,
+    // rather than the text-only rows the first two V5 builds had. The layer stays as a coloured
+    // edge on the card instead of a pill or a dot, so it costs no space at all.
+    const caseCard = cs => {
+      const r = ALL_REPORTS.find(z => z.title === cs.report);
+      if (!r) return "";
+      const href = `../report-viewer.html?src=${encodeURIComponent(r.file)}&amp;title=${encodeURIComponent(r.title)}&amp;back=${encodeURIComponent(backPath)}`;
+      return `<a class="t-card ${cs.layer}" href="${href}" title="${cs.layer.replace(/-/g," ")} · ${r.title}">
+        <img src="${r.hero}" alt="${r.title}" loading="lazy">
+        <span class="tc-t">${r.title}</span>
+        <span class="tc-a">${cs.at}</span>
+      </a>`;
+    };
+    const elsewhere = c.reports - x.local.length;
+    // Only the caveat stays as prose. `inferenceShort` was a second line of commentary doing a
+    // job the problem line and the cards already do between them; it is still in the data and in
+    // V5_CHANGES.md. The full dossier — per-case notes, complete inference and limits,
+    // non-supporting cases, all four counts — lives in that document, not on this page.
+    return `<div class="theme">
+      <div class="t-head">
+        <h3>${t.name}</h3>
+        <span class="t-strength"><b>${c.brands}</b> brands · ${c.events} occasions</span>
+      </div>
+      <p class="t-problem">${t.problem}</p>
+      <div class="t-cards">${x.local.map(caseCard).join("")}</div>
+      <p class="t-caveat">
+        ${t.limitShort ? `<span>Weakest point</span>${t.limitShort}` : ``}
+        ${elsewhere > 0 ? `<em class="t-else">+${elsewhere} more in other domains</em>` : ``}
+      </p>
+    </div>`;
+  }
+
   document.getElementById("app").innerHTML = `
     <div class="kicker">Domain · ${periodLabel}</div>
     <h1>${d.name}</h1>
@@ -236,6 +341,30 @@
     </ol>
     ${droppedCount > 0 ? `<p class="ti-note">${droppedCount} older trend${droppedCount===1?"":"s"} dropped out of tracking — still readable in the source reports below.</p>` : ``}
     `}
+
+    ${domainThemes.length ? `
+    <div class="section-label">
+      <span>Research themes this domain feeds</span>
+      <span class="ti-cap">Cross-domain. Product fact, our reading and the Zebra question are shown as separate things.</span>
+    </div>
+    <div class="themes">${domainThemes.map(themeBlock).join("")}</div>
+    ` : ``}
+
+    ${unclusteredHere.length ? `
+    <div class="section-label">
+      <span>Reports here that feed no theme</span>
+      <span class="ti-cap">Listed rather than absorbed — a good report need not evidence a pattern</span>
+    </div>
+    <div class="themes"><div class="theme">
+      <ul class="t-rows">${unclusteredHere.map(u => {
+        const r = ALL_REPORTS.find(z => z.title === u.report);
+        const href = r ? `../report-viewer.html?src=${encodeURIComponent(r.file)}&amp;title=${encodeURIComponent(r.title)}&amp;back=${encodeURIComponent(backPath)}` : "";
+        // .wrap because here the REASON is the content — a theme row can truncate its heading
+        // since the heading is just an anchor, but "why this feeds no theme" has to be readable.
+        return `<li class="t-row wrap">${r ? `<a href="${href}">${u.report}</a>` : `<span>${u.report}</span>`}<em class="t-at">${u.why}</em></li>`;
+      }).join("")}</ul>
+    </div></div>
+    ` : ``}
 
     <div class="section-label">
       <span>Browse reports one by one</span>
@@ -320,6 +449,7 @@
     const targets = [].concat(
       markReveal(".signals .signal", 90),
       markReveal(".trend-index .ti-row", 40),
+      markReveal(".themes .theme", 70),
       markReveal(".key-takeaway", 0)
     );
     let fired = false;

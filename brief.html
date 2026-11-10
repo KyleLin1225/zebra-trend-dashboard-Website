@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Design Brief — Trend Dashboard</title>
+<style>
+/* Deliberately reuses the dashboard's variables and spacing so this reads as the same product,
+   not a bolt-on tool. Self-contained because it does not share domains/_shared.css. */
+:root{--bg:#070909;--panel:#111515;--line:#2a3030;--ink:#f5f6f1;--muted:#abb2af;--accent:#b9ff43;--max:1180px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.58 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+a{color:inherit}
+.wrap{width:min(var(--max),calc(100% - 32px));margin:auto}
+.topline{padding-top:28px;margin-bottom:22px}
+.back{display:inline-block;color:var(--muted);text-decoration:none;font-size:13px;border:2px solid var(--line);border-radius:999px;padding:7px 13px;transition:border-color .15s,color .15s}
+.back:hover{color:var(--ink);border-color:var(--accent)}
+.kicker{font-size:11px;line-height:1.2;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--accent)}
+h1{font-size:clamp(38px,6.2vw,68px);font-weight:760;line-height:.94;letter-spacing:-.045em;margin:14px 0 14px}
+.sub{font-size:16px;color:#d8dcda;max-width:720px;margin:0 0 28px}
+
+/* ---- picker ---- */
+.picker{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:34px}
+.pick{background:var(--panel);border:1.5px solid var(--line);border-radius:999px;padding:9px 17px;color:var(--ink);font:inherit;font-size:13.5px;font-weight:650;cursor:pointer;transition:border-color .15s,color .15s}
+.pick:hover{border-color:var(--muted)}
+.pick[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+
+.lead-card{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:14px;padding:20px 24px;margin-bottom:12px}
+.lead-card .ex{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.lead-card p{margin:0;font-size:16.5px;line-height:1.5;color:#e4e8e6}
+
+.section-label{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:30px 0 12px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.section-label>span:first-child{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--accent)}
+.cap{font-size:11px;color:var(--muted)}
+
+/* ---- theme block, same anatomy as the domain pages ---- */
+.theme{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:17px 20px;margin-bottom:10px}
+.t-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.theme h3{font-size:clamp(17px,1.9vw,21px);line-height:1.2;letter-spacing:-.015em;margin:0;font-weight:720}
+.theme h3 a{text-decoration:none}
+.t-strength{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.t-strength b{color:var(--accent);font-size:14px}
+.t-why{font-size:13px;line-height:1.5;margin:8px 0 0;padding-left:11px;border-left:2px solid var(--accent);color:#d8dcda}
+.t-why>span{display:inline-block;font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;margin-right:8px;vertical-align:1px;color:var(--accent)}
+.t-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px;margin-top:12px}
+.t-card{display:block;text-decoration:none;background:var(--bg);border:1px solid var(--line);border-top:2px solid var(--line);border-radius:10px;overflow:hidden;transition:border-color .15s,transform .15s}
+.t-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.t-card.product-fact{border-top-color:var(--accent)}
+.t-card.visible-structure{border-top-color:#7fd1ff}
+.t-card.vendor-claim{border-top-color:#ffb020}
+.t-card.analyst-inference{border-top-color:#c89bff}
+.t-card img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;background:#030505;border-bottom:1px solid var(--line)}
+.tc-t{display:block;padding:8px 10px 0;font-size:12px;font-weight:700;line-height:1.25}
+.tc-a{display:block;padding:3px 10px 4px;font-size:11px;color:var(--muted);line-height:1.35}
+.tc-d{display:block;padding:0 10px 9px;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);opacity:.65}
+.t-caveat{font-size:12px;line-height:1.5;margin:11px 0 0;padding-left:11px;border-left:2px solid #ffb020;color:#cbbfa6}
+.t-caveat>span{display:inline-block;font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;margin-right:8px;vertical-align:1px;color:#ffb020}
+
+/* ---- baseline / skip / tests ---- */
+.base{background:rgba(185,255,67,.05);border:1px solid rgba(185,255,67,.22);border-radius:12px;padding:15px 18px}
+.base.un{background:rgba(255,176,32,.06);border-color:rgba(255,176,32,.26)}
+.base b{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.base.un b{color:#ffb020}
+.base p{margin:0;font-size:13px;line-height:1.55;color:#cbd0ce}
+.base a{color:var(--accent)}
+.tests{counter-reset:q;list-style:none;padding:0;margin:0;display:grid;gap:9px}
+.tests li{counter-increment:q;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px 14px 50px;position:relative;font-size:13.5px;line-height:1.55;color:#d8dcda}
+.tests li:before{content:counter(q,decimal-leading-zero);position:absolute;left:18px;top:14px;font-size:12px;font-weight:800;color:var(--accent)}
+.skips{display:grid;gap:7px;margin-top:4px}
+.skip{display:flex;gap:11px;align-items:flex-start;font-size:12.5px;color:var(--muted);padding:9px 14px;border:1px dashed var(--line);border-radius:10px}
+.skip b{color:#c6ccc9;font-weight:650;flex:0 0 auto;max-width:38%}
+footer{padding:50px 0 70px;color:var(--muted);font-size:12px}
+@media(max-width:620px){.t-cards{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}.skip{flex-wrap:wrap;gap:3px}.skip b{max-width:100%}}
+</style></head>
+<body>
+<div class="wrap topline"><a class="back" href="index.html">← Dashboard</a></div>
+<main class="wrap" id="app"></main>
+<script src="data.js"></script>
+<script>
+(function(){
+  const $ = s => document.querySelector(s);
+  const app = $("#app");
+  const byTitle = {};
+  ALL_REPORTS.forEach(r => byTitle[r.title] = r);
+  const themeById = {};
+  THEMES.forEach(t => themeById[t.id] = t);
+
+  // The brief's `pick` list is validated against the theme's own cases rather than trusted.
+  // A brief must not be able to introduce evidence the theme does not actually hold — that is
+  // the exact class of error V5 spent its first pass removing. A pick that does not match a
+  // real case is dropped and reported in the console instead of being rendered.
+  function casesFor(themeId, picks){
+    const t = themeById[themeId];
+    if (!t) { console.warn("brief: unknown theme", themeId); return []; }
+    return picks.map(p => {
+      const cs = t.cases.find(c => c.report === p);
+      if (!cs) { console.warn("brief: '" + p + "' is not a case on theme '" + themeId + "' — dropped"); return null; }
+      return cs;
+    }).filter(Boolean);
+  }
+
+  function card(cs){
+    const r = byTitle[cs.report];
+    if (!r) return "";
+    const href = "report-viewer.html?src=" + encodeURIComponent(r.file)
+      + "&title=" + encodeURIComponent(r.title) + "&back=" + encodeURIComponent("brief.html");
+    return '<a class="t-card ' + cs.layer + '" href="' + href + '" title="' + cs.layer.replace(/-/g," ") + '">'
+      + '<img src="' + r.hero + '" alt="' + r.title + '" loading="lazy">'
+      + '<span class="tc-t">' + r.title + '</span>'
+      + '<span class="tc-a">' + cs.at + '</span>'
+      + '<span class="tc-d">' + r.domain + '</span></a>';
+  }
+
+  function render(b){
+    const parts = [];
+    parts.push('<div class="lead-card"><div class="ex">' + b.examples + '</div><p>' + b.lead + '</p></div>');
+
+    parts.push('<div class="section-label"><span>What to look at, and why it is here</span>'
+      + '<span class="cap">Each card links to the report · caption is that report\'s own section heading</span></div>');
+
+    b.themes.forEach(entry => {
+      const t = themeById[entry.id];
+      if (!t) return;
+      const cs = casesFor(entry.id, entry.pick);
+      parts.push('<div class="theme">'
+        + '<div class="t-head"><h3>' + t.name + '</h3>'
+        + '<span class="t-strength"><b>' + t.counts.brands + '</b> brands · ' + t.counts.events + ' occasions</span></div>'
+        + '<p class="t-why"><span>Why here</span>' + entry.why + '</p>'
+        + '<div class="t-cards">' + cs.map(card).join("") + '</div>'
+        + (t.limitShort ? '<p class="t-caveat"><span>Weakest point</span>' + t.limitShort + '</p>' : '')
+        + '</div>');
+    });
+
+    if (b.skip && b.skip.length){
+      parts.push('<div class="section-label"><span>Does not apply here</span>'
+        + '<span class="cap">A brief that matched every theme would be filtering nothing</span></div><div class="skips">');
+      b.skip.forEach(s => {
+        const t = themeById[s.id];
+        parts.push('<div class="skip"><b>' + (t ? t.name : s.id) + '</b><span>' + s.why + '</span></div>');
+      });
+      parts.push('</div>');
+    }
+
+    parts.push('<div class="section-label"><span>What Zebra already ships here</span>'
+      + '<span class="cap">Checked first, so nothing below recommends something that exists</span></div>');
+    if (b.baseline && b.baseline.unchecked){
+      parts.push('<div class="base un"><b>Not checked for V5</b><p>The baseline for this product area was not verified on zebra.com during this build, so it is left blank rather than guessed. '
+        + (b.baseline.note ? b.baseline.note + ' ' : '')
+        + 'Treat the questions below as unfiltered: some may describe something Zebra already does.</p></div>');
+    } else if (b.baseline){
+      parts.push('<div class="base"><b>Verified on zebra.com</b><p>' + b.baseline.ships
+        + ' <a href="' + b.baseline.source + '" target="_blank" rel="noopener">source ↗</a></p></div>');
+    }
+
+    parts.push('<div class="section-label"><span>Questions to take into the project</span>'
+      + '<span class="cap">Questions, not features — the corpus cannot tell you what to build</span></div>');
+    parts.push('<ol class="tests">' + b.firstTests.map(q => '<li>' + q + '</li>').join("") + '</ol>');
+
+    $("#out").innerHTML = parts.join("");
+  }
+
+  app.innerHTML = '<div class="kicker">Design brief · ' + PERIOD_LABEL + '</div>'
+    + '<h1>What does this period<br>mean for my project?</h1>'
+    + '<p class="sub">Pick what you are working on. The same evidence, re-indexed by Zebra product type instead of by where it came from — so a handheld brief surfaces the camera and the car, which is where the useful answers turned out to be.</p>'
+    + '<div class="picker" id="picker"></div><div id="out"></div>'
+    + '<footer>Every case shown is a verified case on a research theme; this page re-points them, it does not add any. '
+    + 'Full evidence, counts, limits and non-supporting cases: <code>V5_CHANGES.md</code>.</footer>';
+
+  const picker = $("#picker");
+  picker.innerHTML = DESIGN_BRIEFS.map((b,i) =>
+    '<button class="pick" data-i="' + i + '" aria-pressed="' + (i===0) + '">' + b.name + '</button>').join("");
+
+  // Deep-linkable: /brief.html#wearable opens that brief, so a brief can be sent to a colleague.
+  function select(i){
+    picker.querySelectorAll(".pick").forEach(btn =>
+      btn.setAttribute("aria-pressed", String(+btn.dataset.i === i)));
+    render(DESIGN_BRIEFS[i]);
+    history.replaceState(null, "", "#" + DESIGN_BRIEFS[i].id);
+  }
+  picker.addEventListener("click", e => {
+    const btn = e.target.closest(".pick");
+    if (btn) select(+btn.dataset.i);
+  });
+  const fromHash = DESIGN_BRIEFS.findIndex(b => b.id === location.hash.slice(1));
+  select(fromHash > -1 ? fromHash : 0);
+})();
+</script>
+<script src="i18n.zh.js"></script>
+<script src="i18n.js"></script>
+</body></html>

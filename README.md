@@ -1,8 +1,16 @@
-# Design Trend Dashboard — V4
+# Design Trend Dashboard — V5
 
 A static site. No build step, no dependencies, no package manager. Open `index.html` and it runs.
 
-Covers **2026-09-21 – 2026-11-01** (W39–W44), 46 reports.
+Covers **2026-09-21 – 2026-11-08** (W39–W45), 54 reports across 7 weekly releases,
+5 single reports and 2 launch events.
+
+W45 was added on 2026-11-10: six standalone reports plus the EICMA 2026 launch event
+(3 reports), which appears as one card inside W45 rather than as a separate week.
+The Red Bull RB22 single report was withdrawn on 2026-11-08 as too niche. Its HTML was
+deleted from `singles/` on 2026-11-10 so the folder matches what `data.js` actually
+serves; the report itself is preserved in `Red_Bull_RB22_Trend_Report_2026-10-01.zip`
+outside this folder.
 
 ## Running it locally
 
@@ -31,7 +39,8 @@ i18n.js                    post-render DOM translation engine
 i18n.zh.js                 Traditional Chinese dictionary + number rules
 domains/                   one page per domain + _shared.css / _shared.js
 weeks/<W##>/               the shipped weekly packages, filenames unchanged
-single-reports/, launch-events/
+singles/                   standalone reports
+launch-events/<Event>/     one sub-index + that event's reports
 ```
 
 ## Editing content
@@ -48,6 +57,17 @@ Everything the site shows comes out of `data.js`. Nothing is hard-coded into the
 | `DOMAIN_TRENDS` | section 04's keyword cloud and timeline, and each domain page |
 | `DOMAINS` | domain cards; `.application` renders as that page's Key Takeaway |
 | `WEEKS` / `SINGLE_REPORTS` / `LAUNCH_EVENTS` | the report pool (`ALL_REPORTS` is derived) |
+| `THEMES` | the five theme blocks, their evidence bars and their stated limits |
+| `OBSERVATIONS` / `UNCLUSTERED` | the audit trail and the evidence that fits no theme yet |
+| `DESIGN_BRIEFS` | `brief.html` |
+
+A launch event may carry a `week` key. When it does, that week's branch of the sidebar
+lists the event under its reports — the event belongs to the week, and is not counted as
+one of its reports.
+
+`THEMES[].counts` is hand-typed and `THEMES[].limits` quotes those numbers back in prose.
+If you add a case, update all three: `cases`, `counts`, and the sentence in `limits`.
+`cases.length` must equal `counts.reports`.
 
 Every `evidence` string must match an `ALL_REPORTS` title exactly — an unmatched title
 silently drops the chip rather than erroring.
