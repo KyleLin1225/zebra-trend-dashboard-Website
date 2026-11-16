@@ -95,6 +95,8 @@ week codes, dates and ZIP filenames, which stay English on purpose.
 
 GitHub Pages runs Jekyll by default, and Jekyll skips files and folders whose names start
 with an underscore. This site has `domains/_shared.css` and `domains/_shared.js`. The empty
+
+
 `.nojekyll` file at the repository root turns that off. **Do not delete it** — without it
 all eight domain pages lose their styling and behaviour.
 
