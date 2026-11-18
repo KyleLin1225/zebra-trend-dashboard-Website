@@ -96,7 +96,16 @@ body.sidebar-collapsed .topbar-inner{padding-left:66px}
 .seeall{display:block;text-align:center;margin-top:8px;font-size:12px;color:var(--accent);padding:8px;border-top:1px solid var(--line)}
 .noresult{color:var(--muted);font-size:13px;padding:10px 6px}
 
-main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
+/* WIDENED 2026-11-18, 1180 → 1520. On a 1798px viewport the old cap left 309px of dead margin on
+   each side — 34% of the screen empty — and the content read as a tall portrait column, which is a
+   phone proportion shown on a desktop.
+   The width goes into LAYOUT, not into longer lines. That distinction is the whole point: the
+   prose was already running 119 characters per line at 13.5px, which is past any comfortable
+   measure, and simply widening the shell would have pushed it past 150. Every block of running
+   text now carries its own max-width (see `.detail`, `.sig-limit`, `.period-narrative p`), so the
+   extra space goes to the grids — domain tiles, the report feed, the aesthetic galleries — which
+   get more columns per row and therefore make the page shorter as well as wider. */
+main.content{padding:44px 24px 100px;max-width:1520px;margin:auto}
 .reveal-init{opacity:0;transform:translateY(22px)}
 .reveal-in{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
 
@@ -177,11 +186,20 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 .lede-delta span.on{border-color:rgba(185,255,67,.45)}
 .lede-delta span.aside{position:relative;margin-left:16px}
 .lede-delta span.aside::before{content:"";position:absolute;left:-9px;top:3px;bottom:3px;border-left:1px solid var(--line)}
-.lede-act{display:flex;gap:18px;align-items:flex-start;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:16px;background:var(--bg);padding:17px 19px;text-decoration:none;color:inherit;transition:border-color .18s,transform .18s}
-.lede-act:hover{border-color:var(--accent);transform:translateY(-2px)}
-.la-thumb{flex:0 0 136px;height:92px;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#030505}
-.la-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.la-body{flex:1 1 auto;min-width:0}
+/* BOX REMOVED 2026-11-18. This was the only element on the page wearing a full 1px outline plus a
+   3px accent rule down its left edge, and at full width that outline read as a bracket drawn around
+   the row — a one-off that matched no other section. Everything else in this column is separated by
+   the horizontal rules alone, so the card now sits in its band the same way. Padding stays only as
+   vertical rhythm; the horizontal padding is gone so the thumb's left edge lines up with the section
+   label and the headline above it. Hover was carried entirely by the border, so it moves to the
+   title colour and a small lift on the thumbnail — the row is still an <a>. */
+/* The thumbnail and its rules went with the markup on 2026-11-18 — see the note on the template.
+   What is left is a text pointer, so it no longer needs to be a flex row with a fixed-width image
+   column beside it, and hover is carried by the title alone. */
+.lede-act{display:block;padding:4px 0 2px;text-decoration:none;color:inherit}
+.lede-act:hover .la-title{color:var(--accent)}
+.lede-act .la-title{transition:color .18s}
+.la-body{display:block;min-width:0}
 .la-badge,.la-title,.la-gap,.la-more{display:block}
 .la-badge{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:850;color:#0b0f0b;background:var(--accent);border-radius:999px;padding:4px 10px;margin-bottom:9px;width:fit-content}
 .la-title{font-size:19px;font-weight:765;line-height:1.26;letter-spacing:-.018em;margin-bottom:7px}
@@ -193,7 +211,8 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 .la-gap b{color:var(--accent);font-weight:780}
 .la-more{font-size:12.5px;color:var(--muted)}
 .lede-act:hover .la-more{color:var(--accent)}
-@media(max-width:760px){.lede-act{flex-direction:column}.la-thumb{flex:0 0 auto;width:100%;height:150px}}
+/* The 760px rule that stacked the thumbnail above the text went with the thumbnail — a block of
+   text needs no breakpoint of its own here. */
 /* Once the cards wrap, a "→" pointing into empty space at the end of a row is worse than none:
    it implies a step that isn't there. The numbers still carry the order. */
 @media(max-width:860px){.pr-head{padding:22px 18px 20px}.pr-step-card::after{content:none}}
@@ -274,6 +293,45 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 .mast-legend{margin:0 0 26px}
 .mast-legend .pr-legend{margin-top:0}
 #ledeAct{margin:0 0 40px}
+/* ---- Tracked signal index, added 2026-11-18 -------------------------------------------------
+   `pickTopSignals` draws 3 of 10, and TOP_SIGNALS is referenced nowhere else on the site, so the
+   other 7 were authored, kept current through every weekly sync, counted in the lede chip's
+   "of 14" — and unreachable on every page. The W46 sync's only genuinely new signal, "The Robot's
+   Body Reports Its Task", was one of them: a reader opening the newest dashboard met two cards
+   badged NO NEW CASE THIS WEEK and no way to find the one that was new.
+   Ranking is NOT changed. The three cards keep their places; this names the rest underneath them.
+   Styles are lifted verbatim from `domains/_shared.css`, where the identical problem ("the stat
+   box says 8 tracked but the page shows 3") was already solved — same component, same rules, so
+   the two pages do not grow separate dialects for one idea. */
+/* 2px border and a filled panel made this read as a data table like the keyword timeline below.
+   A 1px rule and no fill make it an index — the thing it is. */
+.trend-index{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+/* The pointer left behind under the signal cards when the list itself moved into 04. One line,
+   no box: it is a signpost, and the page already learned once what happens when a signpost grows
+   a picture and a headline of its own. */
+.sig-index-ptr{margin:30px 0 0;font-size:12.5px}
+.sig-index-ptr a{color:var(--muted);text-decoration:none}
+.sig-index-ptr a:hover{color:var(--accent)}
+.sig-index-ptr b{color:var(--ink);font-weight:800}
+/* The Cloud/Timeline control is now one level down, inside the keywords layer, so its label row
+   is quieter than the layer row above it. */
+.kw-sub-label{margin-top:4px;opacity:.9}
+.cat-controls-inline{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin:0 0 14px}
+#layerSignals,#layerDomains{padding-top:2px}
+#layerSignals .cloud-legend,#layerDomains .cloud-legend{margin-bottom:16px}
+.ti-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 18px;border-top:1px solid var(--line)}
+.ti-row:first-child{border-top:none}
+.ti-row.featured{background:rgba(255,255,255,.028)}
+.ti-name{color:var(--ink);text-decoration:none;font-size:14.5px;font-weight:650;letter-spacing:-.01em;min-width:0}
+.ti-name:hover{color:var(--accent)}
+.ti-meta{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.ti-flag{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;color:var(--accent)}
+.ti-count{font-size:11.5px;color:var(--muted);min-width:68px;text-align:right}
+.ti-count.thin{border-bottom:1px dashed var(--line)}
+.ti-cap{font-size:10.5px;letter-spacing:.04em;text-transform:none;font-weight:500;color:var(--muted);opacity:.75}
+/* The row is a flex line and the domain pages never meet a narrow viewport with this component,
+   so the stacking rule is new here rather than lifted. */
+@media(max-width:620px){.ti-row{flex-direction:column;align-items:flex-start;gap:8px}.ti-count{text-align:left}}
 /* Below this the ruler's own label no longer fits one line beside the tiles, which is the
    point where side by side stops being tidier than stacked. */
 @media(max-width:1180px){.mast-band{grid-template-columns:minmax(0,1fr)}}
@@ -354,7 +412,17 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 /* 54/46 rather than 44/56: the images are the evidence in this section, so they get the larger
    share. The vertical room for it comes from the evidence list, which stopped being a 110px
    block of capsules. */
-.aes-media{flex:1 1 54%;align-self:stretch;min-height:270px;display:grid;grid-template-columns:repeat(2,1fr);grid-auto-rows:minmax(0,1fr);gap:5px;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:var(--panel)}
+/* RESHAPED 2026-11-18. `align-self:stretch` inside a flex row meant this grid took its height from
+   whatever the TEXT column happened to be, and the tiles — `grid-auto-rows:minmax(0,1fr)` — then
+   divided that height between them. So the picture size was a function of how much prose sat beside
+   it. Measured across the four features at the widened shell: 366px, 466px, 322px and 564px tall,
+   with tiles running 279×180, 279×230, 279×320 (portrait!) and 279×279. Four galleries of the same
+   component, four different crops, and a feature with only two images stretched them into portraits.
+   Widening the shell made it worse, because a wider text column is a SHORTER text column.
+   The grid no longer stretches. It starts at the top of the row and each tile holds a fixed 4:3,
+   so every gallery crops its pictures the same way whatever the copy beside it does. */
+.aes-media{flex:1 1 54%;align-self:flex-start;display:grid;grid-template-columns:repeat(2,1fr);gap:5px;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:var(--panel)}
+.aes-media img{aspect-ratio:4/3}
 /* The tiles take their height from the row, so --aes-ar no longer sets the crop here — it is
    kept for the stacked layout below, where there is no row height to fill. object-fit:cover
    does the cropping either way. */
@@ -376,11 +444,13 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 /* Stacked: there is no row height to stretch into, so the block needs its own. A square block
    gives the 2x2 grid square-ish tiles; at the trend's own 16/9 the whole block was only 154px
    tall on a phone, which made each of the four 133x73 — too small to be evidence of anything. */
-@media(max-width:760px){.aes-feature,.aes-feature.rev{flex-direction:column;gap:20px}.aes-media{width:100%;min-height:0;aspect-ratio:1/1}.aes-title{font-size:25px}}
+@media(max-width:760px){.aes-feature,.aes-feature.rev{flex-direction:column;gap:20px}/* The stacked breakpoint no longer forces a square on the whole grid — the tiles carry the ratio
+   now, so the grid is simply as tall as its rows. */
+.aes-media{width:100%}.aes-title{font-size:25px}}
 .signals-frame .section-label{padding:0 2px}
 /* Now closes section 01 instead of opening it, so the spacing flips: air above it to separate
    it from the last card, none below. */
-.period-narrative{position:relative;padding-left:22px;margin:30px 2px 4px;max-width:860px}
+.period-narrative{position:relative;padding-left:22px;margin:30px 2px 4px;max-width:720px}
 .period-narrative::before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:3px;background:var(--accent);border-radius:3px}
 .period-narrative .pn-kicker{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--accent);margin-bottom:8px}
 .pn-thesis{color:var(--ink);font-size:22px;font-weight:730;letter-spacing:-.01em;line-height:1.32;margin:0 0 10px}
@@ -547,16 +617,46 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 .chip.chip-pulse{border-color:var(--accent)!important;color:var(--accent)!important;transform:translate(-50%,-50%) translate(var(--tx,0px),var(--ty,0px)) scale(1.15)!important;z-index:10}
 .signal{background:var(--panel);border:2px solid var(--line);border-radius:20px;position:relative;overflow:hidden;transition:border-color .25s}
 .signal:hover{border-color:var(--accent)}
-.signal-bg{position:absolute;top:0;left:0;right:0;height:380px;background:linear-gradient(135deg,var(--panel),#0c0f0f);background-size:cover;background-position:center;background-repeat:no-repeat;z-index:0}
+/* HEIGHT MADE PROPORTIONAL 2026-11-18. This was a fixed 380px band. At the old 1180px shell that
+   was a 3.10 crop, which every hero on the site was chosen against. Widening the shell to 1520
+   turned the same band into a 4.0 crop without anyone changing an image: the window got wider while
+   the subject stayed the same size, so every product lost more of its top and bottom than the
+   frame it was picked for.
+   The height now tracks the width, so the crop ratio holds near 3.1 whatever the viewport does, and
+   the clamp stops it collapsing on a narrow pane or running away on a very wide one. `.signal-body`
+   is given the same value so the text block keeps sitting exactly on the picture — the text-over-
+   image treatment is the component's character and is deliberately unchanged. */
+/* The picture fills the WHOLE card — `inset:0`, no height of its own. It used to be a band with a
+   fixed height, first 380px and then a clamp, and both versions shared one fault: a band cannot
+   know how tall the card will end up. Narrow the column and the same copy wraps to more lines, the
+   body outgrows the band, and the last thing on the card — the Weakest point line — lands on flat
+   black below the photograph. That is exactly what a reviewer saw after the shell was widened:
+   shrinking the window broke the layout.
+   Covering the card instead makes the geometry self-correcting. Height is decided by the body
+   below; this follows it, whatever it turns out to be, and `background-size:cover` means the frame
+   is always filled. The crop ratio still lands near 3.1 at desktop widths because the body's
+   min-height dominates there, and where content does push the card taller the crop gets LESS
+   extreme, not more. */
+.signal-bg{position:absolute;inset:0;background:linear-gradient(135deg,var(--panel),#0c0f0f);background-size:cover;background-position:center;background-repeat:no-repeat;z-index:0}
 /* Fixed height (not min-height) so this block NEVER changes size or re-flows as the sibling
    .evidence grows/shrinks below it — the old min-height + justify-content:flex-end combo would
    silently "snap" the text to a different layout the instant total content height crossed the
    380px threshold, which is what read as the text and cards arriving out of sync. */
-.signal-body{position:relative;z-index:1;height:380px;display:flex;flex-direction:column;justify-content:flex-end;padding:26px 32px 24px}
+/* min-height, never height. The clamp sets the card's resting size — which is what keeps the hero
+   crop near 3.1 on a desktop — but the body is allowed to grow past it when the copy needs the
+   room, instead of overflowing it. */
+.signal-body{position:relative;z-index:1;min-height:clamp(330px,31vw,470px);display:flex;flex-direction:column;justify-content:flex-end;padding:26px 32px 24px}
 .signal .eyebrow{display:flex;align-items:center;gap:8px}
 .signal h2{font-size:clamp(21px,2.6vw,28px);line-height:1.2;letter-spacing:-.02em;margin:10px 0 11px;max-width:800px;font-weight:720}
 .signal h2 strong{color:var(--accent);font-weight:780}
-.signal p.detail{color:#cbd0ce;max-width:800px;margin:0;font-size:13.5px;line-height:1.58;padding-right:50px}
+/* 800px at 13.5px was 119 characters a line — well past a comfortable measure before the shell was
+   widened, and it would have grown with it. Capped at a readable span and given a little more
+   leading. The card keeps its text over the hero image, which is the component's character; this
+   only decides how far that text runs before it wraps.
+   NOTE the selector: `.signal p.detail`, not `.detail`. An edit that matched only the `.detail{`
+   fragment once spliced a comment into the middle of this selector and silently killed the rule —
+   the text then fell back to the 15px body default at full card width, 180 characters a line. */
+.signal p.detail{color:#cbd0ce;max-width:600px;margin:0;font-size:13.5px;line-height:1.66;padding-right:50px}
 /* The 01→03 backlink. The focus list already links up to the signals it draws from; without
    this the chain only ran one way, so a reader starting at a signal had no way to find out
    whether anything was being done about it. One line, ellipsised, never wrapping — the card's
@@ -564,8 +664,27 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 .sig-act{font-size:11.5px;color:var(--muted);margin:11px 0 0;max-width:660px;padding-right:50px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sig-act a{color:var(--accent);text-decoration:none}
 .sig-act a:hover{text-decoration:underline}
+/* ---- Weakest point on a Top Signal card, added 2026-11-18 -----------------------------------
+   The domain pages and brief.html both render a `Weakest point` line under a claim and it is the
+   most trusted thing on them. The dashboard — the page most people read — had no equivalent, so
+   it showed every claim at full strength while the sentence that qualifies it lived two clicks
+   away. TOP_SIGNALS carry no `limitShort` of their own, and inventing one per signal would be
+   authoring a limit rather than reporting one, so this surfaces the limit of the THEME the signal
+   sits inside, attributed to that theme by name. Measured, not assumed: each displayed signal has
+   60–100% of its evidence inside the theme quoted (see signalTheme below).
+   Attribution is the whole point. A limit that reads as the signal's own would be a claim nobody
+   wrote; "the theme this sits in says…" is exactly what is true. */
+.sig-limit{font-size:12px;line-height:1.6;color:#b9bfbc;margin:12px 0 0;max-width:600px;padding-right:50px}
+.sig-limit > span{display:inline-block;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;font-weight:850;color:var(--accent);margin-right:8px;vertical-align:1px}
+.sig-limit em{font-style:normal;color:var(--muted);opacity:.8}
 .sig-time{margin-top:9px}
-.expander{position:absolute;right:20px;top:316px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:border-color .2s,color .2s,transform .2s}
+/* PINNED TO THE BOTTOM-RIGHT 2026-11-18. It was positioned at a hard `top:316px`, measured against
+   a card that was always 380px tall. Once the card's height became content-driven the button
+   stopped being anywhere in particular — on a tall card it floated in the middle of the picture,
+   detached from the thing it opens. `bottom` instead of `top` makes it the card's corner at any
+   height. It also has to clear the evidence strip when that is open, so it sits against the body's
+   lower edge rather than the card's: see `.signal.detail-open .expander`. */
+.expander{position:absolute;right:20px;bottom:20px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:border-color .2s,color .2s,transform .2s,bottom .35s cubic-bezier(.4,0,.2,1)}
 .expander:hover{border-color:var(--accent);color:var(--accent);transform:scale(1.07)}
 .expander .tri{display:inline-flex;align-items:center;justify-content:center;font-size:30px;line-height:1;transition:transform .35s cubic-bezier(.4,0,.2,1)}
 .expander.open .tri{transform:rotate(180deg)}
@@ -574,7 +693,13 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
    ended, which is what read as a janky "two-step" motion. margin-top is in the SAME transition
    (same duration/easing) as grid-template-rows so the gap above the cards grows in lockstep
    with the cards themselves, instead of snapping in before they've finished animating. */
-.evidence{display:grid;grid-template-rows:0fr;min-height:0;margin-top:0;padding:0 32px;transition:grid-template-rows .35s cubic-bezier(.4,0,.2,1),margin-top .35s cubic-bezier(.4,0,.2,1)}
+/* z-index:1 added 2026-11-18, and it is not cosmetic. `.signal-bg` used to be a band across the
+   top of the card, so everything below it was clear of the picture by position alone. Now the
+   picture covers the whole card (`inset:0`) and anything without a stacking context of its own
+   renders UNDERNEATH it. `.signal-body` already carried `z-index:1`; this did not, so opening a
+   card animated the evidence strip open behind the photograph and the reader got an empty gap.
+   `position:relative` is what makes the z-index apply. */
+.evidence{position:relative;z-index:1;display:grid;grid-template-rows:0fr;min-height:0;margin-top:0;padding:0 32px;transition:grid-template-rows .35s cubic-bezier(.4,0,.2,1),margin-top .35s cubic-bezier(.4,0,.2,1)}
 .evidence.open{grid-template-rows:1fr;margin-top:18px}
 /* This shrink-wrapper must carry NO padding/border of its own — padding persists through
    min-height:0, so the row couldn't reach 0px with it here. The real visual chrome (padding,
@@ -589,7 +714,31 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 /* Pills are spiral-packed from the center outward within a wide, short (roughly rectangular)
    bounding box, so the highest-heat keywords sit in the middle and the whole cluster reads as
    a landscape rectangle rather than a circular blob. */
-.chip-cloud{position:relative;height:560px;margin-bottom:44px}
+/* ---- Cloud viewport, 2026-11-18 ----------------------------------------------------------
+   The porthole used to exist only below 700px; the desktop drew the cloud as a plain 560px block
+   with no clipping and no gestures. Zoom was asked for on both, and two different containers would
+   have meant two different zoom implementations, so the porthole is now the container at every
+   width and the desktop simply starts at zoom 1 with the whole cloud in view.
+   The box the packer measures is unchanged — it was a 560px-tall, full-width block and it still is,
+   just absolutely positioned inside a parent of exactly that size. `layoutKeywordCloud` reads
+   `clientWidth`/`clientHeight`, so chip placement is identical at zoom 1 to what it was before. */
+.chip-cloud-viewport{position:relative;height:560px;overflow:hidden;border-radius:16px;margin-bottom:16px;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.chip-cloud-viewport.dragging{cursor:grabbing}
+.chip-cloud-viewport.zoomed{border:1px solid var(--line)}
+/* top/left/right but NOT bottom: `layoutKeywordCloud` grows this box when the chips need more room
+   than the 560px base, and `inset:0` would have pinned it to the porthole instead — the cloud then
+   measured 620px inside a 560px window and the bottom row was clipped at zoom 1. The porthole is
+   resized to match after layout (see initChipPanZoom), so 100% always shows everything and the
+   scroll only has somewhere to go once you zoom in. */
+.chip-cloud{position:absolute;top:0;left:0;right:0;height:560px;transform-origin:0 0}
+/* Zoom controls. Shown at every width — a phone needs them more than a desktop does, since pinch
+   is discoverable but a reader who does not think to try it has no other way in. */
+.kw-zoom{display:flex;align-items:center;gap:6px;margin:-6px 0 16px}
+.kw-zoom button{width:32px;height:32px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .15s,color .15s}
+.kw-zoom button:hover{border-color:var(--accent);color:var(--accent)}
+.kw-zoom button:disabled{opacity:.35;cursor:default;border-color:var(--line);color:var(--muted)}
+.kw-zoom .kw-zoom-level{font-size:11.5px;color:var(--muted);min-width:46px;text-align:center;font-variant-numeric:tabular-nums}
+.kw-zoom .kw-zoom-hint{font-size:11px;color:var(--muted);opacity:.75;margin-left:6px}
 .chip{position:absolute;top:50%;left:50%;background:var(--panel);border:2px solid var(--line);border-radius:999px;color:#dfe3e1;cursor:pointer;font-weight:600;white-space:nowrap;transform:translate(-50%,-50%) translate(var(--tx,0px),var(--ty,0px)) scale(var(--mag,1));transition:border-color .15s,color .15s}
 .chip:hover{color:var(--accent);transform:translate(-50%,-50%) translate(var(--tx,0px),var(--ty,0px)) scale(1.1);z-index:10}
 .chip.kw-1{font-size:19px;padding:15px 23px;opacity:1}
@@ -603,12 +752,14 @@ main.content{padding:44px 24px 100px;max-width:1180px;margin:auto}
 /* Mobile: the flat scrolling pill list read as an unreadable wall of text, so instead the
    full desktop spiral layout is kept (same algorithm, bigger canvas) behind a fixed-size
    "porthole" — drag to pan around it, Apple Watch app-grid style, with items nearest the
-   viewport's center growing slightly (see initMobileChipPan in the script below). */
+   viewport's center growing slightly (see initChipPanZoom in the script below). */
 @media(max-width:700px){
-  .chip-cloud-viewport{position:relative;height:380px;overflow:hidden;border-radius:16px;border:2px solid var(--line);margin-bottom:16px;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
-  .chip-cloud-viewport.dragging{cursor:grabbing}
-  .chip-cloud-viewport::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 40px 10px var(--bg)}
-  .chip-cloud{position:absolute;top:0;left:0;height:520px;width:1100px;margin-bottom:0}
+  /* Only the things that genuinely differ on a phone are left here now: a shorter porthole, a
+     canvas bigger than it so there is something to pan to, and the vignette. Position, overflow,
+     cursor and touch-action moved to the shared rule above when the porthole became universal. */
+  .chip-cloud-viewport{height:380px;border:2px solid var(--line)}
+  .chip-cloud-viewport::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 40px 10px var(--bg);z-index:3}
+  .chip-cloud{inset:auto;top:0;left:0;height:520px;width:1100px;margin-bottom:0}
   .chip-cloud .chip{transition:none}
 }
 .chip.thin{border-style:dashed}
@@ -672,6 +823,46 @@ a.kt-name:hover{color:var(--accent)}
    width is now DERIVED from its height via aspect-ratio rather than from a column track —
    that's the only way a fixed 6:4 ratio at full Top-Signal height stays exact at any viewport. */
 .cat-grid{display:flex;flex-wrap:wrap;gap:18px;margin-bottom:54px}
+/* The slider rules are kept for other pages that still use them; the dashboard does not any more.
+   `.cat-overview` is the replacement: a 4-up grid that shows all eight domains at once. A tile here
+   is a NAVIGATION target, not a Top Signal card, so it no longer needs to match the signal card's
+   380px resting height — the image shrinks to 132px and the body sets its own height, which puts
+   the whole overview in roughly half the space the three-visible-of-eight slider occupied. */
+.cat-grid.cat-overview{flex-wrap:wrap;gap:16px;margin-bottom:54px}
+.cat-grid.cat-overview .cat-tile{flex:1 1 calc(25% - 12px);min-width:208px;height:auto;aspect-ratio:auto;border-width:1px}
+/* 132px was too timid — cut from the 284px the big tile used, it left the picture as a thin strip
+   with the text doing all the work, and a domain tile is navigated BY its picture. The image now
+   takes roughly half the tile again and scales with the column, so it keeps presence at any shell
+   width instead of thinning out as the grid grows. */
+.cat-grid.cat-overview .cat-img{height:clamp(150px,13vw,206px)}
+/* Crowding fixes, all four from one review of the 4-up grid:
+   · the body had 14px of top padding sized for a 380px tile, which at this size put the title hard
+     against the picture — it gets room, and the accent bar gets room under it;
+   · a name that wraps to two lines ("Automotive & Mobility", "Mobile & Handheld Devices") pushed
+     its stats row down while its neighbours' stayed up, so no row of tiles lined up. The heading
+     is given the height of two lines whether it needs them or not, which costs one blank line on
+     the short names and buys an aligned grid;
+   · "MULTI-SOURCE" was breaking across two lines inside a 12px uppercase label. The stats are a
+     row of three short facts, so they are nowrap now and the gap closes to suit;
+   · 23px was the headline size for a tile nearly twice this wide. */
+/* The name sits on the picture now — see the template note. `.cat-media` is the positioning
+   context; `.cat-name` is pinned to its bottom edge over a gradient dark enough to hold white text
+   at any photograph. The body keeps only the three counts, so it is a thin strip rather than the
+   half-tile block it used to be — which is also what gives the picture its height back. */
+.cat-grid.cat-overview .cat-media{position:relative;display:block}
+/* Name enlarged and weighted up on request. 19/760 → 23/830. The gradient grows with it (34 → 46px
+   of lead-in) so a two-line name — "Sensing & Capture Devices", "Mobile & Handheld Devices" — still
+   has dark behind its top line rather than sitting half on the photograph. Tracking tightens as the
+   size goes up, which is the usual compensation. */
+.cat-grid.cat-overview .cat-name{position:absolute;left:0;right:0;bottom:0;padding:46px 16px 13px;display:block;
+  background:linear-gradient(to top,rgba(4,6,6,.95) 0%,rgba(4,6,6,.82) 46%,rgba(4,6,6,0) 100%)}
+.cat-grid.cat-overview .cat-name .bar{height:3px;width:30px;border-radius:3px;display:block;margin-bottom:9px}
+.cat-grid.cat-overview .cat-name h3{font-size:23px;line-height:1.18;letter-spacing:-.02em;margin:0;color:#fff;font-weight:830;
+  text-shadow:0 1px 10px rgba(0,0,0,.6);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cat-grid.cat-overview .cat-body{padding:12px 16px 14px;justify-content:center}
+.cat-grid.cat-overview .meta-row{gap:14px;font-size:11px;white-space:nowrap}
+@media(max-width:900px){.cat-grid.cat-overview .cat-tile{flex-basis:calc(50% - 8px)}}
+@media(max-width:520px){.cat-grid.cat-overview .cat-tile{flex-basis:100%}}
 .cat-grid.slider{flex-wrap:nowrap;overflow-x:auto;scroll-behavior:smooth;padding:6px 4px 16px;margin-bottom:44px}
 .cat-grid.slider::-webkit-scrollbar{height:6px}
 .cat-grid.slider::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
@@ -778,7 +969,7 @@ a.kt-name:hover{color:var(--accent)}
 }
 
 @media(max-width:1000px){.stat-row,.feed,.cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:620px){.stat-row,.feed{grid-template-columns:1fr}.topbar-inner{gap:10px}.signal p.detail{padding-right:44px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.signal p.detail.expanded{display:block;overflow:visible}.signal-bg{height:300px}.signal-body{height:300px;padding:22px 20px 20px}.signal.detail-open .signal-body{height:auto;min-height:300px}.expander{top:236px}.cat-tile{height:300px}.cat-tile .cat-img{height:210px}.cat-tile .cat-body{gap:4px}
+@media(max-width:620px){.stat-row,.feed{grid-template-columns:1fr}.topbar-inner{gap:10px}.signal p.detail{padding-right:44px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.signal p.detail.expanded{display:block;overflow:visible}.signal-body{min-height:300px;padding:22px 20px 20px}.expander{bottom:16px;right:16px}.cat-tile{height:300px}.cat-tile .cat-img{height:210px}.cat-tile .cat-body{gap:4px}
   /* The full search bar no longer fits beside the brand on one row at phone widths — collapse
      it to an icon aligned with the hamburger/brand row, expanding into a dropdown on tap
      instead of permanently claiming its own full-width row below the header. */
@@ -896,12 +1087,39 @@ a.kt-name:hover{color:var(--accent)}
             <div class="tension-bar mast-tension" id="tensionBar"></div>
           </div>
           <figure class="mast-figure">
-            <img referrerpolicy="no-referrer" src="https://images.ctfassets.net/a3peezndovsu/7qZMZ80Qcs3jC1HicLoZvW/c20ea9b6d751bb7e42aaf116ea7b0892/ring_floodlight_cam_4k_plus_wired_lifestyle_atf_1500x1500.jpg?w=1100&amp;q=80"
-                 alt="A Ring floodlight camera mounted on a house wall at dusk with both lamps lit. The lens sits inside a moulded boundary on the white housing."
+            <!-- CHANGED 2026-11-18. This picture had never been changed since the masthead was built
+                 and was the largest frozen image on the site. It was also a Ring camera, and the ai
+                 domain card below is a Ring camera too. The thesis beside it names three things —
+                 a moulded boundary, A DELETED FEATURE, a dock that covers the lens — and the first
+                 was the only one ever illustrated. This is the second: glasses shipped with no camera
+                 at all, where there is nothing to switch off because there is nothing there.
+                 Ray-Ban Meta Audio is in no other large slot on this page. The two frames that read
+                 this claim even more directly were both unavailable — "No lens-corner camera eye" is
+                 already the Visible Sensing State banner, and the Aviator close-up is priority 02's
+                 picture — which is the same per-page product rule applied to the masthead. -->
+            <!-- THIRD PASS, and the first two failed for the same unexamined reason: this frame is
+                 378×594 — PORTRAIT, ratio 0.64. Glasses are a WIDE object. Any 16:9 photograph of a
+                 pair of glasses, however good, loses its sides to a 0.64 centre crop and arrives as
+                 an unreadable macro of a lens rim. The Ring floodlight this slot opened with worked
+                 because it was 1500×1500 with the product centred — the note above the CSS says so —
+                 and that constraint was never carried into the replacements. Candidates are now
+                 filtered by SOURCE RATIO (≤1.25) before anything else is judged.
+                 Subject: the thesis beside this picture names three things and the third, "a dock
+                 that covers the lens", had never been illustrated. Backed by the analytical card
+                 "Docking closes the camera" — "the Drone rests inside a low docking enclosure, with
+                 its camera covered when not flying… a physical privacy cue that does not depend on
+                 interpreting an app icon". Not an apply card.
+                 Ring Robotics also holds a report card below, which the per-page product rule would
+                 normally block. Allowed here because it is a DIFFERENT DEVICE in the same report —
+                 the card is the ground Rover, this is the Drone above its dock — and because every
+                 square-or-portrait alternative in the corpus was either a person-dominant frame or a
+                 white cutout. Recorded rather than silently excepted. -->
+            <img referrerpolicy="no-referrer" src="https://images.ctfassets.net/a3peezndovsu/34U2l6CjtTrgOsXIgf1nVh/516c050b21200816099cb621e337dd79/ring_dronecam_product_front_1500x1500.jpg"
+                 alt="A grey Ring Drone Cam hovering directly above its white dock. Lowered into the dock, the enclosure covers the camera."
                  decoding="async">
             <figcaption>
-              <b>Ring 2026 Camera Family</b> — a moulded boundary around the lens, not an app toggle. It is in the housing, so it cannot be switched off.
-              <a href="weeks/W41/02_Ring_Camera_Family.html">Read the report →</a>
+              <b>Ring Robotics</b> — the dock closes over the camera. Parked is a physical state, not an icon you have to read correctly.
+              <a href="weeks/W46/01_ring-robotics.html">Read the report →</a>
             </figcaption>
           </figure>
         </div>
@@ -925,13 +1143,61 @@ a.kt-name:hover{color:var(--accent)}
              actually carry a strip. -->
         <div class="mast-legend" id="prLegend"></div>
         <div class="signals" id="signalsGrid"></div>
+        <!-- The signal index moved into section 04 on 2026-11-18 — see the note there. It lived
+             here for a few hours and was the third "everything we track" list on one page. -->
+        <!-- THE SIGNAL INDEX IS BACK HERE, 2026-11-18, and this is its third and last address.
+             It started under these cards, moved into section 04 as one of three "layers" behind a
+             toggle, and comes back because that toggle was describing the wrong relationship.
+             Signals and keywords are not two alternatives a reader picks between — a signal is
+             the narrower cut, a keyword the wider inventory. A segmented control says
+             "either/or, same kind of thing", which flattened a hierarchy into a false choice.
+             What was actually wrong the first time was not the position but the shape: the list
+             carried a momentum badge and a report count on every row, which made it a second data
+             table a screen above the keyword timeline. That is fixed — badges only where there is
+             something to say, no count column — so it can sit where it belongs, in the section
+             that is about signals, as the full list of what the three cards above are drawn from.
+
+             COUNTS CORRECTED 2026-11-18. The paragraph above used to read "there are ten signals
+             INSIDE fifty keywords", and the section-04 note below said the same. The nesting is
+             not literal and was never checked: ZERO of the 11 TOP_SIGNALS keywords appears among
+             the 50 DOMAIN_TRENDS keywords. They are two separately authored naming layers over
+             the same corpus, tied together by evidence overlap — which is exactly how
+             `claimingPriority()` links them — not by sharing a name. Worth knowing before anyone
+             builds a feature that assumes a signal can be looked up in the cloud by its title;
+             one such feature already existed and is removed, see the `.p-viewcloud` guard. -->
+        <!-- ALSO 2026-11-18: an eleventh signal, "A Suggestion Is Shown Beside Its Source". All
+             counts on this page are computed from TOP_SIGNALS.length, so nothing here needed a
+             number changed — verified "3 of 11 tracked signals" in the stat tile after the fact
+             rather than assuming it. -->
+        <div class="section-label" id="signalIndexLabel" style="margin-top:34px">
+          <span>All signals this period</span>
+          <!-- CAPTION CORRECTED 2026-11-18. It asserted flatly that "a signal is a narrower cut
+               inside one of the themes". Ran `signalTheme()` over all eleven: nine resolve to a
+               theme at the 60% evidence-overlap bar and two return null — "Robots Are Being
+               Issued Governed Credentials" (already true before today) and "A Suggestion Is
+               Shown Beside Its Source". Those are the same two the paragraph below this list
+               calls out as sitting outside the main argument, arrived at independently, which
+               is a reason to trust both. The caption now matches what the code computes.
+               LENGTH: the first wording of this fix ran 180 characters and pushed BOTH the label
+               and the caption onto a second line — measured, header height 19px → 38px at
+               1200px wide. This wording is 154 and measures 19px, identical to what it replaced.
+               Any future edit here gets measured, not eyeballed. -->
+          <span class="ti-cap">The three above are the most-evidenced. Most signals are a narrower cut inside one of the five themes — not all are. Click any row for the reports behind it.</span>
+        </div>
+        <ol class="trend-index" id="signalIndex"></ol>
         <!-- This paragraph used to open the section, and it named Sigma's STILL/CINE switch,
              Ferrari's drive-mode rotary and Jetta's dial — the same three examples the first
              card names 300px below it. Read before the cards it is a wall you cross twice;
-             read after them it is the thing the three cards do not individually say, which is
-             that sensing and autonomous hardware reach the same end by a different route. -->
+             read after them it is the thing the three cards do not individually say.
+             Its position is now load-bearing for a second reason: standing after the index, it
+             is the only place on the page that says how the three displayed cards relate to the
+             rest of the tracked list. That is what it was failing to do — see data.js. -->
         <div class="period-narrative">
-          <span class="pn-kicker">What connects the three</span>
+          <!-- KICKER WIDENED 2026-11-18. It promised only "the three" while sitting directly
+               under the full index, so the paragraph had no licence to mention the rest — and
+               the paragraph it labelled was describing one card, not three. See the long note
+               on PERIOD_NARRATIVE.detail in data.js. -->
+          <span class="pn-kicker">What connects the three — and where the rest sit</span>
           <p class="pn-detail" id="periodDetail"></p>
         </div>
       </div>
@@ -951,8 +1217,26 @@ a.kt-name:hover{color:var(--accent)}
         <div class="priority-list" id="priorityList"></div>
       </div>
 
+      <!-- 04 WAS THE KEYWORD SECTION; IT IS NOW THE INDEX OF ALL THREE LAYERS, 2026-11-18.
+           The page had grown three separate "here is everything we track" components — a signal
+           index under 01, this keyword cloud/timeline, and the domain strip below — at three
+           different places, in three different shapes, with no statement anywhere of how the three
+           layers relate. Measured at 9.1 screens and 2,758 visible words, that was the single
+           largest source of "too much, too scattered": not length so much as the same promise made
+           three times in three dialects.
+           They are one control now. The layer buttons carry their own counts, which is the first
+           time the page says out loud how many signals, keywords and domains there are.
+           (CORRECTED 2026-11-18 — this said "10 signals inside 50 keywords across 8 domains".
+           Signals are not inside keywords; see the correction note under the signal index.)
+           Keywords stays the DEFAULT layer deliberately: `layoutKeywordCloud()` measures
+           chips at load and would mis-measure them inside a hidden panel, so the view that was
+           visible before is still the view that is visible on arrival. -->
       <div class="landscape-frame" id="step-4">
         <div class="section-label kw-section-label">
+          <!-- The layer toggle that briefly lived here is gone with the signal index — see the
+               note beside that index in 01. This section is about keywords again, and Cloud /
+               Timeline is what it always needed: two views of ONE thing, which is what a segmented
+               control is actually for. -->
           <span class="lbl"><span class="pr-step">04</span>Everything underneath — click a keyword to jump to its reports</span>
           <span class="kw-modes" id="kwModes">
             <button class="kw-mode active" data-mode="cloud">Cloud</button>
@@ -965,6 +1249,13 @@ a.kt-name:hover{color:var(--accent)}
           <div class="chip-cloud-viewport" id="chipCloudViewport">
             <div class="chip-cloud" id="chipCloud"></div>
           </div>
+          <div class="kw-zoom" id="kwZoom">
+            <button type="button" data-zoom="out" title="Zoom out" aria-label="Zoom out">−</button>
+            <span class="kw-zoom-level" id="kwZoomLevel">100%</span>
+            <button type="button" data-zoom="in" title="Zoom in" aria-label="Zoom in">+</button>
+            <button type="button" data-zoom="reset" title="Reset zoom" aria-label="Reset zoom">⤢</button>
+            <span class="kw-zoom-hint">Drag to pan · pinch or ⌘/Ctrl + scroll to zoom</span>
+          </div>
           <div class="chip-drag-hint">↔ Drag to explore</div>
           <p class="cloud-count" id="cloudCount"></p>
         </div>
@@ -975,15 +1266,20 @@ a.kt-name:hover{color:var(--accent)}
       </div>
       </section>
 
-      <div class="section-label cat-section-label">
-        <span>Domains this period</span>
-        <div class="cat-controls">
-          <button class="cat-arrow" id="catPrev" title="Scroll left">‹</button>
-          <button class="cat-arrow" id="catNext" title="Scroll right">›</button>
-          <a class="show-all-btn" href="domains-overview.html">Show all</a>
-        </div>
+      <!-- DOMAINS PULLED BACK OUT OF 04, 2026-11-18. Folding them in was over-consolidation: signals
+           and keywords are both NAMED CLAIMS we track and belong behind one control, but a domain is
+           a PLACE, not a claim. Making it the third tab of a claim index both buried it and made 04
+           crowded. It is its own section again — and a better one than before: it used to be a
+           horizontal slider with arrow buttons, which showed three of eight tiles and hid the rest
+           behind a scroll gesture nobody is told about. An overview that has to be scrolled to be
+           seen is not an overview. All eight now sit in a 4×2 grid, visible at once, in about half
+           the vertical space the slider took. -->
+      <div class="section-label">
+        <span>The eight domains</span>
+        <a class="show-all-btn" href="domains-overview.html">Show all →</a>
       </div>
-      <div class="cat-grid" id="catGrid"></div>
+      <p class="section-sub">Every report sits in one of these. Each page carries that domain's own trend signals, the research themes it feeds, and its full report list.</p>
+      <div class="cat-grid cat-overview" id="catGrid"></div>
 
       <div class="section-label">Latest reports <a href="reports-overview.html">Browse all →</a></div>
       <div class="feed" id="feedGrid"></div>
@@ -1387,10 +1683,18 @@ if (typeof ZEBRA_PRIORITIES !== "undefined") {
   // Not a second copy of the copy — it reads the same object 03 renders, and leads with the
   // `gap` rather than the title's rationale, because the gap is the half that survives the
   // baseline check and therefore the half worth putting in front of someone who may not scroll.
+  //
+  // THUMBNAIL REMOVED 2026-11-18. The claim above — "not a second copy" — stopped being true in
+  // practice: this pointer was reproducing the headline, the picture AND two lines of the gap, so
+  // a reader meeting item 01 again in section 03 saw the same headline over the same image and
+  // read it as the page repeating itself. The picture was always the same file (both read
+  // `lead.image`); it only became obvious once that file changed from a warehouse scene to a
+  // device with a recognisable silhouette. The pointer keeps the badge, the headline, the clamped
+  // gap and the "and 1 more ↓" link, which is everything it needs to do its job, and the image now
+  // appears exactly once on the page — large, in 03, next to the argument it belongs to.
   const lead = ZEBRA_PRIORITIES[0];
   $("#ledeAct").innerHTML = `
     <a class="lede-act reveal-init" href="#step-3">
-      ${lead.image ? `<span class="la-thumb"><img referrerpolicy="no-referrer" src="${lead.image}" alt=""></span>` : ``}
       <span class="la-body">
         <span class="la-badge">What to find out · ${URGENCY_LABEL[lead.urgency] || lead.urgency}</span>
         <span class="la-title">${lead.title}</span>
@@ -1427,21 +1731,66 @@ if (typeof ZEBRA_PRIORITIES !== "undefined") {
     // sentence carries the whole thing, with the denominator in it and the week named, and the
     // second chip appears only when a signal actually spans several weeks. The per-entry badges
     // below still give the same status card by card.
-    `<span class="${tally.new ? "on" : ""}"><b>${tally.new}</b> of <b>${pool.length}</b> signals picked up a ${latestWeekLabel} report</span>` +
-    (tally.building ? `<span><b>${tally.building}</b> of them run across several weeks</span>` : ``) +
+    // COUNT FIX 2026-11-16 — the first chip counted only `new`, meaning signals whose ONLY week
+    // is the latest one. A signal that already ran for three weeks and gained a report this week
+    // did pick up a report this week, and was being left out: at the W46 sync the chip read "1 of
+    // 14" when two signals had actually taken a W46 report. Worse, the second chip said "of them",
+    // which made `building` look like a subset of `new` when the two tags are mutually exclusive
+    // by construction (see momentumTag above) — so the sentence could never be true. Both numbers
+    // now come off the same set, and `building` genuinely is a subset of it.
+    `<span class="${tally.new + tally.building ? "on" : ""}"><b>${tally.new + tally.building}</b> of <b>${pool.length}</b> signals picked up a ${latestWeekLabel} report</span>` +
+    (tally.building ? `<span><b>${tally.building}</b> of those run across several weeks</span>` : ``) +
     (dropped ? `<span class="aside"><b>${dropped}</b> cut on the Zebra check</span>` : ``);
 })();
 
-function signalHero(s){
-  if(s.heroOverride) return s.heroOverride;
-  for(const title of s.evidence){
-    const r = ALL_REPORTS.find(x=>x.title===title);
-    if(r && r.hero) return r.hero;
-  }
-  return null;
+// REWRITTEN 2026-11-18, same change as trendHero() in domains/_shared.js — see the long note there.
+// Two faults this had: evidence was walked in author order, which is roughly oldest-first, so a
+// signal that took a case this week still showed its oldest one; and there was no de-duplication at
+// all, so two of the three cards on screen could show the same product. The guard keys on the report
+// an image belongs to, not the URL, because two different photographs of one product read as a
+// repeat to anyone looking at the page — which is exactly how the ai page ended up with two Ray-Ban
+// banners. heroOverride still leads: a hero is chosen for suitability, not freshness, and overrides
+// are re-curated in the weekly sync when a new case brings a better frame.
+function heroKeyOf(url){
+  const owner = ALL_REPORTS.find(r => r.hero === url);
+  if (owner) return "report:" + owner.title;
+  try { return "host:" + new URL(url).host; } catch (e) { return "url:" + url; }
 }
+// The theme a signal sits inside, by evidence overlap — not by name, which is the trap. The two
+// layers were briefly reported as the same claims under two names; they are not. A theme is a
+// container and a signal is a narrower cut inside it: "Feedback Is Specified by Who Has to Read It"
+// holds three signals, and "Visible Sensing State" has 80% of its evidence there and 60% in another
+// theme as well. So this returns the BEST container, by share of the signal's own evidence, and
+// only when that share is convincing — below 60% a signal straddles themes and gets no line rather
+// than a borrowed one.
+function signalTheme(s){
+  if (typeof THEMES === "undefined") return null;
+  const ev = new Set(s.evidence || []);
+  if (!ev.size) return null;
+  let best = null, bestShare = 0;
+  THEMES.forEach(t => {
+    const cases = new Set((t.cases || []).map(c => c.report));
+    let hit = 0; ev.forEach(x => { if (cases.has(x)) hit++; });
+    const share = hit / ev.size;
+    if (share > bestShare) { bestShare = share; best = t; }
+  });
+  return (best && bestShare >= 0.6 && best.limitShort) ? best : null;
+}
+function signalHero(s, usedKeys){
+  const evidenceHeroes = (s.evidence||[])
+    .map(title => ALL_REPORTS.find(x => x.title === title))
+    .filter(r => r && r.hero)
+    .sort((a,b) => String(b.date||"").localeCompare(String(a.date||"")))
+    .map(r => r.hero);
+  const candidates = (s.heroOverride ? [s.heroOverride] : []).concat(evidenceHeroes);
+  if (!usedKeys) return candidates[0] || null;
+  const chosen = candidates.find(h => !usedKeys.has(heroKeyOf(h))) || candidates[0] || null;
+  if (chosen) usedKeys.add(heroKeyOf(chosen));
+  return chosen;
+}
+const usedSignalHeroKeys = new Set();
 $("#signalsGrid").innerHTML = shownSignals.map((s,i) => {
-  const hero = signalHero(s);
+  const hero = signalHero(s, usedSignalHeroKeys);
   const bgStyle = hero ? ` style="background-image:linear-gradient(180deg, rgba(7,9,9,.1) 0%, rgba(7,9,9,.62) 55%, rgba(7,9,9,.97) 100%), url('${hero}')"` : "";
   const mom = momentumTag(s);
   // The focus list in step 03 already links up to the signals it draws from; this is the same
@@ -1450,9 +1799,20 @@ $("#signalsGrid").innerHTML = shownSignals.map((s,i) => {
   const actedOn = (typeof ZEBRA_PRIORITIES !== "undefined" ? ZEBRA_PRIORITIES : [])
     .map((p, pi) => ({ p, pi }))
     .filter(x => (x.p.relatedSignals || []).includes(s.keyword));
+  // TITLE DROPPED FROM THIS LINK 2026-11-18. It used to print the focus item's full headline, which
+  // put that same 13-word sentence on the page three times — here, in the lede pointer, and in 03
+  // itself — and the two long ones sat only a screen apart. The link's job is to say THAT this
+  // signal is being acted on and to get the reader there; the number plus the section name does
+  // that, and the headline is waiting at the other end of the click. Multiple items still read
+  // "01 · 02".
+  // Second attempt: the first one appended " in <span>Where Zebra should focus ↓</span>", which
+  // split the sentence into fragments the dictionary cannot reach — the bare "in" is its own text
+  // node, so 中 rendered "成為重點項目 01 in Where Zebra should focus ↓". The arrow now lives inside
+  // the link, so the only translatable string is the "Becomes focus item" prefix that was already
+  // in the dictionary, and no new key is introduced at all.
   const actLine = actedOn.length
     ? `<div class="sig-act">Becomes focus item ${actedOn.map(x =>
-        `<a href="#" data-prio="${x.pi}">${String(x.pi+1).padStart(2,"0")} · ${x.p.title}</a>`).join(" · ")}</div>`
+        `<a href="#" data-prio="${x.pi}">${String(x.pi+1).padStart(2,"0")} ↓</a>`).join(" · ")}</div>`
     : `<div class="sig-act">Not yet turned into a focus item — read as context.</div>`;
   return `
   <div class="signal reveal-init" data-i="${i}">
@@ -1461,6 +1821,9 @@ $("#signalsGrid").innerHTML = shownSignals.map((s,i) => {
       <div class="eyebrow kicker">Top Signal <span class="momentum-badge ${mom.cls}">${mom.label}</span></div>
       <h2><strong>${s.keyword}.</strong> ${s.statement}</h2>
       <p class="detail">${s.detail}</p>
+      ${(() => { const th = signalTheme(s); return th
+        ? `<p class="sig-limit"><span>Weakest point</span>${th.limitShort} <em>— the limit recorded on the theme this sits inside, “${th.name}”.</em></p>`
+        : ``; })()}
       <div class="sig-time">${sparkWrap(s)}</div>
       ${actLine}
     </div>
@@ -1479,6 +1842,52 @@ $("#signalsGrid").innerHTML = shownSignals.map((s,i) => {
   </div>
 `;
 }).join("");
+
+// ---- Tracked signal index. See the CSS note: 3 of 10 TOP_SIGNALS render as cards and the other 7
+// had no destination anywhere on the site. This lists all ten, the featured three flagged in place
+// so the page does not contradict itself, the rest ranked the way the domain pages rank their
+// index — momentum first, so a signal the newest week still feeds outranks one coasting on old
+// evidence, then evidence count, then name. Each row links to the reports behind it, which is the
+// same destination the domain pages use.
+// Deliberately NOT a ranking change: `pickTopSignals` is untouched and the three cards above are
+// exactly as they were.
+(function(){
+  const grid = $("#signalIndex");
+  if (!grid || typeof TOP_SIGNALS === "undefined" || TOP_SIGNALS.length <= shownSignals.length) return;
+  // Same values as domains/_shared.js:53. Declared here because that file is an IIFE and exports
+  // nothing — this page cannot see it. Kept identical on purpose: the two indexes must not drift
+  // into ranking the same three momentum states differently.
+  const MOMENTUM_RANK = { new: 0, building: 1, holding: 2 };
+  const featured = new Set(shownSignals);
+  const rest = TOP_SIGNALS.filter(s => !featured.has(s)).sort((a,b) => {
+    const ra = MOMENTUM_RANK[momentumTag(a).cls], rb = MOMENTUM_RANK[momentumTag(b).cls];
+    if (ra !== rb) return ra - rb;
+    const ea = (a.evidence||[]).length, eb = (b.evidence||[]).length;
+    if (ea !== eb) return eb - ea;
+    return a.keyword.localeCompare(b.keyword);
+  });
+  // SIMPLIFIED on first review: the first version printed a momentum badge AND a report count on
+  // every row, which made it a second table of name + weeks + count — the same shape as the keyword
+  // timeline in section 04, two screens down. Those two lists share no content at all (this one is
+  // TOP_SIGNALS, that one is DOMAIN_TRENDS keywords; the only apparent overlap, "Visible Sensing
+  // State", is two different entries), but a reader cannot see that through the layout, so the page
+  // read as if it were saying the same thing twice.
+  // What this component actually owes the reader is narrow: these signals exist, and one of them is
+  // new this week. So a badge now appears only when there is something to say — `holding` rows stay
+  // quiet — and the report count is gone, since that column is what made it look like the timeline.
+  grid.innerHTML = shownSignals.concat(rest).map(s => {
+    const ev = s.evidence || [], mom = momentumTag(s), isTop = featured.has(s);
+    const href = `reports-overview.html?titles=${encodeURIComponent(ev.join("|"))}&kw=${encodeURIComponent(s.keyword)}`;
+    return `<li class="ti-row${isTop ? " featured" : ""}">
+      <a class="ti-name" href="${href}">${s.keyword}</a>
+      <span class="ti-meta">
+        ${isTop ? `<span class="ti-flag">Shown above</span>` : ``}
+        ${mom.cls === "holding" ? `` : `<span class="momentum-badge ${mom.cls}">${mom.label}</span>`}
+      </span>
+    </li>`;
+  }).join("");
+
+})();
 
 // V4 TEST — Apple-style editorial layout (see the CSS comment above): a big clean photo beside a
 // large headline, alternating sides per entry, evidence as plain link chips instead of an
@@ -1689,7 +2098,7 @@ $$("#chipCloud .chip").forEach(el => el.addEventListener("click", ()=>
     }
     // The cloud packer measures pill boxes, which are all zero-sized while the view is hidden —
     // so a layout that ran during a hidden stretch has to be redone on the way back.
-    if (!timeline) { layoutKeywordCloud(); initMobileChipPan(); }
+    if (!timeline) { layoutKeywordCloud(); initChipPanZoom(); }
   }));
 })();
 
@@ -1753,7 +2162,7 @@ $$("#chipCloud .chip").forEach(el => el.addEventListener("click", ()=>
   // legible from the example strip itself.
   $("#prLegend").innerHTML = `
     <div class="pr-legend">
-      <span class="li wide">${sparkFromCounts(sample, "Example only")}<span>Oldest week on the left; dot size is how many reports that week fed in.</span></span>
+      <span class="li wide">${sparkFromCounts(sample, "Example only")}<span>Oldest week on the left; dot size is how many reports that week fed in. The standalone reports belong to no week, so the columns sum to fewer than the total above.</span></span>
       <span class="li"><span class="momentum-badge new">New case this week</span><span>only ${latest}</span></span>
       <span class="li"><span class="momentum-badge building">Repeats across weeks</span><span>${latest} plus earlier weeks</span></span>
       <span class="li"><span class="momentum-badge holding">No new case this week</span><span>nothing in ${latest}</span></span>
@@ -1765,6 +2174,24 @@ $$("#chipCloud .chip").forEach(el => el.addEventListener("click", ()=>
   $("#kwSub").textContent = `${allKeywordEntries.length} keywords across ${domainCount} domains — the inventory 01–03 were drawn from.`;
 })();
 
+// DEAD-CONTROL GUARD ADDED 2026-11-18. This button was rendered on every priority row
+// unconditionally, but it can only work if at least one chip in the cloud claims that rank — and
+// the cloud shows 30 of the 50 keyword entries, so a priority whose evidence only appears in
+// single-report entries that missed the cut gets a link that silently does nothing. That is
+// exactly what happened the moment the third priority was added: its three reports are cited by
+// "AI Output Stays Inspectable Beside the Source", "One Action at a Time, Confirmed Explicitly"
+// and "Material Tells the Hand Where to Go", all one-report entries, none of them in the 30.
+// Forcing those chips into the cloud to make the link work would be rigging the cloud's own
+// ranking to serve a button, so the button goes instead. Removed, not disabled: a greyed-out
+// control still asks the reader to work out why it is there.
+$$(".p-viewcloud").forEach(btn => {
+  if (!$$(`#chipCloud .chip[data-priority="${btn.dataset.rank}"]`).length) {
+    // Also take the " · " separator that precedes it, or the row ends on a dangling middot.
+    const prev = btn.previousSibling;
+    if (prev && prev.nodeType === 3 && /·\s*$/.test(prev.textContent)) prev.textContent = prev.textContent.replace(/\s*·\s*$/, "");
+    btn.remove();
+  }
+});
 $$(".p-viewcloud").forEach(btn => btn.addEventListener("click", () => {
   const rank = btn.dataset.rank;
   const chips = $$(`#chipCloud .chip[data-priority="${rank}"]`);
@@ -1785,7 +2212,7 @@ function layoutKeywordCloud(){
   const cloud = $("#chipCloud");
   // Runs on mobile too now — the canvas is just a different fixed size there (set via CSS),
   // panned through a fixed "porthole" instead of reflowed into a scrolling list (see CSS and
-  // initMobileChipPan below).
+  // initChipPanZoom below).
   const chips = $$("#chipCloud .chip");
   // .chip has no transition on `transform` — pills are placed directly at their final spot,
   // every time (initial load, resize, restored scroll position), with no slide/reveal motion.
@@ -1908,76 +2335,169 @@ function layoutKeywordCloud(){
 // the canvas is bigger than the visible "porthole" — drag to pan it, Apple Watch app-grid
 // style. Chips nearer the porthole's center are scaled up a touch so the drag itself feels
 // alive, echoing that same lens effect, without animating anything on a timer.
-function initMobileChipPan(){
+// PAN + ZOOM, rewritten 2026-11-18. Was `initMobileChipPan`, guarded to widths below 700px: the
+// desktop drew the cloud as a static block with no gestures at all. Zoom was asked for on both, so
+// the porthole became the container at every width (see the CSS note) and this controller now runs
+// everywhere. At zoom 1 on a desktop the whole cloud is in view and nothing is pannable, which is
+// exactly what it looked like before.
+//
+// Geometry: `.chip-cloud` has `transform-origin:0 0`, so the transform is simply
+// `translate(pan) scale(z)` and a content point c lands on screen at c*z + pan. Zooming keeps the
+// point under the cursor (or under the midpoint of a pinch) fixed, which is the only behaviour that
+// feels like direct manipulation: pan = focus - (focus - pan) * (newZ / oldZ).
+//
+// The lens magnification — chips swelling slightly toward the middle of the porthole — stays a
+// phone-only effect. It was built for a canvas much larger than its window, and on a desktop at
+// zoom 1 there is no "middle to drift toward".
+function initChipPanZoom(){
   const viewport = $("#chipCloudViewport");
   const cloud = $("#chipCloud");
-  // Also clear any leftover --mag lens-scale from a prior mobile-width pass (e.g. the preview
-  // pane settling from a transient narrow width right after load) — otherwise a chip stays
-  // visually scaled up past what layoutKeywordCloud measured it as, overlapping its neighbors.
-  if (!viewport || !cloud || window.innerWidth >= 700) {
-    if (cloud) { cloud.style.transform = ""; $$("#chipCloud .chip").forEach(c => c.style.removeProperty("--mag")); }
-    return;
-  }
-  const vw = viewport.clientWidth, vh = viewport.clientHeight;
-  const cw = cloud.offsetWidth, ch = cloud.offsetHeight;
-  const clampX = x => Math.min(0, Math.max(vw - cw, x));
-  const clampY = y => Math.min(0, Math.max(vh - ch, y));
-  let panX = clampX(-(cw/2 - vw/2));
-  let panY = clampY(-(ch/2 - vh/2));
+  if (!viewport || !cloud) return;
+  const lens = window.innerWidth < 700;
+  // Clear any leftover --mag from a previous narrow-width pass, or chips stay visually scaled up
+  // past what layoutKeywordCloud measured them as and overlap their neighbours.
+  if (!lens) $$("#chipCloud .chip").forEach(c => c.style.removeProperty("--mag"));
+
+  const MIN_Z = 0.5, MAX_Z = 3;
+  const st = viewport.__cz || (viewport.__cz = { z: 1, panX: 0, panY: 0 });
   const chips = $$("#chipCloud .chip");
+
+  const vw = () => viewport.clientWidth, vh = () => viewport.clientHeight;
+  const cw = () => cloud.offsetWidth,   ch = () => cloud.offsetHeight;
+  // Smaller than the window on an axis: centre it there rather than letting it drift to a corner.
+  function clampPan(){
+    const sw = cw() * st.z, sh = ch() * st.z;
+    st.panX = sw <= vw() ? (vw() - sw) / 2 : Math.min(0, Math.max(vw() - sw, st.panX));
+    st.panY = sh <= vh() ? (vh() - sh) / 2 : Math.min(0, Math.max(vh() - sh, st.panY));
+  }
   function render(){
-    cloud.style.transform = `translate(${panX}px, ${panY}px)`;
-    const radius = Math.max(vw, vh) * 0.45;
+    clampPan();
+    cloud.style.transform = `translate(${st.panX}px, ${st.panY}px) scale(${st.z})`;
+    viewport.classList.toggle("zoomed", st.z > 1.001);
+    const lvl = $("#kwZoomLevel"); if (lvl) lvl.textContent = Math.round(st.z * 100) + "%";
+    const outB = $('#kwZoom button[data-zoom="out"]'), inB = $('#kwZoom button[data-zoom="in"]');
+    if (outB) outB.disabled = st.z <= MIN_Z + 0.001;
+    if (inB)  inB.disabled  = st.z >= MAX_Z - 0.001;
+    if (!lens) return;
+    const radius = Math.max(vw(), vh()) * 0.45;
     chips.forEach(chip => {
       const tx = parseFloat(chip.style.getPropertyValue("--tx")) || 0;
       const ty = parseFloat(chip.style.getPropertyValue("--ty")) || 0;
-      const screenX = cw/2 + tx + panX, screenY = ch/2 + ty + panY;
-      const dist = Math.hypot(screenX - vw/2, screenY - vh/2);
-      const t = Math.max(0, 1 - dist/radius);
+      const screenX = (cw()/2 + tx) * st.z + st.panX, screenY = (ch()/2 + ty) * st.z + st.panY;
+      const t = Math.max(0, 1 - Math.hypot(screenX - vw()/2, screenY - vh()/2) / radius);
       chip.style.setProperty("--mag", (1 + t*0.16).toFixed(2));
     });
   }
+  // Keep the content under `fx,fy` (viewport coordinates) where it is while the scale changes.
+  function zoomTo(nz, fx, fy){
+    nz = Math.min(MAX_Z, Math.max(MIN_Z, nz));
+    if (Math.abs(nz - st.z) < 0.001) return;
+    if (fx == null) { fx = vw()/2; fy = vh()/2; }
+    const k = nz / st.z;
+    st.panX = fx - (fx - st.panX) * k;
+    st.panY = fy - (fy - st.panY) * k;
+    st.z = nz;
+    render();
+  }
+  // On anything but a phone the porthole takes the cloud's own height, so zoom 1 shows the whole
+  // cloud and there is nothing to pan to until the reader zooms in. The phone keeps its short fixed
+  // window and a deliberately larger canvas behind it.
+  if (!lens) viewport.style.height = cloud.offsetHeight + "px";
+  else viewport.style.removeProperty("height");
+
+  // Re-centre on a fresh layout (first run, resize, language switch) but keep the reader's zoom.
+  st.panX = (vw() - cw()*st.z)/2; st.panY = (vh() - ch()*st.z)/2;
   render();
-  if (viewport.dataset.panBound) return; // listeners only need attaching once per page load
+
+  if (viewport.dataset.panBound) return; // listeners attach once per page load
   viewport.dataset.panBound = "1";
+
+  /* ---- buttons ---- */
+  const zoomBar = $("#kwZoom");
+  if (zoomBar) zoomBar.addEventListener("click", e => {
+    const b = e.target.closest("button[data-zoom]"); if (!b) return;
+    const mode = b.dataset.zoom;
+    if (mode === "reset") { st.z = 1; st.panX = (vw() - cw())/2; st.panY = (vh() - ch())/2; render(); }
+    else zoomTo(mode === "in" ? st.z * 1.25 : st.z / 1.25, null, null);
+  });
+
+  /* ---- wheel: only with a modifier, so the page can still be scrolled over the cloud ---- */
+  viewport.addEventListener("wheel", e => {
+    if (!e.ctrlKey && !e.metaKey) return;
+    e.preventDefault();
+    const r = viewport.getBoundingClientRect();
+    zoomTo(st.z * (e.deltaY < 0 ? 1.12 : 1/1.12), e.clientX - r.left, e.clientY - r.top);
+  }, { passive: false });
+
+  /* ---- drag to pan, pinch to zoom ---- */
+  // Deliberately NOT using setPointerCapture: capturing on the viewport also retargets the
+  // synthesized click to the viewport in this browser, which silently broke every chip's
+  // tap-to-navigate — not just during a drag, always.
+  const pts = new Map();
   let didDrag = false, startX = 0, startY = 0, baseX = 0, baseY = 0, raf = null;
-  // Deliberately NOT using setPointerCapture: capturing the pointer on the viewport also
-  // redirects the synthesized "click" event's target to the viewport itself in this browser,
-  // which silently broke every chip's tap-to-navigate — not just during an actual drag, ALL
-  // the time. Tracking move/up on window while a gesture is active gets the same "keep
-  // following the finger past the box edge" behavior without hijacking click dispatch.
+  let pinchDist = 0, pinchZ = 1;
+
   function onMove(e){
+    if (pts.has(e.pointerId)) pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pts.size >= 2) {
+      const [a, b] = [...pts.values()];
+      const d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (pinchDist) {
+        const r = viewport.getBoundingClientRect();
+        didDrag = true;
+        zoomTo(pinchZ * (d / pinchDist), (a.x + b.x)/2 - r.left, (a.y + b.y)/2 - r.top);
+      }
+      return;
+    }
     const dx = e.clientX - startX, dy = e.clientY - startY;
     if (Math.hypot(dx, dy) > 6) didDrag = true;
-    panX = clampX(baseX + dx);
-    panY = clampY(baseY + dy);
+    st.panX = baseX + dx; st.panY = baseY + dy;
     if (!raf) raf = requestAnimationFrame(() => { render(); raf = null; });
   }
-  function onUp(){
-    viewport.classList.remove("dragging");
-    window.removeEventListener("pointermove", onMove);
-    window.removeEventListener("pointerup", onUp);
+  function onUp(e){
+    pts.delete(e.pointerId);
+    if (pts.size < 2) pinchDist = 0;
+    // Lifting one finger of a pinch leaves the other one still down, and that finger is now a pan.
+    // Without re-seeding the baseline here the next move is measured from where the FIRST finger
+    // started, so the cloud jumps the full distance between the two touch points the instant one
+    // of them leaves. Re-anchor the drag on whichever pointer is still on the glass.
+    if (pts.size === 1) {
+      const p = [...pts.values()][0];
+      startX = p.x; startY = p.y; baseX = st.panX; baseY = st.panY;
+    }
+    if (pts.size === 0) {
+      viewport.classList.remove("dragging");
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+    }
   }
   viewport.addEventListener("pointerdown", e => {
-    didDrag = false; startX = e.clientX; startY = e.clientY; baseX = panX; baseY = panY;
+    pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pts.size === 2) {
+      const [a, b] = [...pts.values()];
+      pinchDist = Math.hypot(a.x - b.x, a.y - b.y); pinchZ = st.z;
+    } else {
+      didDrag = false; startX = e.clientX; startY = e.clientY; baseX = st.panX; baseY = st.panY;
+    }
     viewport.classList.add("dragging");
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
   });
-  // A drag that passed over a chip would otherwise still fire that chip's own click handler
-  // (and navigate away) the moment the finger lifts — swallow the click only when this
-  // gesture actually moved, so a real tap still navigates normally.
+  // A drag that passed over a chip would otherwise still fire that chip's click handler and
+  // navigate away the moment the finger lifts — swallow the click only when the gesture moved.
   viewport.addEventListener("click", e => { if (didDrag) { e.stopPropagation(); e.preventDefault(); } }, true);
 }
 layoutKeywordCloud();
-initMobileChipPan();
+initChipPanZoom();
 let kwResizeT;
-window.addEventListener("resize", ()=>{ clearTimeout(kwResizeT); kwResizeT = setTimeout(()=>{ layoutKeywordCloud(); initMobileChipPan(); }, 150); });
+window.addEventListener("resize", ()=>{ clearTimeout(kwResizeT); kwResizeT = setTimeout(()=>{ layoutKeywordCloud(); initChipPanZoom(); }, 150); });
 
 // Chip widths are measured, so a language switch invalidates the packing — Chinese labels are
 // much narrower than the English ones and the cloud would otherwise sit at English spacing.
 document.addEventListener("i18n:change", ()=>{
-  if (!$("#kwCloudView").hidden) { layoutKeywordCloud(); initMobileChipPan(); }
+  if (!$("#kwCloudView").hidden) { layoutKeywordCloud(); initChipPanZoom(); }
 });
 
 /* ---------- domains this period (slider by default, "show all" switches to full grid) ---------- */
@@ -1990,19 +2510,28 @@ $("#catGrid").innerHTML = DOMAINS.map(d => {
   const trendCount = domTrends.length;
   const multiCount = domTrends.filter(t => (t.evidence||[]).length >= 2).length;
   const repHero = d.cardImage || (ALL_REPORTS.find(r=>r.domain===d.id)||{}).hero || "";
+  // NAME MOVED ONTO THE PICTURE 2026-11-18. Under it, at 18px in the body, the domain name was the
+  // least visible thing on a tile whose whole job is to be recognised and clicked — the picture had
+  // the weight and the label was a caption under it. It now sits on the image bottom-left over its
+  // own gradient, the same treatment the Top Signal cards use, so the two components speak the same
+  // language. The accent bar goes with it as the colour key. Counts stay below on their own strip:
+  // they are detail you read second, and over a photograph three small numbers would be noise.
   return `<a class="cat-tile reveal-init" href="domains/${DOMAIN_PAGE[d.id]}.html" style="--accent:${d.accent}">
-    <img referrerpolicy="no-referrer" class="cat-img" src="${repHero}" alt="${d.name}">
+    <span class="cat-media">
+      <img referrerpolicy="no-referrer" class="cat-img" src="${repHero}" alt="${d.name}">
+      <span class="cat-name">
+        <span class="bar" style="background:${d.accent}"></span>
+        <h3>${d.name}</h3>
+      </span>
+    </span>
     <div class="cat-body">
-      <div class="bar" style="background:${d.accent}"></div>
-      <h3>${d.name}</h3>
       <div class="meta-row"><span><b>${reportCount}</b> report${reportCount===1?"":"s"}</span><span><b>${trendCount}</b> trend${trendCount===1?"":"s"}</span><span><b>${multiCount}</b> multi-source</span></div>
     </div>
     <div class="cat-overlay"><span>Go to domain dashboard →</span></div>
   </a>`;
 }).join("");
-$("#catGrid").className = "cat-grid slider";
-$("#catPrev").addEventListener("click", ()=> $("#catGrid").scrollBy({left:-600, behavior:"smooth"}));
-$("#catNext").addEventListener("click", ()=> $("#catGrid").scrollBy({left:600, behavior:"smooth"}));
+// The line that forced this into slider mode is gone with the arrows — the class is set in the
+// markup now, and `.cat-overview` does not scroll, so there is nothing to drive.
 
 /* ---------- latest reports feed ---------- */
 $("#feedGrid").innerHTML = ALL_REPORTS.slice(0,6).map(r => `
@@ -2014,12 +2543,11 @@ $("#feedGrid").innerHTML = ALL_REPORTS.slice(0,6).map(r => `
 
 /* ---------- scroll position restore (returning from a sub-page lands back where you left, not at the top) ---------- */
 const SCROLL_KEY = "dashboardScrollY";
-// The domain-card carousel scrolls horizontally inside its own element, separate from the
-// page's vertical scroll — restoring only window.scrollY left it snapped back to the first
-// cards whenever the carousel itself had been scrolled before leaving.
-const CAT_SCROLL_KEY = "dashboardCatScrollX";
+// The domain carousel's horizontal scroll position used to be saved and restored alongside the
+// page's vertical one. The carousel is gone — the domains are a 4x2 grid that does not scroll —
+// so there is nothing left to remember, and the three lines that did it were reading
+// `.scrollLeft` off an element that no longer scrolls. Removed 2026-11-18 with the slider.
 const savedScroll = sessionStorage.getItem(SCROLL_KEY);
-const savedCatScroll = sessionStorage.getItem(CAT_SCROLL_KEY);
 // `beforeunload` writes the scroll position on every exit, including a plain reload — so a
 // reload used to count as "returning" and suppress every entrance animation, even when the
 // saved position was 0 and there was no content above the viewport to protect. Treat only a
@@ -2036,24 +2564,15 @@ if (isReturning) {
   // scrollY:0 (the page's natural starting point) before the jump landed — a visible flash of
   // the top of the page before snapping down to the saved position.
   window.scrollTo({ top: parseInt(savedScroll, 10), left: 0, behavior: "instant" });
-  // .cat-grid has CSS scroll-behavior:smooth (for the arrow buttons), which also hijacks a
-  // plain .scrollLeft assignment into an animated slide — scrollTo({behavior:"instant"}) is
-  // the only way to actually jump straight to the saved position.
-  if (savedCatScroll !== null) $("#catGrid").scrollTo({ left: parseInt(savedCatScroll, 10), behavior: "instant" });
+
 }
 let scrollSaveTimer;
 window.addEventListener("scroll", ()=>{
   clearTimeout(scrollSaveTimer);
   scrollSaveTimer = setTimeout(()=> sessionStorage.setItem(SCROLL_KEY, window.scrollY), 150);
 });
-let catScrollSaveTimer;
-$("#catGrid").addEventListener("scroll", ()=>{
-  clearTimeout(catScrollSaveTimer);
-  catScrollSaveTimer = setTimeout(()=> sessionStorage.setItem(CAT_SCROLL_KEY, $("#catGrid").scrollLeft), 150);
-});
 window.addEventListener("beforeunload", ()=>{
   sessionStorage.setItem(SCROLL_KEY, window.scrollY);
-  sessionStorage.setItem(CAT_SCROLL_KEY, $("#catGrid").scrollLeft);
 });
 
 /* ---------- scroll reveal + the rest of the motion layer (see the MOTION LAYER CSS) ---------- */

@@ -3,7 +3,7 @@
 // Folder convention: weeks/<W##>/... for weekly-bundled reports, singles/... for standalone reports.
 // report.file is ROOT-RELATIVE (resolved against the site root, used by report-viewer.html as an iframe src).
 
-const PERIOD_LABEL = "2026-09-21 – 2026-11-08";
+const PERIOD_LABEL = "2026-09-21 – 2026-11-15";
 
 // V4 TEST — homepage synthesis narrative tying the current Top Signals together into one
 // throughline, instead of leaving three independent cards for the reader to connect themselves.
@@ -18,8 +18,100 @@ const PERIOD_NARRATIVE = {
   // words; at that length the thesis stops being a claim and becomes a paragraph. Held to roughly
   // 20 and 70. Everything cut from here is still argued in full on the theme blocks and in
   // V5_CHANGES.md — this is the headline, not the evidence.
-  thesis: "The cue aimed at a bystander is moving into hardware — a moulded boundary, a deleted feature. Firmware cannot switch those off.",
-  detail: "Ring moulds a boundary around the lens instead of offering an app toggle; Meta ships a whole camera-free Ray-Ban line whose argument is the absent lens corner; Ferrari lets body geometry report that a system is open. Different industries, one conclusion: a cue that software can disable is a weaker promise than one built into the shape. Note the scope — this is one of five themes below, and two of them have nothing to do with proving state.",
+  // REWRITTEN 2026-11-16 (W46 sync). The displayed top three are unchanged in identity, but
+  // "Visible Sensing State" went from three cases to five, so the examples here are restated from
+  // the strongest current ones rather than left on the W45 set.
+  // REWRITTEN AGAIN 2026-11-18, for comprehension and for one factual error.
+  // Was: "The cue aimed at a bystander is moving into hardware — a moulded boundary, a deleted
+  // feature, a dock that covers the lens." Three faults in the site's single most-read sentence:
+  //   · "the cue aimed at a bystander" made the reader assemble the subject themselves — what cue,
+  //     aimed at whom, about what;
+  //   · "a moulded boundary" has no object. A boundary around what? Only the detail paragraph said;
+  //   · "a deleted feature" is WRONG. Ray-Ban Meta Audio ships with no camera at all — it was never
+  //     fitted, not fitted and removed. The masthead caption beside this headline already said
+  //     "the camera is absent, not disabled", so the page contradicted itself in two adjacent
+  //     elements.
+  // The three examples are kept — they are what the masthead picture illustrates — but each now
+  // names its own object, and the subject is the plain thing the period is actually about.
+  // CLAUSES REORDERED 2026-11-18. The content did not change; the sequence did, and the sequence was
+  // the bug. The thesis names three mechanisms and the masthead picture beside it can only show one
+  // of them — it shows the third, the Drone Cam over its dock. A reader's eye lands on the FIRST
+  // example and pairs it with the picture, so the page appeared to illustrate "a moulded edge around
+  // the lens" with a photograph containing no such edge, and the question it drew was exactly that:
+  // what has this got to do with that. The caption underneath said "the dock closes over the camera"
+  // and still did not rescue it — a caption is read after the pairing has already failed.
+  // Whichever clause leads has to be the one in the frame. Changing the PICTURE instead was the
+  // alternative and it was worse: the moulded-edge case is Ring 2026 Cameras, whose usable frames
+  // are a white cutout render and an image now carrying an ai trend, and Ring would have appeared
+  // three times at large size on one page again.
+  // Ending on "a camera left out" is also the stronger close — deletion is the most surprising of
+  // the three.
+  // "A MOULDED EDGE/BOUNDARY" REMOVED 2026-11-18 — it was never what the report said.
+  // It came from the Ring 2026 Camera Family heading "A lens with a physical boundary", read as a
+  // styling feature in the housing. The body of that same analytical card says what the boundary
+  // actually is: "the optical face in a compact upright body with A REMOVABLE LENS COVER. That
+  // cover provides a physical, visible barrier independent of software status." The boundary IS
+  // the cover. A moulded rim around a lens communicates nothing on its own — raised as exactly
+  // that in review — and worse, it was not a third mechanism at all: a cover over the lens and a
+  // dock that covers the lens are the same move, so the thesis was listing two things and calling
+  // them three. An earlier caption on this page compounded it by claiming the boundary "is in the
+  // housing, so it cannot be switched off"; a removable cover is neither.
+  // The three clauses are now three genuinely different mechanisms, each from an analytical card:
+  //   · Ring Robotics, "Docking closes the camera" — "the Drone rests inside a low docking
+  //     enclosure, with its camera covered when not flying… a physical privacy cue that does not
+  //     depend on interpreting an app icon";
+  //   · Ray-Ban Meta Audio, "No lens-corner camera eye" — a camera-free frame that "reads as
+  //     ordinary eyewear" (the report's own caveat: the microphones are still there);
+  //   · Samsung Intelligent Eyewear, "Bold frames expose hardware" — "the form makes the equipment
+  //     visible instead of disguising it as a conventional wire frame".
+  // SUBJECT CORRECTED 2026-11-18, third pass and the last substantive one. The clauses were fixed
+  // against the reports first; this fixes the sentence they hang off, which did not describe them.
+  // "Telling people they're being recorded" promises three ways of announcing active capture, and
+  // not one of the three examples does that:
+  //   · a dock that covers the lens says it is NOT recording right now;
+  //   · a camera never fitted says it CANNOT record at all;
+  //   · electronics shown instead of disguised says only that this is a device which might.
+  // All three answer one question — can this thing see me — and none of them answers "am I being
+  // recorded". The subject now asks the question the evidence actually answers. It also matches the
+  // signal these reports feed, whose own statement is about SENSING state, not recording state:
+  // "Sensing and recording state must be unmistakable, confirmed by a physical cue, not software."
+  thesis: "Whether a device can see you is becoming visible on the object itself — a dock that covers the lens, a camera never fitted, electronics shown instead of disguised.",
+  // Rewritten with the thesis on 2026-11-18. The old opening — "Ring moulds a boundary around the
+  // lens instead of offering an app toggle" — carried the same misreading corrected above, and it
+  // also split one Ring mechanism across two clauses as if they were two findings.
+  // The closing scope note is kept because it is the honest part, but "five themes below" was
+  // wrong on its own terms: the themes are the five bars ABOVE this paragraph, not below it, and
+  // they are not rendered as cards anywhere on this page.
+  // ===== REWRITTEN 2026-11-18, THIRD TIME, AND THIS ONE IS A SCOPE FIX, NOT A WORDING FIX. =====
+  // Reported as「這邊主要在說主要的三個，跟總表的連結性比較低」. Checking it, the problem was worse
+  // than the report: the block is titled "What connects the three" and the paragraph did not
+  // describe the three at all. The three cards are whatever `pickTopSignals` returns — pure
+  // evidence-count descending — which today is The Surviving Button Declares Mode (8 reports),
+  // The Chassis Is a Mounting Platform (7) and Visible Sensing State (5). The old paragraph's
+  // examples were Ring's Drone Cam, Ray-Ban Meta Audio and Samsung Intelligent Eyewear: all five
+  // of those products sit inside the THIRD card alone. So the paragraph expanded one card and
+  // called it the throughline of three.
+  // How it got that way is worth recording, because it is a failure mode, not a typo. `thesis`
+  // and `detail` are written as a pair, and the thesis is pinned to the masthead photograph —
+  // which is a Ring camera. Rewriting the thesis to match that picture (correctly: the picture
+  // and the sentence have to agree) quietly dragged the detail onto the same three products,
+  // and nothing in the file or the page checks that `detail` still covers the cards it sits
+  // under. The lesson: `thesis` answers to the masthead image; `detail` answers to
+  // `pickTopSignals`. They are not the same obligation and must be checked separately.
+  // The second half now also places the remaining tracked signals, because the block renders
+  // directly BELOW the full index and said nothing about it. Counts verified by reading all
+  // eleven entries, not estimated — re-count them every sync, they are not computed:
+  //   state declared by the object (6) — State Has to Be Readable Mid-Task, Mode Is Declared by
+  //     Changing Shape, The Surviving Button Declares Mode, Visible Sensing State, The Robot's
+  //     Body Reports Its Task, Concealed Systems Legible at the Point of Use
+  //   body as a control / attachment / tether surface (3) — One Physical Surface Several Working
+  //     Roles, The Chassis Is a Mounting Platform, The Tether Is Part of the Product
+  //   outside it (2) — Robots Are Being Issued Governed Credentials (whose own entry says the
+  //     legible half is still only a recommendation), and A Suggestion Is Shown Beside Its Source,
+  //     the one signal in the list about a screen rather than a housing.
+  // No total is written into the sentence on purpose. "Five themes" was hard-typed in the version
+  // before this one and was wrong about its own direction ("below" for a chart that is above).
+  detail: "All three cards above answer, on the housing itself, a question that used to be left to a menu, a spec sheet or an app: which mode is live, what can be bolted on, whether the thing can see you. Sigma appears in two of them — a labelled STILL/CINE switch, and a chassis covered in 1/4-20 threads — the same decision taken twice on one body. In the list above, six signals make that argument about state and three concern the body as a control, attachment or connection surface. Two sit outside it: robots issued governed credentials, where both reports say visible authority is still only a recommendation, and the one signal about a screen rather than a housing — generated output shown beside the source it came from.",
   // ===== `tension` REMOVED 2026-11-04 (V5) =====================================================
   // It was a two-sided bar splitting the top signals into "state declared by hardware" against
   // "state declared by the system". Three things were wrong with it and none could be fixed by
@@ -130,7 +222,25 @@ const ZEBRA_PRIORITIES = [
     // Antigravity's "A Blue LED Does the Talking" is the purest illustration but is a
     // white-background cutout the hero rule excludes; Tesla's "Tie light cues to state" reads as
     // a car reveal rather than work equipment.
-    image: "https://www.signode.com/Signode/media/Signode/Automation/Application-by-Forklift.png"
+    // IMAGE CHANGED TWICE ON 2026-11-18. It began as a Signode forklift — the operating ENVIRONMENT,
+    // not the claim. It was then a front-on TOUGHBOOK 34, which was wrong twice over: the photo
+    // contains no control, no LED and no indicator, so it failed this field's own rule a few lines
+    // up ("a MECHANISM shot… picked so the photo literally shows the thing the title argues for"),
+    // and the Rugged Devices domain card lower down the same page is also a TOUGHBOOK 34. That
+    // collision could not be solved from the other end either: the industrial domain holds exactly
+    // one report in the whole corpus, so its card has to be TOUGHBOOK.
+    //
+    // This is the Sigma fp2 top plate: a two-position CINE | STILL switch, labelled, beside the
+    // power dial. The switch POSITION is the mode — which is precisely what this card says Zebra's
+    // six momentary keys cannot do, and what a DataWedge profile with no indicator cannot do either.
+    // Analytical figure (h3 2 of 16), not an apply card. Legible at 300×294.
+    //
+    // KNOWN LIMITATION in the de-duplication that let the TOUGHBOOK collision through: the product
+    // key resolves a URL to a report only when it matches that report's `hero` EXACTLY. A different
+    // frame of the same product falls back to its host, so two images of one product can carry two
+    // different keys and pass the check. Authoring a `product` field beside these image fields would
+    // close it properly; until then, check large-image collisions by eye as well.
+    image: "https://petapixel.com/assets/uploads/2026/10/DSC_9325-800x533.jpg"
   },
   {
     title: "Make capture state legible to the person in frame, not just the operator",
@@ -151,6 +261,46 @@ const ZEBRA_PRIORITIES = [
     // Ray-Ban Meta Gen 3 · "Camera and signal share the front" — the capture indicator module
     // itself, aimed outward at the subject rather than back at the wearer.
     image: "https://cdn.mos.cms.futurecdn.net/CKfFyaXRjUXvbfG8nEpFJA-1200-80.jpg"
+  },
+  {
+    // ===== NEW 2026-11-18, and the first focus item on this site to come from software behaviour
+    // rather than from a housing. Added after「zebra該著墨的東西都沒有ai相關的嗎?」— a fair question,
+    // because the honest answer was no, nothing. Zebra ships AI; this page had never asked a
+    // question about it. See the signal "A Suggestion Is Shown Beside Its Source" for how the
+    // evidence was assembled out of three fragments already in the corpus.
+    //
+    // KEPT AS A QUESTION, per the V5 rule at the top of this array. "Add citations to Companion"
+    // would be an implementation instruction, and nothing here establishes that a worker ever
+    // acts wrongly on an untraceable answer, or what it costs when they do.
+    title: "Show a frontline worker where an agent's answer came from, before they act on it",
+    urgency: "next",
+    validate: [
+      "Does a worker act on an agent's answer they cannot trace? Obtainable from the Companion early-access pilots — compare what the agent returned against what was actually done, without any product change.",
+      "What does one wrong acceptance cost — a re-pick, a mis-ship, a safety event, a returned order? If the answer is \"they check anyway\", this item is about trust in a product that is already trusted, and should be dropped.",
+      "Which Companion replies carry a consequential action rather than information? Three of this period's cases draw the line there — motorola's report puts \"a reversible action path\" specifically on the step that proposes something, not on the answer itself.",
+      "Would a source citation survive the setting? Note Assist works because a tablet has room for two panes. A worker holding a TC53 one-handed in an aisle does not, and a voice reply through \"Hey Zebra\" has no pane at all — so test whether the answer is spoken provenance, a second screen state, or nothing.",
+      "Re-verify the premise before acting: the gap below rests on Zebra's public product pages read on 2026-11-18. Companion is an early-access product and its shipped interface was not inspected."
+    ],
+    rationale: "Three brands this period put generated output next to the material it came from and made accepting it a separate act. Zebra's own answer surface argues the opposite case — that the answer is grounded in your data, so it can be trusted. Nothing published says what a worker sees of where it came from.",
+    relatedSignals: ["A Suggestion Is Shown Beside Its Source"],
+    zebraBaseline: {
+      ships: "Zebra Companion, a set of GenAI agents reached by voice (\"Hey Zebra, where can I find…\"), which Zebra describes as grounded in your business — your inventory, your operating procedures, your product catalogs; the Knowledge agent delivers context-aware guidance from a company's own SOPs. Alongside it, Frontline AI Enablers put trained on-device vision models, sample applications and APIs on Zebra mobile computers.",
+      source: "https://www.zebra.com/us/en/software/ai-software/zebra-companion.html",
+      gap: "Every published claim on both pages is about the answer being RIGHT — grounded, tailored, accurate, fast, less training. Neither page describes anything the worker sees of where a given answer came from, how an uncertain one is marked, or what the confirm-and-undo path is when an agent proposes a consequential step. That is precisely the half this period's evidence is about: Samsung keeps the source pane open beside the summary, motorola warns that proximity makes uncertain output look final, Aina keeps the confirmation explicit. Per §8.2, a marketing page not mentioning a feature is not proof it is absent from the product — this is a gap in what is published, and the first validation question is whether it is a gap in the interface."
+    },
+    // Galaxy Tab S12 Ultra · "AI output remains beside source material", section 02 card 1 — the
+    // split-pane view itself: dense source document on the left, generated summary on the right.
+    // Picked by rendering the four candidates at the real 300×294 `.wz-thumb-wrap` crop: the other
+    // three fail this field's "the photo literally shows the thing the title argues for" rule —
+    // Aina's meeting shot has no interface in frame, Aina's three-ring shot is a white cutout the
+    // hero background rule excludes, and the DeX frame shows a desktop, not a source/summary pair.
+    // Verified at card size: the two panes read as two panes even though the text does not.
+    // motorola's "Contextual AI interface" frame would also show the mechanism but is blocked —
+    // motorola signature 27 is already the Mobile domain card on this same page.
+    // Noted and accepted: Samsung is on the page twice as a BRAND (the W46 Intelligent Eyewear
+    // report card). Not a repeat under the rule, which is about one product read twice — a tablet
+    // UI and eyewear on a face share nothing visually. Flagged here so the next sync re-judges it.
+    image: "https://img.global.news.samsung.com/au/wp-content/uploads/2026/09/Note-Assist-1024x576.jpg"
   }
 ];
 
@@ -191,7 +341,12 @@ const DROPPED_PRIORITIES = [
 
 const DOMAINS = [
   { id: "automotive", name: "Automotive & Mobility", accent: "#D40000", // Ferrari red
-    blurb: "Fifteen 2026 launches — from Ferrari's first EV to six Stellantis concept cars, Renault, Alpine and Tesla's Paris Motor Show reveals, Jetta's first EV sedan and Toyota's five tracked Snowhunter concepts at SEMA — converge on keeping tactile, locatable controls legible in digital cabins, while Citroën, FIAT and Toyota mark repair, reconfiguration and dirty-versus-clean boundaries right on the body, and both Jetta's three-trim platform and Toyota's five-vehicle equipment language show one system can scale across a whole range. W45 adds Singapore Airlines' next-generation cabins and two EICMA machines, which push the same question into transport interiors: where the mode change happens, and whether a setting follows the person.",
+    // BLURB REWRITTEN 2026-11-16, all eight domains. They had grown into roll-calls of every
+    // report in the domain — one 150-word sentence naming fifteen products, which is the index
+    // the page already shows underneath. A domain summary should say what kind of product sits
+    // here and what question it keeps raising; the evidence belongs to the trend cards. Keep
+    // these to roughly 35 words and resist adding this period's products to them.
+    blurb: "Cars, concept cabins, motorcycles and aircraft interiors — anywhere a person operates a machine while moving. The recurring question is where the mode change physically happens, and whether a setting follows the person.",
     // EVIDENCE FIX 2026-11-04 (V5) — three of the seven brands named in this sentence did not
     // support it. BRABUS BODO's only control claim is its apply card "Keep frequent actions
     // physically distinct"; DS F3VER's analytical text is entirely exterior volume, light and
@@ -201,11 +356,35 @@ const DOMAINS = [
     // analytical sections, and
     // Citroën and Alfa Romeo were added because they do too — Alfa's "Steer-by-wire does not
     // remove every analogue cue" is the clearest statement of this in the whole corpus.
-    application: "Physical controls survive even as automotive cabins go fully digital. Ferrari, Tesla and the Stellantis concepts keep distinctly shaped controls for the actions that matter; Citroën and Toyota declare repair and dirty-versus-clean boundaries on the body; Yamaha keeps its riding-mode change a physical, unmistakable act. For Zebra: glove-test the control that carries a mode, make the impact boundary readable without a teardown, and keep mode changes something the hand performs rather than something a menu records.",
-    cardImage: "https://vrrb-prod-s3.s3.us-west-1.amazonaws.com/strapi/Screenshot_2026_04_01_165401_7665b911db.jpg" },
+    application: "Physical controls survive even as automotive cabins go fully digital. Ferrari, Tesla and the Stellantis concepts keep distinctly shaped controls for the actions that matter; Citroën and Toyota declare repair and dirty-versus-clean boundaries on the body; Yamaha keeps its riding-mode change a physical, unmistakable act, and Polestar makes one tunnel shifter carry a change the seat and steering feel as well as the screen. For Zebra: glove-test the control that carries a mode, make the impact boundary readable without a teardown, and keep mode changes something the hand performs rather than something a menu records.",
+    // CARD IMAGE RE-CURATED 2026-11-18. All eight of these were pinned and none had ever been
+    // revisited, so the domain strip on the dashboard looked identical every week no matter how many
+    // reports landed — reported as "有好幾張圖感覺一直都沒有變". Each pin was compared against the
+    // newest report in its domain, rendered at the card's real 567×284. Three were beaten and are
+    // updated; five were not and are kept, with the reason recorded, because switching every card to
+    // "newest report hero" wholesale would have made three of them WORSE (ai → a portrait headshot,
+    // wearables → an airport scene with no device in frame, consumer → a promo banner with marketing
+    // copy baked into the image). Freshness is not the test; suitability is. Re-check these each sync.
+    // TWO RULES ADDED THE SAME DAY, both from review and both now part of the check:
+    //   · a car reads as a car from the OUTSIDE — an automotive card takes an exterior frame, not an
+    //     interior one, however good the interior argument is;
+    //   · no image with headline or marketing copy burnt into it. This is what disqualified the
+    //     SwitchBot candidate for `consumer` ("Two Curtains, One Command" plus a legal footnote set
+    //     in the artwork) — a card is the site's own typography, not the vendor's.
+    // automotive: was the Ferrari F80 hero, a single-report April screenshot. Polestar was tried next
+    // and reverted — twice. First its interior, under the exterior rule above; then its exterior,
+    // because Polestar is THIS WEEK'S automotive report and so already holds a report card on the
+    // dashboard, which put the same product in two large slots.
+    // THIRD RULE, and the stable one: a domain card must not come from the current week's reports at
+    // all. Those six already have their own cards directly below the strip. Picking the newest report
+    // for a domain card guarantees the clash every single week; picking the best representative from
+    // OUTSIDE the current week never does, and does not churn when the week rolls over.
+    // Toyota Snowhunter (W44) — five vehicles against a mountain at dusk: exterior, landscape, reads
+    // as "automotive" at card size in one glance, and carries no burnt-in text.
+    cardImage: "https://i0.wp.com/gearheaddaily.com/wp-content/uploads/2026/10/toyota-snowhunter-concept-sema-2026-tundra-tacoma-4runner-gallery-43.jpg" },
   { id: "ai",         name: "Sensing & Capture Devices", accent: "#81D8D0", // Tiffany blue
-    blurb: "Ray-Ban's audio and capture-enabled glasses, Meta's VR headset, Ring's camera family, XREAL's spatial displays and AURA eyewear, and Sony's wireless mic kit all treat sensing state, fit and point-of-use confirmation as explicit design problems — and increasingly treat the cable to an off-body compute pack as product architecture rather than a compromise.",
-    application: "Sensing state has to be unmistakable to the wearer and everyone nearby. Ray-Ban Meta and Ring pair a physical capture cue with swappable fit parts, XREAL and Sony show that fit calibration matters as much as the sensor, and AURA publishes the tether as a replaceable USB-C part rather than a captive assembly. For Zebra: a bystander-legible capture cue, fit measured at hour eight rather than at fitting, and the most-flexed cable kept as a stock line.",
+    blurb: "Glasses, cameras, doorbells and microphones — products whose job is to sense, and whose state matters to people other than the owner. The recurring question is how capture state is made unmistakable without an app.",
+    application: "Sensing state has to be unmistakable to the wearer and everyone nearby. Ray-Ban Meta and Ring pair a physical capture cue with swappable fit parts, Samsung puts an outward capture LED on a frame whose thick temple admits what it contains, XREAL and Sony show that fit calibration matters as much as the sensor, and AURA publishes the tether as a replaceable USB-C part rather than a captive assembly. Arlo adds the installation-time version of the same honesty: the power path, not the model name, decides whether pre-event footage exists. For Zebra: a bystander-legible capture cue, fit measured at hour eight rather than at fitting, the most-flexed cable kept as a stock line, and capability differences stated at the first setup screen.",
     cardImage: "https://images.ctfassets.net/a3peezndovsu/54lfzLXdIk48j3MEALH8Vy/50d100a828eef652c87f8cf33c49f360/ring_pan-tilt_indoor_cam_2K_lifestyle_atf_1500x1500_03.jpg?w=1100&q=80" },
   { id: "wearables",  name: "Wearable Devices",       accent: "#8B5CF6", // purple
     // EVIDENCE FIX 2026-11-04 (V5) — "Logitech's swappable pads and batteries" was not observed.
@@ -214,8 +393,11 @@ const DOMAINS = [
     // load-bearing structure, and the pairing sequence. The replacement claim — structure and
     // contact surface designed as separate parts — is the stronger finding anyway, and is actually
     // in the report.
-    blurb: "Amazfit's dual-solar watch, Logitech's Zone Vibe Pro headset and Antigravity's Watch and Ring Remotes treat power recovery, body contact and a hardware fallback as deliberate product decisions rather than specification lines. Aina's ring narrows a finger-worn interface to one action at a time and keeps the confirmation step explicit.",
-    application: "What touches the body and what carries the load are being designed as separate parts. Logitech splits the load-bearing structure from the soft contact band so each can be tuned alone, Amazfit makes power recovery continuous and readable in direct sun, and Aina narrows a finger-worn interface to one action at a time with the confirmation kept explicit. For Zebra: does one part currently do both jobs, do state cues survive the lighting workers actually stand in, and does every gesture path keep a gloved hardware fallback?",
+    blurb: "Watches, rings, headsets and worn remotes — hardware that has to survive being on a body all day. The recurring question is how load, contact and power get divided between separate parts.",
+    // LEAD SHORTENED 2026-11-16 — the first sentence renders as this domain page's Key Takeaway
+    // and ran 15 words / 85 characters, over the 12-word, 80-character limit (§7.7). Pre-existing;
+    // caught by running the whole checklist this sync rather than only the entries W46 touched.
+    application: "What touches the body and what carries the load are separate parts. Logitech splits the load-bearing structure from the soft contact band so each can be tuned alone, Amazfit makes power recovery continuous and readable in direct sun, and Aina narrows a finger-worn interface to one action at a time with the confirmation kept explicit. For Zebra: does one part currently do both jobs, do state cues survive the lighting workers actually stand in, and does every gesture path keep a gloved hardware fallback?",
     cardImage: "https://us.amazfit.com/cdn/shop/files/T-Rex_Dual_Solar__Lifestyle_15.jpg?v=1789715426&width=3840" },
   { id: "robotics",   name: "Robotics",               accent: "#38BDF8", // sky blue
     // EVIDENCE FIX 2026-11-04 (V5) — "legible and correctable" was the whole problem here. In the
@@ -225,18 +407,30 @@ const DOMAINS = [
     // clean grasp, a low-confidence read and a required retry" paraphrased the apply card almost
     // word for word. Sharpa's analytical text supports only a hardware spec, and the report itself
     // cautions that more intensity levels do not prove a wearer can tell them apart.
-    blurb: "ANYmal's credentialed door access, Sharpa's haptic manipulation hardware, Skydio's docked F10 drone, DJI's Matrice 5T and Signode's five-class AMR portfolio all push autonomy past capability — into identity, readiness, shared-space signalling and whether what the machine brought back can be acted on by someone else.",
-    application: "Permission, readiness and visibility are becoming as designed as the motion itself. ANYmal joins the building's existing identity system instead of carrying its own, Skydio makes the dock establish readiness before a mission starts, and DJI is judged on whether the next person can act on what it brought back. For Zebra: a request-grant-deny path that reuses site access control, a cradle that establishes shift-readiness rather than displaying it, and a capture a worker can hand on without the scene being rebuilt.",
-    cardImage: "https://assets.newatlas.com/dims4/default/5b61d73/2147483647/strip/true/crop/6629x3480+0+469/resize/1200x630!/quality/90/?url=https%3A%2F%2Fnewatlas-brightspot.s3.ap-southeast-2.amazonaws.com%2F85%2Fc9%2Fd8d7d55441838b767a3d41fc73b9%2Fanymal-autonomous-inspection-power-grid.jpg" },
+    blurb: "Quadrupeds, drones, AMRs and humanoids — machines that move and decide on a floor shared with people. The recurring question is whether permission, readiness and the current task are readable without a dashboard.",
+    // LEAD SHORTENED 2026-11-16 — the previous first sentence ran 82 visible characters, over the
+    // 80 the heading policy sets for a Key Takeaway. Same claim, two characters of slack to spare.
+    application: "Permission, readiness and visibility are designed as deliberately as motion. ANYmal joins the building's existing identity system instead of carrying its own, Skydio makes the dock establish readiness before a mission starts, DJI is judged on whether the next person can act on what it brought back, and Apollo 2 puts task and charge state on the chest where a passing worker reads it rather than in a fleet console. For Zebra: a request-grant-deny path that reuses site access control, a cradle that establishes shift-readiness rather than displaying it, a capture a worker can hand on without the scene being rebuilt, and one fixed place on every machine where its current job reads at standing distance.",
+    // robotics: was the ANYmal power-grid frame from W39, pinned since the domain was created.
+    // The Ring Rover office shot was tried first and REVERTED the same day — it is the Ring Robotics
+    // report hero, so it was already on the dashboard as that report's card, and the ai domain card
+    // is a Ring camera, which would have put two Ring products in the eight-card strip. The rule is
+    // per-PAGE, and the dashboard is one page: a domain card competes with the report cards and the
+    // signal banners on it, not just with the other seven domain cards.
+    // DJI Matrice 5T (W45) is the frame nothing else on the dashboard uses. Apollo 2 and Ring were
+    // both blocked by their own report cards; Signode already appears in the lede thumbnail. A drone
+    // is named in this domain's own blurb, the shot is in-context with a person for scale, and it
+    // carries no burnt-in text.
+    cardImage: "https://www-cdn.djiits.com/dps/e58cff7e9706bb80687cef1f6067ebe9.png" },
   { id: "industrial", name: "Rugged Devices",     accent: "#b9ff43", // unchanged
-    blurb: "Panasonic's TOUGHBOOK 34 keeps gloved, physical interaction central to rugged field computing, separates structure from serviceable interface zones, and expresses both legacy compatibility and rugged durability through genuine structure rather than decoration.",
+    blurb: "Rugged handhelds and vehicle-mounted computers, built for gloves, drops and whole shifts. The recurring question is whether the physical interaction and the service path survive the conditions the device is specified for.",
     // "validates hardware buttons with real gloves" softened 2026-11-04 (V5): the report states
     // that gloves belong in the primary interaction, which is a design position. It does not
     // report a test, and saying it does would be inventing a verification result.
     application: "Gloved, physical interaction still belongs at the center of rugged computing. The TOUGHBOOK 34 treats glove operation as the primary input case rather than an accommodation, exposes a defined service bay instead of hidden disassembly, treats battery exchange as a state the workflow passes through, and protects existing accessory and connector investments even as it adopts new standards. Zebra can apply the same dedicated buttons, explicit service access, and genuine structural (not decorative) expression of both legacy compatibility and durability to its next rugged tablet.",
     cardImage: "https://cdn.mos.cms.futurecdn.net/xFyyTAsRTt2BeMc8uKE4nB-1200-80.jpg" },
   { id: "sports",     name: "Sports Industry",        accent: "#F76900", // Nike orange
-    blurb: "adidas' FREERIDER 2027 splits one footwear family into task-matched variants with micro-adjustable, inspectable wear zones.",
+    blurb: "Performance footwear and equipment that form part of a mechanical system and get adjusted mid-use. The recurring question is which geometry must be defended from styling, and whether adjustment is reachable in the real posture.",
     // EVIDENCE FIX 2026-11-04 (V5) — "glove-tested" removed: no test is reported. The analytical
     // heading is "Place adjustment where it can be reached", and the testing language belongs to
     // the apply cards ("Prototype adjustment with the whole load path", "Make correct fit visible
@@ -245,16 +439,19 @@ const DOMAINS = [
     application: "An interface can be defended against the rest of the design. adidas reserves the binding geometry, so the one surface that must mate with another product is off-limits to styling, puts adjustment where a hand reaches it on a slope, and treats grip, impact and attachment as separately engineered zones. For Zebra: which mount geometry is currently negotiable in a styling review and should not be, and is adjustment reachable in the posture the work is actually done in?",
     cardImage: "https://cdn.road.cc/wp-content/uploads/2026/09/Adidas-Freerider-Whistler.jpg" },
   { id: "mobile",     name: "Mobile & Handheld Devices", accent: "#FFD60A", // gold
-    blurb: "Samsung's Galaxy Tab, Amazon's Kindle and Alexa Tablets, Apple's foldable iPhone Duo, and OPPO's Find X10 Series with its factory Tilta Khronos rig all treat attachment, hinge and control placement as explicit, testable — and increasingly officially supported — decisions on a familiar handheld device, while Apple's hand-held iPad mini beside its touch MacBook Pro and Turtle Beach's flip-over stick modules push the same thinking further, letting the device's own shape and posture declare which input mode is live.",
+    blurb: "Phones, tablets, e-readers and controllers — held in the hand and reconfigured by accessories. The recurring question is whether the surface and the outline tell a hand where to go and which mode is live.",
     application: "Attachments and controls deserve their own tested state, not an assumption. Galaxy Tab, Kindle and OPPO treat attachment and control placement as decisions the maker owns, Turtle Beach lets the outline declare which input mode is live, and motorola designs finish, camera architecture and grip as one system so the surface says where the hand belongs. For Zebra: glove-test the control layout, design in-hand and docked as separate targets, and check a refined finish still tells a gloved hand where to hold.",
-    cardImage: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/P1011550.jpg?w=800" },
+    // mobile: was a Kindle frame from W40. motorola signature 27 (W45) replaces it — a phone held in
+    // the hand is the plainest statement of what this domain is, and it is six weeks newer.
+    cardImage: "https://assets.motorola.com/global/zeus_2027/motorola_signature_27_pdp_form_factor_03_d_.jpg" },
   { id: "consumer",   name: "Consumer Electronics", accent: "#14B8A6", // teal
-    blurb: "Logitech's Rally Bar 2 and Rally System 2 Pro turn room hardware into serviceable, managed modules with status visible before anyone walks in; Apple's HomeView extends shared-screen logic into the home; Sigma's fp2 and Teenage Engineering's EP-35 show a physical switch or handle can replace menu depth as the primary interface; and Sony's ELF-MN1 and Fujifilm's instax mini Evo 2 add two newer moves — delivering depth to one viewer with no worn optics at all, by steering light to each eye and tracking the observer, and placing a deliberate preview between capture and an irreversible print.",
+    blurb: "Cameras, audio, room systems and smart-home hardware, mostly installed once and then lived with. The recurring question is whether one physical element can carry the interface, and whether what needs servicing stays reachable.",
     // FABRICATION REMOVED 2026-11-08 — this blurb previously ended "publishing an optical
     // envelope as a hard dimension", the same invented Sony specification §4.12 removed from the
     // application paragraph below and §10.6 removed from the consumer domain trend. See those
     // notes for the word-count verification against the source report.
-    application: "Consumer electronics increasingly treat one physical element as the whole interface. Sigma's STILL/CINE switch and Teenage Engineering's handle replace menu depth, Logitech makes room status readable before anyone walks in, Apple adapts a shared screen to who is approaching, and Fujifilm puts a preview before film is spent. For Zebra: one dedicated switch instead of a menu, an availability signal readable from outside the room, and a review step in front of anything a worker cannot undo.",
+    // LEAD SHORTENED 2026-11-16 — 84 characters, over the 80-character Key Takeaway limit (§7.7).
+    application: "Consumer electronics treat one physical element as the whole interface. Sigma's STILL/CINE switch and Teenage Engineering's handle replace menu depth, Logitech makes room status readable before anyone walks in, Apple adapts a shared screen to who is approaching, and Fujifilm puts a preview before film is spent. SwitchBot adds the other half of that honesty — it says in millimetres where it will not fit, and keeps the part needing regular attention reachable without undoing the install. For Zebra: one dedicated switch instead of a menu, an availability signal readable from outside the room, a review step in front of anything a worker cannot undo, and a published mounting envelope a site can fail before it buys.",
     // FABRICATION REMOVED 2026-11-04 (V5). The previous version of this paragraph said Sony
     // "publishes its usable viewing distance, angle and ambient-light range as hard numbers and
     // derives the cradle angle and body size from them", and the Zebra line asked Zebra to
@@ -266,10 +463,66 @@ const DOMAINS = [
     // other defects in V5 came from quoting the wrong part of a real report, this one came from
     // nowhere in the report at all, so no heading-position check would ever have caught it. What
     // catches it is searching the source file for the specific words a claim depends on.
-    cardImage: "https://resource.logitech.com/w_1200,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/rally-bar-2/rally-bar2-video-bar-install-minutes-desktop-2.jpg?v=1" }
+    // CARD IMAGE CHANGED 2026-11-18, reported as "重點被擋住". The Logitech Rally Bar frame put its
+    // subject along the BOTTOM of the picture, under a wall-mounted TV. `.cat-img` crops with
+    // `object-position:center 22%` — it keeps the top of a frame, which is right for most product
+    // photography and wrong for this one — so the tile showed the television's black screen and
+    // what little of the bar survived was then covered by the name's gradient. The rule the tile
+    // relies on is "the subject sits in the upper half"; this image broke it.
+    // instax mini Evo 2, "Grip and lens": camera held in both hands, subject in the upper-middle
+    // where the crop keeps it and the gradient does not reach, with colour and depth behind it.
+    // Picked by rendering every unused consumer frame at the real 273×156 crop WITH the gradient
+    // and the name overlaid, rather than judging the full picture.
+    cardImage: "https://asset.fujifilm.com/www/py/files/2026-10/21d93ef851f936232bab9fea2fa6d6dc/news_14132_07_en.jpg" }
 ];
 
 const WEEKS = [
+  // ===== W46 ADDED 2026-11-16 from the promoted edition in 01_Weekly Report\W46. Six standalone
+  // topics, no launch event: nothing in the 9–15 Nov window produced two or more independently
+  // qualifying products from one real-world occasion. Dates are each product's own announcement
+  // date, taken from the Sources section of its own report, not the week label.
+  // Domains follow §8 of environment-overrides.md — the report's SUBJECT, not its argument. That
+  // is why Ring Robotics sits in `robotics` and not beside the W41 Ring camera family in `ai`:
+  // the subject here is a machine that drives and flies around a building, which is the same kind
+  // of subject as the Skydio F10 and the DJI Matrice 5T. Arlo's doorbell is the opposite case —
+  // a fixed camera, so it files under `ai` exactly where the W41 Ring cameras are.
+  {
+    id: "W46", year: 2026, label: "W46", dateRange: "9 – 15 Nov 2026",
+    indexFile: "weeks/W46/index.html",
+    zipName: "Weekly_Design_Trend_Report_2026-W46.zip",
+    reports: [
+      { title: "Ring Robotics", date: "2026-11-10", domain: "robotics",
+        blurb: "A camera can leave its fixed viewpoint, but a moving sensor must make its route, state and privacy legible.",
+        hero: "https://images.ctfassets.net/a3peezndovsu/6Di2XFU6XFz3bJY4D6ugrH/efab294cbf7be348742c5e84f6150213/ring_rover-cam_lifestyle_office_1500x1500.jpg",
+        file: "weeks/W46/01_ring-robotics.html",
+        tags: ["robotics","security","mobile camera","patrol","docking","privacy state","ring"] },
+      { title: "Samsung Intelligent Eyewear", date: "2026-11-12", domain: "ai",
+        blurb: "The November full-lineup disclosure pairs everyday frame choice with hands-free AI and explicit signals for people nearby.",
+        hero: "https://images.samsung.com/is/image/samsung/assets/us/mobile/intelligent-eyewear/1_us_narrative_ft03_pc_05-2.jpg?$1920_N_JPG$",
+        file: "weeks/W46/02_samsung-intelligent-eyewear.html",
+        tags: ["ai device","wearable","smart glasses","eyewear","frame choice","capture cue","samsung"] },
+      { title: "SwitchBot Curtain Track 4", date: "2026-11-11", domain: "consumer",
+        blurb: "A small retrofit mechanism makes installation, power access and manual override central to the experience.",
+        hero: "https://us.switch-bot.com/cdn/shop/files/1600_09_2x_80244139-bcc8-4ab0-996d-bdab805df601.webp?v=1794227537",
+        file: "weeks/W46/03_switchbot-curtain-track-4.html",
+        tags: ["smart home","consumer electronics","retrofit","installation","removable battery","manual override","switchbot"] },
+      { title: "Apptronik Apollo 2", date: "2026-11-10", domain: "robotics",
+        blurb: "A modular humanoid enters a factory kitting pilot where task state and operator handoff have to stay legible in real work.",
+        hero: "https://cdn.prod.website-files.com/6a0dd86942776facbc2f6ba4/6a2b2e86a38ddbf2ccdeb2e9_Apollo2-3PL-1.jpg",
+        file: "weeks/W46/04_apollo-2.html",
+        tags: ["robotics","humanoid","warehouse","task state","service access","shared aisle","apptronik"] },
+      { title: "Arlo Video Doorbell (3rd Gen)", date: "2026-11-11", domain: "ai",
+        blurb: "One entryway product family offers two power architectures, while its app turns a wide camera view into prioritized events.",
+        hero: "https://us.arlo.com/cdn/shop/files/Video_Doorbell_3rd_Gen-hero-desktop.jpg?v=1790635507&width=2800",
+        file: "weeks/W46/05_arlo-video-doorbell-3rd-gen.html",
+        tags: ["ai device","camera","doorbell","entryway","power architecture","event hierarchy","arlo"] },
+      { title: "Polestar Formula 2030", date: "2026-11-10", domain: "automotive",
+        blurb: "A future-facing cockpit gives physical controls, adaptable information and material honesty distinct roles in one legible driving experience.",
+        hero: "https://www.polestar.com/dato-assets/94392/1794218641-polestar-formula2030-17-d.png?fm=webp&only-imgix=true&fit=min&q=80&w=1000",
+        file: "weeks/W46/06_polestar-formula-2030.html",
+        tags: ["automotive","car","concept car","ev","electric vehicle","mode change","tactile controls","polestar"] }
+    ]
+  },
   // ===== W45 REPLACED 2026-11-10 — the promoted edition in 01_Weekly Report\W45 is a different
   // production ("Designing for Field Readiness"), not an update of the earlier one. Four standalone
   // topics plus the EICMA launch event, which is one card on the week index and lives at
@@ -579,6 +832,14 @@ const LAUNCH_EVENTS = [
   {
     id: "stellantis-mondial-2026", name: "Stellantis · Mondial de l'Auto 2026 Special Edition", shortName: "Stellantis Mondial 2026",
     dateRange: "11 Oct 2026", eventDate: "2026-10-11",
+    // WEEK KEY ADDED 2026-11-18. It was simply missing — EICMA has had one since it was created.
+    // Only events carrying a `week` are folded into that week's `totalReports`, so this event's six
+    // reports were absent from the week axis: the axis summed to 46 under a header reading 57, and
+    // W41 — the single densest evidence week in the corpus, six reports from one press day —
+    // rendered as one of the quietest columns on the strip. Every momentum sparkline on the site is
+    // drawn against that axis, so the error was not confined to one chart.
+    // 11 Oct 2026 falls inside W41 (5–11 Oct); it is the last day of it.
+    week: "W41",
     indexFile: "launch-events/Stellantis_Mondial_2026/index.html",
     zipName: "Stellantis_Mondial_2026_Six_Full_Reports.zip",
     reports: [
@@ -681,14 +942,46 @@ const TOP_SIGNALS = [
     heroOverride: "https://ferrari-cdn.thron.com/delivery/public/image/ferrari/d368f0c9-8dde-433a-b097-26b77421e8b6/bocxuw/std/1920x1080/d368f0c9-8dde-433a-b097-26b77421e8b6?quality=high"
   },
   {
+    // MERGED 2026-11-16 (W46) — Ring Robotics and Samsung Intelligent Eyewear added rather than
+    // opening a second capture-cue entry. Both make the same move this signal already names: the
+    // cue is carried by the product's shape or its range, not by an indicator the firmware owns.
+    // Cited from analytical sections only. Ring Robotics: "Docking closes the camera" and "Two
+    // forms make two states clear". Samsung: the section statement "Frame styling must acknowledge
+    // embedded sensing", under it "Bold frames expose hardware" and "One platform supports
+    // different looks" (six Gentle Monster styles and three Warby Parker designs), and from
+    // "Controls sit along the arm" the one capture fact the report states as Samsung's own spec:
+    // an outward-facing LED signals image capture. The stronger bystander claim — that covering
+    // the light stops the camera — is NOT cited: this report does not make it, and its own
+    // bystander language, "Signal capture to both sides", is apply card 03, a recommendation.
     keyword: "Visible Sensing State",
     domain: "ai",
     statement: "Bystander legibility moved from an indicator-light decision to a product-line decision — the answer is a different SKU, not a brighter LED.",
-    detail: "Privacy LEDs are a decade old. What is new is Meta shipping an entire camera-free Ray-Ban line whose design argument is the absent lens corner, and Ring answering with a physical lens boundary rather than an app toggle.",
-    evidence: ["Ray-Ban Meta Audio", "Ray-Ban Meta (Gen 3)", "Ring 2026 Camera Family"],
+    detail: "Privacy LEDs are a decade old. What is new is Meta shipping an entire camera-free Ray-Ban line whose design argument is the absent lens corner, and Ring answering with a physical lens boundary rather than an app toggle. W46 extends it in two directions. Ring's Drone Cam sits in a dock that covers its camera, so the off state is a position anyone can see rather than an icon to interpret. Samsung spreads one sensing platform across thirty frames whose thick temples show the equipment instead of disguising it, with an outward LED for capture.",
+    evidence: ["Ray-Ban Meta Audio", "Ray-Ban Meta (Gen 3)", "Ring 2026 Camera Family", "Ring Robotics", "Samsung Intelligent Eyewear"],
     // Ray-Ban Meta Audio · "No lens-corner camera eye" — the absent lens is the whole argument,
     // and it keeps this off the shot the priority card already uses.
     heroOverride: "https://cdn.mos.cms.futurecdn.net/swENUj8ALYwGWMt996y6Rd-1200-80.jpg"
+  },
+  {
+    // ===== NEW 2026-11-16 (W46). Two independent brands, so it clears the OBSERVATIONS bar below
+    // and belongs here rather than there. Deliberately NOT merged into "Visible Sensing State":
+    // that signal is about whether a sensor is capturing, this one is about what a machine is
+    // doing and where it is going — Apollo 2 has no privacy argument at all, it has a kitting
+    // task and an aisle full of people. Deliberately NOT merged into "State Has to Be Readable
+    // Mid-Task" either: that entry is about the operator's own body carrying their state, this is
+    // about everyone else in the room reading a machine's.
+    // Analytical sections only. Ring Robotics: "A camera becomes a visible actor", "The screen
+    // announces its role", "Flight is deliberately noticeable", "Light and display signal
+    // escalation", "Two forms make two states clear". Apollo 2: "The chest gives status a home",
+    // "The face simplifies robot intent", "An aisle is a shared space". The Zebra-facing versions
+    // of this ("Map robot routes to people", "Show an unambiguous pause") are apply cards in those
+    // reports and are not cited as shipped behaviour.
+    keyword: "The Robot's Body Reports Its Task",
+    domain: "robotics",
+    statement: "A machine working beside people carries its state on its own body, where the floor can read it.",
+    detail: "Ring turns the Rover's front display outward, toward the people in the room rather than the remote owner, and says the screen and LEDs indicate recording; the Drone's propellers are audible by design, so operation is apparent indoors. Apollo 2 gives status a fixed home on the chest and simplifies the face so intent reads at a glance in a shared aisle. In both, the person nearby is the audience, not an operator at a dashboard.",
+    evidence: ["Ring Robotics", "Apptronik Apollo 2"],
+    heroOverride: "https://images.ctfassets.net/a3peezndovsu/UQhuO0fanFFT9AZwTGZPH/4e1ed5935eeaf7b2da1618cddd88770c/ring_rover-cam_5050_patrolling_1500x1500.jpg"
   },
   {
     // EVIDENCE FIX 2026-11-04 (V5) — the old title "Credentialed, Legible Autonomy" fused a real
@@ -710,6 +1003,58 @@ const TOP_SIGNALS = [
     detail: "ANYmal's breakthrough is permission rather than mobility: credential, access policy and door motor are described as one audited interaction, using installed dormakaba ED100/250 operators rather than a robot-specific door. Skydio's F10 makes readiness a property the dock establishes before a mission is allowed to start. Whether that authorisation state is also made legible to bystanders is, so far, a recommendation in both reports — not a shipped feature.",
     evidence: ["ANYmal Door Access", "Skydio F10 Lightrunner"],
     heroOverride: "https://www.gevernova.com/news/sites/default/files/inline-images/aui-anybotics_0.png"
+  },
+  {
+    // ===== NEW 2026-11-18. The site had no AI entry anywhere above the domain pages — raised as
+    // 「趨勢的走向，或是zebra該著墨的東西都沒有ai相關的嗎?」 — and the answer turned out to be that
+    // the pattern was already in the corpus, split into one-report fragments in two different
+    // domain silos where neither could ever clear the two-brand bar:
+    //   · DOMAIN_TRENDS.mobile    "AI Output Stays Inspectable Beside the Source"  — 1 report
+    //   · DOMAIN_TRENDS.wearables "One Action at a Time, Confirmed Explicitly"     — 1 report
+    // and a third case, motorola's "Contextual AI interface", which was in NO trend entry at all:
+    // that report's only entry, "Material Tells the Hand Where to Go", is about grip and finish.
+    // Three independent brands once merged, so this clears the bar the way "The Robot's Body
+    // Reports Its Task" (2) does. Exactly the failure the cross-domain fragment scan exists for.
+    // The two domain-page entries are deliberately KEPT: a domain trend is that domain's own
+    // reading of its own reports, and deleting them would strip the Mobile and Wearables pages of
+    // a finding that is genuinely theirs. This entry is the cross-domain statement they add up to.
+    //
+    // ALL THREE CITATIONS ARE ANALYTICAL, checked by reading the section each card sits in:
+    //   · Galaxy Tab S12 Ultra — "AI output remains beside source material", section 02
+    //     (Technology / Product Architecture), card 1 of 4: "The paired panes put an AI-produced
+    //     summary next to material a person can inspect. This layout can make acceptance or
+    //     correction more deliberate because the source is still visible."
+    //   · motorola signature 27 — "Contextual AI interface", section 03 card 4 of 4: "proximity
+    //     can reduce app switching, but it also risks making uncertain output look final. Clear
+    //     labels and a reversible action path are essential whenever the interface proposes a
+    //     consequential step."
+    //   · Aina Ring — section 02's own statement is "Make adaptive actions visible before
+    //     execution"; under it, "The user must still recognize which mode has control before a
+    //     blind flick" and "leaving a call needs stronger protection than toggling mute."
+    // NOT cited, and each is an apply card in its own report: Galaxy Tab's "Keep AI output
+    // inspectable", Aina's "Keep field approvals brief and reversible", Ray-Ban Gen 3's
+    // "State visibility". The wording below is taken only from the analytical passages above.
+    //
+    // HONESTY NOTE the Samsung report makes about itself and this entry inherits: the Note Assist
+    // image "illustrates a workflow intention, not measured accuracy of the generated text". This
+    // is a claim about how the interface is arranged, not about whether the output is any good.
+    //
+    // NEWNESS: passes. None of this was sayable in 2023 — it is about generated output appearing
+    // in the industrial-design and interface story of shipping hardware, with the act of accepting
+    // it treated as a separate design problem from producing it.
+    //
+    // MOMENTUM will render "No new case this week": the cases are W40 and W45, none in W46. That
+    // is accurate and should be left alone rather than padded with a W46 report.
+    // No heroOverride — with 3 reports this sits in the index, not in a card, and `signalHero`
+    // falls back to the newest evidence hero if it ever rises into the top three.
+    // DOMAIN: follows the SUBJECTS, not the argument — two of the three products are tablets and
+    // phones. It is not filed under `ai`, which on this site is named "Sensing & Capture Devices"
+    // and is about who can see you, not about generated output.
+    keyword: "A Suggestion Is Shown Beside Its Source",
+    domain: "mobile",
+    statement: "Where a product proposes an action, the source stays in view and accepting it is made a separate, reversible step.",
+    detail: "Samsung's Note Assist splits the screen so a generated summary sits beside the material it came from, which its report reads as making acceptance or correction more deliberate because the source is still visible. motorola places assistant output next to the active task and names the cost in the same breath: proximity cuts app switching but risks making uncertain output look final. Aina narrows a worn agent to one proposed action and keeps the confirmation explicit. All three separate producing an answer from accepting it.",
+    evidence: ["Galaxy Tab S12 Ultra", "motorola signature 27", "Aina Ring"]
   },
   {
     keyword: "Concealed Systems, Legible at the Point of Use",
@@ -836,7 +1181,10 @@ const THEMES = [
       { report: "Teenage Engineering EP-35",    at: "The handle is the dashboard",                   layer: "visible-structure", note: "An existing structural part carries the controls, rather than a control area being added. 'One knob swaps the whole effect' is the mode-setting case." },
       { report: "instax mini Evo 2",            at: "Rotary choice",                                 layer: "product-fact",      note: "Physical rotary selection kept alongside a live digital preview — the two are not presented as alternatives." },
       { report: "Kindle 2026 Family",           at: "Buttons live in an optional cover",             layer: "product-fact",      note: "THE INFORMATIVE EXCEPTION. Amazon agreed the control was worth keeping and then refused to pay for it on the base device, moving it into an accessory. Any Zebra read of this theme has to account for this case, not just the ones that confirm it." },
-      { report: "Apple iPad mini and MacBook Pro", at: "Retain physical control paths",              layer: "product-fact",      note: "Touch was added to the MacBook and the keyboard, trackpad and Touch ID key all stayed — addition rather than replacement." }
+      { report: "Apple iPad mini and MacBook Pro", at: "Retain physical control paths",              layer: "product-fact",      note: "Touch was added to the MacBook and the keyboard, trackpad and Touch ID key all stayed — addition rather than replacement." },
+      // ===== W46 ADDED 2026-11-16 =====
+      { report: "Polestar Formula 2030", at: "The console keeps controls in reach", layer: "product-fact",
+        note: "Eight physical controls sit directly below the portrait screen, and Polestar says they can be exchanged and reassigned — the selection rule is handed to the owner rather than frozen at design time. 'The tunnel concentrates mode choice' keeps the mode shifter distinguished from the functions beside it." }
     ],
     // `inferenceShort` and `limitShort` are the one-line versions shown on the dashboard; the full
     // `inference` and `limits` below are for V5_CHANGES.md and for anyone auditing the theme.
@@ -850,8 +1198,8 @@ const THEMES = [
       { case: "Galaxy Tab S12 Ultra", why: "'Keyboard changes working posture' is about posture, not about which action keeps a control. Belongs to the posture theme." },
       { case: "Turtle Beach Stealth Flip Wireless Controller", why: "Controls are relocated and duplicated, not selected — the report is about reconfiguration, not about what earns a control." }
     ],
-    counts: { reports: 15, brands: 12, families: 15, events: 13,
-      note: "Alfa Romeo, Peugeot and Citroën are three Stellantis marques from one Mondial press day; Kindle is Amazon. W45 adds Yamaha and Aina, each on its own occasion. Twelve independent brands across thirteen independent occasions is the honest figure." },
+    counts: { reports: 16, brands: 13, families: 16, events: 14,
+      note: "Alfa Romeo, Peugeot and Citroën are three Stellantis marques from one Mondial press day; Kindle is Amazon. W45 adds Yamaha and Aina and W46 adds Polestar, each on its own occasion. Thirteen independent brands across fourteen independent occasions is the honest figure." },
     limits: "Ten of the fifteen are consumer or automotive products, where a physical control is also a premium cue — so some of this may be priced rather than reasoned. TOUGHBOOK and the A1 are the only cases where the stated driver is a working constraint (gloves) rather than feel. The corpus still contains no case of a brand REMOVING a control, so the rule is derived only from survivors; that is a survivorship bias we cannot correct from these reports. A deletion case was briefly recorded here from an earlier W45 edition and was withdrawn on 2026-11-10 when that edition was replaced — the replacement Yamaha report does not describe a clutch lever or gear pedal being removed.",
     zebraQuestions: [
       "Zebra handhelds already carry six or more remappable keys, so the question is not whether to have physical controls — it is whether the current assignment follows the rule these products follow. Which Zebra key is spent on a mode rather than a momentary action?",
@@ -898,6 +1246,13 @@ const THEMES = [
     problem: "Parts wear out and get swapped mid-shift. Is that access hidden behind a panel, or part of the exterior design?",
     productPractice: "The split line, the service bay and the replaceable part are located, shaped and finished deliberately — and in several cases are visible from the outside rather than concealed.",
     cases: [
+      // ===== W46 ADDED 2026-11-16 — two cases, and the first genuinely new ones since W44. Both
+      // are access-PATH cases rather than styled-boundary cases, which shifts the balance the
+      // `inference` below describes: that split is now four to two rather than three to two.
+      { report: "SwitchBot Curtain Track 4", at: "Charge without removing the motor", layer: "product-fact",
+        note: "The battery module detaches while the motor stays on the rail, so the frequent service action is separated from undoing the installation — the same decision Logitech makes at room scale, taken on a device mounted above head height." },
+      { report: "Apptronik Apollo 2", at: "A rear pack exposes service intent", layer: "visible-structure",
+        note: "The battery module and back structure are presented as their own zone, with swappable batteries and opportunity charging as the stated uptime strategy. 'The joints are separate service objects' extends it to the actuators — though the report is explicit that a photograph cannot prove maintainability." },
       // Sony MDR-3R case removed 2026-11-10 — that report is not in the replacement W45 edition,
       // so this theme gains nothing from W45 and returns to its earlier six cases.
       { report: "Panasonic TOUGHBOOK 34", at: "Battery exchange is a workflow state",      layer: "product-fact",      note: "The strongest framing in the corpus: a swap is treated as a state the workflow passes through, not a maintenance event. 'Map service zones across the rear' locates them deliberately." },
@@ -909,14 +1264,14 @@ const THEMES = [
     ],
     inferenceShort: "Two different things sit here: designing the access path, and styling the boundary so the split is readable. Only Panasonic and Logitech do both.",
     limitShort: "Defined service bays are category baseline for rugged and conferencing hardware, not a change — and EU repair law requires none of this to be visible.",
-    inference: "Two genuinely different things are present and should not be merged: Panasonic, Logitech and Ring design the access PATH (where you reach, in what orientation, with what tool), while Citroën and adidas style the BOUNDARY so the separation is readable. Only Panasonic and Logitech do both.",
+    inference: "Two genuinely different things are present and should not be merged: Panasonic, Logitech, Ring and now SwitchBot design the access PATH (where you reach, in what orientation, with what tool), while Citroën and adidas style the BOUNDARY so the separation is readable. Apptronik does both, which until W46 only Panasonic and Logitech did. SwitchBot is the sharpest version of the path case in the corpus, because the device is mounted above head height and the routine action — charging — is the one that had to be freed from the installation.",
     notSupporting: [
       { case: "Logitech Zone Vibe Pro", why: "Cited in V4's aesthetic section for publishing spare parts. That is an apply card, not an observed practice. The product's visible split lines remain valid for the aesthetic claim only." },
       { case: "OPPO Find X10 Series",   why: "A deliberate, prominent seam between two glass finishes with nothing serviceable behind it — the direct falsifier for equating a visible seam with repairability." },
       { case: "Galaxy Tab S12 Ultra",   why: "'Orderly accessory seams' are alignment aesthetics." }
     ],
-    counts: { reports: 6, brands: 5, families: 6, events: 6,
-      note: "WEAKEST THEME IN THE SET. Two of the six reports are the same Logitech Rally family from one launch, so this is really five independent brands across five occasions." },
+    counts: { reports: 8, brands: 7, families: 8, events: 8,
+      note: "Was the weakest theme in the set at six reports; W46 adds SwitchBot and Apptronik, both new brands on their own occasions. Two of the eight are still the same Logitech Rally family from one launch, so this is seven independent brands across seven occasions." },
     limits: "Rugged and conferencing hardware have had defined service bays for years — for TOUGHBOOK in particular this is category baseline, not a change, so it cannot evidence a new direction. EU regulation (ESPR 2024/1781, Right to Repair 2024/1799 applying 31 Jul 2026, Battery Regulation 2023/1542 Art.11 from Feb 2027) explains why parts must come apart but requires none of this to be VISIBLE — a hidden screw and a PDF is full compliance. The voluntary move past compliance is the only part that is news, and it rests on Citroën and adidas, who are the two weakest cases technically.",
     zebraQuestions: [
       "Panasonic's 'battery exchange is a workflow state' is directly testable against Zebra hot-swap: time a shift-change swap in the real posture — gloved, device on a strap, in a cold store — rather than at a desk. Does the current access path survive that?",
@@ -944,18 +1299,21 @@ const THEMES = [
       { report: "iPhone Duo",             at: "The opened product reads as a held workspace", layer: "analyst-inference", note: "Posture claim about the open state; the hinge detents define which postures are actually supported." },
       { report: "Galaxy Tab S12 Ultra",   at: "Keyboard changes working posture",          layer: "product-fact",      note: "The accessory changes the posture, so posture becomes a configuration rather than a property." },
       { report: "adidas FREERIDER 2027",  at: "Design the contact patch intentionally",    layer: "product-fact",      note: "The only case in the corpus where the contact patch is also the performance surface." },
-      { report: "Sigma fp2",              at: "A hinge changes the shooting silhouette",   layer: "product-fact",      note: "A screen hinge that changes which posture the camera supports — the lightest case here." }
+      { report: "Sigma fp2",              at: "A hinge changes the shooting silhouette",   layer: "product-fact",      note: "A screen hinge that changes which posture the camera supports — the lightest case here." },
+      // ===== W46 ADDED 2026-11-16 =====
+      { report: "Samsung Intelligent Eyewear", at: "The temple carries the load", layer: "product-fact",
+        note: "The electronics sit where an ordinary glasses arm would be thin, and Samsung cites roughly 41 grams. The report refuses to go further than that — it says a photograph cannot establish balance or pressure, and that the real question is how the weight distributes behind the ear across a full shift. That is the same unanswered question this theme's limits already record." }
     ],
     inferenceShort: "Two strategies get confused: redistribute the mass on the body, or move it off the body onto a tether. The second trades comfort for cable management.",
-    limitShort: "Eleven of thirteen are worn by choice for an hour or two. Nothing here is measured over a full shift, including the claim that geometry beats weight.",
+    limitShort: "Twelve of fourteen are worn by choice for an hour or two. Nothing here is measured over a full shift, including the claim that geometry beats weight.",
     inference: "Two distinct strategies are visible and are often confused: REDISTRIBUTE the mass on the body (Meta's temples, Logitech's contact band, Turtle Beach's grip) or REMOVE it from the body entirely onto a tether (XREAL's puck, Meta's handheld compute). The second trades a comfort problem for a cable-management problem, and no report in this corpus evaluates that trade over a full shift.",
     notSupporting: [
       { case: "Sony ELF-MN1",  why: "A fixed desk display. 'Track the observer position' adapts the image to the viewer, which is not a load or posture decision about a worn product." },
       { case: "Amazfit T-Rex Dual Solar", why: "'Charge while worn' is a power-path decision; the report makes no load or fit argument." }
     ],
-    counts: { reports: 13, brands: 9, families: 12, events: 10,
-      note: "Meta supplies three of the thirteen, all from the same W39 cycle, and XREAL two. Nine independent brands — and the wearables evidence is more concentrated than the report count suggests." },
-    limits: "Eleven of thirteen are consumer products worn by choice for an hour or two. Zebra's wearables are worn under instruction for eight to twelve hours, and no report here measures anything over a full shift — the Ray-Ban Gen 3 report says geometry beats weight but does not test it over time either. The tether strategy in particular is unvalidated for a working environment: moving mass to a belt pack is only a win if the cable survives the shift.",
+    counts: { reports: 14, brands: 10, families: 13, events: 11,
+      note: "Meta supplies three of the fourteen, all from the same W39 cycle, and XREAL two. W46 adds Samsung on its own occasion. Ten independent brands — and the wearables evidence is still more concentrated than the report count suggests." },
+    limits: "Twelve of fourteen are consumer products worn by choice for an hour or two. Zebra's wearables are worn under instruction for eight to twelve hours, and no report here measures anything over a full shift — the Ray-Ban Gen 3 report says geometry beats weight but does not test it over time either, and Samsung's own W46 report names the full-shift question without answering it. The tether strategy in particular is unvalidated for a working environment: moving mass to a belt pack is only a win if the cable survives the shift.",
     zebraQuestions: [
       "The 'geometry beats weight' claim is the single most testable thing in this corpus and it contradicts how wearable comfort is usually specified. Run it: same mass, different load paths, measured at hour eight rather than at fitting.",
       "For the tether strategy, the open question is not comfort but failure — what does a belt-pack cable do across a full shift of reaching, twisting and docking? Compare against a self-contained unit on the same route.",
@@ -968,6 +1326,13 @@ const THEMES = [
     problem: "Not whether a product shows its state, but who the cue is for: the operator, a bystander, or a remote supervisor.",
     productPractice: "The cue is placed, sized and chosen according to the reader. Operator cues sit in the working sightline; bystander cues are readable across a room and increasingly structural rather than electronic; fleet cues are aggregated onto a dashboard and verified before the work starts.",
     cases: [
+      // ===== W46 ADDED 2026-11-16 =====
+      { report: "Ring Robotics", at: "The screen announces its role", layer: "product-fact", reader: "bystander",
+        note: "The Rover's front display is pointed at the people in the room rather than at the remote owner, and Ring says the screen and LEDs indicate recording. The report's own caution is the useful part: it has to stay readable at ordinary standing distance and tell patrol, live view, sleep and alarm apart." },
+      { report: "Apptronik Apollo 2", at: "The chest gives status a home", layer: "product-fact", reader: "bystander",
+        note: "A fixed panel on the robot's chest, which Apptronik says can carry task progress, charging and battery state for people nearby — so a worker in the aisle sees ready, paused or needs-help without opening a fleet console. A location, not an indicator." },
+      { report: "Samsung Intelligent Eyewear", at: "Controls sit along the arm", layer: "product-fact", reader: "bystander",
+        note: "An outward-facing LED signals image capture — the cue is aimed at the person opposite, not the wearer. Weaker than Ring's moulded boundary or Meta's deleted camera: this one is electronic, so firmware still owns it." },
       // ===== W45 ADDED 2026-11-10 =====
       { report: "Honda RN0", at: "Put the readout where a glance is possible", layer: "product-fact", reader: "operator",
         note: "The display is mounted in the frame at the top tube rather than clamped to the handlebar, so the state can be read at the moment movement permits a glance." },
@@ -994,7 +1359,7 @@ const THEMES = [
     ],
     inferenceShort: "The shift is that the bystander cue is becoming structural rather than electronic — and a moulded or absent feature cannot be disabled by firmware.",
     limitShort: "The three-reader split is our reading, not one any report draws. And none of them tests whether a cue is actually read correctly under workload.",
-    inference: "The interesting shift is not that products report state — they always have — but that the bystander cue is increasingly STRUCTURAL rather than electronic. Ring moulds the boundary, Meta deletes the camera, Ferrari uses body geometry. A moulded or absent feature cannot be disabled by firmware, which is a stronger guarantee than an indicator and is the actual news here.",
+    inference: "The interesting shift is not that products report state — they always have — but that the bystander cue is increasingly STRUCTURAL rather than electronic. Ring moulds the boundary, Meta deletes the camera, Ferrari uses body geometry. A moulded or absent feature cannot be disabled by firmware, which is a stronger guarantee than an indicator and is the actual news here. W46 sharpens the split rather than simply confirming it: Ring's Drone Cam dock covers the lens and Apollo 2 gives status a physical location, but Samsung's capture cue is an ordinary outward LED. The structural version is where the brands with the most to prove are going; it is not yet the default.",
     notSupporting: [
       { case: "Alpine A310 VISION",  why: "'Use activation to reveal identity' is brand recognition — the older job, not state reporting." },
       { case: "Teenage Engineering EP-35", why: "'A hatch that lights itself' is task illumination." },
@@ -1004,8 +1369,8 @@ const THEMES = [
       // the theme, so it appears in `cases` instead. A report is judged claim by claim, not
       // admitted or rejected whole — the light audit lives on the OBSERVATIONS entry.
     ],
-    counts: { reports: 15, brands: 15, families: 15, events: 15,
-      note: "Every case is a different brand on a different occasion — the only theme in the set with no shared-parent or shared-event discount. That independence, not the report count, is why this is the strongest theme here. Was 15 until the Red Bull RB22 report was withdrawn on 2026-11-08, and is back to 15 with Honda RN0 from W45 — a different brand on a different occasion again, so the no-discount property still holds. It remains the widest-sourced theme in the set." },
+    counts: { reports: 18, brands: 17, families: 18, events: 18,
+      note: "W46 adds three cases and costs this theme its perfect-independence property: Ring Robotics is a second Ring report, so eighteen reports are seventeen brands. The occasions are still all distinct — the Rover and Drone Cams were announced on 10 Nov, three weeks after the W41 camera family — and Apptronik and Samsung are both new brands here. Still the widest-sourced theme in the set, now with one shared-parent discount rather than none." },
     limits: "The three-reader split is OUR reading, not a distinction any report draws itself; no product in the corpus is described as designing different cues for different audiences deliberately. The bystander group is also the one most shaped by regulation and platform policy rather than design choice, which this corpus cannot separate. And none of these reports measures whether a cue is actually read correctly under workload — Sharpa's report is the only one that raises the question, and it raises it as a caution.",
     zebraQuestions: [
       "Zebra's scan feedback is addressed almost entirely to the operator. Who else in a store or DC needs to read a device's state — the supervisor, the customer being scanned near, the person sharing the aisle with a robot — and is any cue currently aimed at them?",
@@ -1028,7 +1393,33 @@ const UNCLUSTERED = [
   { report: "Jetta M6",               why: "Exterior crease, aero target and packaging. Its two interior headings are screen layout, not control selection. Cited in V3/V4 for a dial that only exists in an apply card." },
   { report: "Renault E-Space Concept", why: "Interior volume and spatial organisation. 'Position information separately from touch' is close to the controls theme but is about screen architecture, not about which action keeps a control." },
   { report: "Sony ELF-MN1",           why: "A fixed single-viewer desk display. Was wrongly cited under compute-offload in V3/V4; its report argues the opposite ('without a headset'). Genuinely interesting and genuinely unlike anything else in the corpus." },
-  { report: "ANYmal Door Access",     why: "CANDIDATE SIXTH THEME, not a miss. Its real subject — a robot designed around installed plant infrastructure rather than the reverse — rhymes with Logitech's 'Mount geometry reduces labor' and Ring's 'Power choice changes installation'. Three cases across three brands is enough to watch and not enough to declare. Revisit next period rather than forcing it into one of the five." }
+  // `why` IS RENDERED COPY. It prints on the domain pages under "Reports here that feed no theme",
+  // where every other row is one clean line. This entry had grown into a 2,509-character internal
+  // audit — "three versions of this file", a reopen threshold, brand counts — set at 12px and 261px
+  // tall on the Robotics page, the longest prose block there, attached to the least important
+  // section. A designer is not the audience for our editorial process. The audit now lives in this
+  // comment and in V5_CHANGES.md; the line below is what the reader gets.
+  //
+  // CANDIDATE SIXTH THEME — audited and closed 2026-11-17, not promoted. Two faults in the old note:
+  // (1) the claim it was NAMED after, ANYmal's "Design around installed infrastructure", is an APPLY
+  // card and was never admissible; the analytical card that carries the idea is "Existing plants are
+  // the design constraint". (2) Logitech does not belong — "Mount geometry reduces labor" is about
+  // one-person installation effort, not about conforming to infrastructure the maker does not
+  // control. That leaves FOUR independent brands, not five: SwitchBot, Arlo, Ring 2026 Cameras,
+  // ANYmal. Four is below the weakest theme in the set (service-access, seven brands), and the broad
+  // reading fails the newness test anyway — retrofit hardware sized to existing rails was sayable
+  // twenty years ago. The genuinely new, narrower claims are already carried by two DOMAIN_TRENDS
+  // entries from the same sync: consumer "Fit Is Published Before the Purchase" and ai "The Power
+  // Path Decides What Gets Recorded". REOPEN only if a later week adds two further independent
+  // brands doing one of those two things; at six brands it clears the bar and those two domain
+  // trends should be merged up into it.
+  { report: "ANYmal Door Access",     why: "Its subject is a robot shaped around the plant it has to work in — existing doors, clearances and service lanes — rather than a plant adapted to the robot. Two other reports rhyme with it; no theme here holds it." },
+  // ===== W46 2026-11-16 =====
+  // Same treatment as ANYmal above — the process half moved out of the rendered field.
+  // It was the second-strongest case for that candidate sixth theme. Its narrower claim is published
+  // as the ai DOMAIN_TRENDS entry "The Power Path Decides What Gets Recorded"; staying unclustered
+  // is the right outcome for the report itself.
+  { report: "Arlo Video Doorbell (3rd Gen)", why: "The power path chosen at installation decides what the device is allowed to record. Feedback is the closest theme and still does not fit — a pre-event clip is a capability difference, not a cue aimed at anyone." }
 ];
 
 // ===== DESIGN BRIEFS — THE "I AM WORKING ON X" MODE ==========================================
@@ -1258,9 +1649,28 @@ const AESTHETIC_TRENDS = [
     // EP-35 dropped from `evidence`. "Color-code cables by function" is one of that report's four
     // What-Zebra-Can-Apply cards, so it was a suggestion to Zebra being quoted as something TE
     // ships. The remaining five cases are all observed in analytical sections.
-    detail: "Renault colour-codes cabin zones; Ferrari F80 marks the primary operator's seat. Signode makes AMR colour a configurable safety signal, and Antigravity leaves the watch one colour cue.",
-    evidence: ["Renault E-Space Concept", "Ferrari F80", "Signode AMR Portfolio", "Antigravity A1 Follow Me Bundle", "Kindle 2026 Family"],
+    // MERGED 2026-11-16 (W46) — Polestar Formula 2030 added. Both of its colour statements are
+    // analytical: "A quiet weave carries the accent" (a measured yellow on a pale woven surface,
+    // marking a functional zone without a bright colour field) and, on the steering wheel, "the
+    // visible yellow detail is an orientation cue". Same referent logic this entry already names.
+    // NOT added to "Seams Are Drawn Now, Not Erased": Apollo 2 does draw a dark joint mechanism
+    // against white protective panels, but the report's reason is reading moving parts apart from
+    // fixed ones, not that the part behind the boundary comes off. Different claim, left out.
+    detail: "Renault colour-codes cabin zones; Ferrari F80 marks the primary operator's seat. Signode makes AMR colour a configurable safety signal, Antigravity leaves the watch one colour cue, and Polestar spends a single measured yellow on the zone a hand reaches for.",
+    evidence: ["Renault E-Space Concept", "Ferrari F80", "Signode AMR Portfolio", "Antigravity A1 Follow Me Bundle", "Kindle 2026 Family", "Polestar Formula 2030"],
     mediaRatio: "16/9",
+    // NO POLESTAR IMAGE, deliberately — added 2026-11-16, removed the same day. The frame that
+    // carries this claim ("A quiet weave carries the accent", 28-d) is 960×1704 and the other
+    // one that could ("Hands keep a direct control surface", 08-d) is 640×1136. Both portrait.
+    // `.aes-media` is `align-self:stretch` inside a flex row and the tiles take their height
+    // from the row, so one portrait source drove this feature's row to 804px against the ~440px
+    // of its neighbours: four 224×399 tiles, a stretched text column and a void under the copy.
+    // The landscape Polestar frames do not show the accent — 12-d is the harness, not "the zone
+    // a hand reaches for" — so substituting one would illustrate a different claim. Polestar
+    // stays in `evidence` and in `detail`; the gallery keeps the four shots that do show their
+    // own claim. aesMedia() caps at 4 anyway, so adding a fifth only displaced Kindle.
+    // Rule for next time: check the natural aspect of a gallery image before adding it. The
+    // masthead note at the end of this file says the same thing about a different slot.
     images: [
       // Ferrari F80 · "Color can identify the primary operator"
       "https://www.topgear.com/sites/default/files/2025/07/12-Ferrari-F80-review-2025.jpg",
@@ -1429,10 +1839,22 @@ const DOMAIN_TRENDS = {
     { keyword: "Settings Follow the Person, Not the Seat", statement: "A position is stored as a named situation that travels with the passenger to the next journey, instead of an adjustment lost when they leave the seat.", application: "Carry a worker's handedness, grip and trigger sensitivity between shared Zebra devices the way language, display and sound already travel, so a shift change does not restart the setup.", evidence: ["Singapore Airlines Next-Generation Cabins"] },
     // MERGED 2026-11-10 — Yamaha RW700 EXPLORE added rather than opening a separate W45 entry: its own
     // takeaway is "make mode changes physical and unmistakable", which is this claim, not a new one.
-    { keyword: "The Dial That Declares Drive Mode", statement: "The physical control that survives a screen-first cabin is specifically the one that declares which mode is active — not the one that is merely convenient.", application: "Give vehicle-mounted computers and cradles one distinctly shaped physical control that states the device's operating mode, rather than a touch target that has to be woken and read before the mode is known.", // EVIDENCE FIX 2026-11-04 (V5) — Jetta M6 removed here for the same reason as in the top signal
+    // HEADLINE SHORTENED 2026-11-16 — 32 combined words against a recomputed homepage ceiling of
+    // 27 (§7.7). Claim unchanged; the dropped qualifier is still carried by `application`.
+    { keyword: "The Dial That Declares Drive Mode", statement: "The control that survives a screen-first cabin is the one that declares which mode is active, not the convenient one.", application: "Give vehicle-mounted computers and cradles one distinctly shaped physical control that states the device's operating mode, rather than a touch target that has to be woken and read before the mode is known.", // EVIDENCE FIX 2026-11-04 (V5) — Jetta M6 removed here for the same reason as in the top signal
     // of the same name: the report's only dial is an apply card, and it is about the most-used
     // function rather than the drive mode.
-    evidence: ["Ferrari Luce", "Tesla Model Y", "Ferrari F80", "Yamaha RW700 EXPLORE"], heroOverride: "https://images.autoexpress.co.uk/autoexpress/2026/10/Alfa%20Romeo%20Cuorerosso-25.jpg" },
+    // MERGED 2026-11-16 (W46) — Polestar Formula 2030 added, not given its own entry. Its
+    // analytical card "The tunnel concentrates mode choice" states exactly this claim: the mode
+    // shifter is distinguished from the functions beside it, and Polestar connects that one
+    // selection to screen, seat, steering position and steering feel. Polestar's eight
+    // exchangeable console controls are the same argument about where mode lives.
+    evidence: ["Ferrari Luce", "Tesla Model Y", "Ferrari F80", "Yamaha RW700 EXPLORE", "Polestar Formula 2030"], heroOverride: "https://images.autoexpress.co.uk/autoexpress/2026/10/Alfa%20Romeo%20Cuorerosso-25.jpg" },
+    // ===== W46 2026-11-16. Single report. Not merged into "Viewing Zone Split From Reaching
+    // Zone" above: that entry separates where information is shown from where it is touched.
+    // This one is about the screen's own contents being swapped as a set, which is a different
+    // decision and happens on one surface.
+    { keyword: "The Display Swaps Cards, Not Sizes", statement: "Instead of a larger screen, the driver display switches between named information sets, making priority itself a mode choice.", application: "Let a Zebra screen swap to a named, task-specific layout rather than growing to fit every field, and require each layout to keep the critical status visible and say where the information it dropped has gone.", evidence: ["Polestar Formula 2030"], heroOverride: "https://www.polestar.com/dato-assets/94392/1794219140-polestar-formula2030-22-d.png?fm=webp&only-imgix=true&fit=min&q=80&w=1000" },
     // REMOVED 2026-11-04 (V5) — "Light Reports State". It rested on exactly two cases and neither
     // survived the audit recorded on the OBSERVATIONS entry: Tesla's "tie light cues to state" is
     // an apply card, and Alpine's illuminated wordmark is the recognition signature this trend
@@ -1462,7 +1884,33 @@ const DOMAIN_TRENDS = {
     // replaced; its successor moved to `robotics` on 2026-11-10 with the DJI Matrice 5T report,
     // after the domain rule was settled as "which product is the subject" rather than "what the
     // report argues". The ai domain therefore carries no W45 case.
-    { keyword: "Visible Sensing State, Physical Not Just Software", statement: "Sensing and recording state must be unmistakable, confirmed by a physical cue, not software.", application: "Give mute, listening and capture states the same physical, bystander-legible treatment — a lens cover, mechanical indicator or hardware cue — on any Zebra wearable or camera-equipped device with a mic or camera, so capture state reads without opening an app.", evidence: ["Ray-Ban Meta Audio", "Ray-Ban Meta (Gen 3)", "Ring 2026 Camera Family"], heroOverride: "https://media.ray-ban.com/cms/resource/blob/1855480/0569c828966f15647a99b37f440fece6/rbm-pdp-ho26-aperol-features-capture-cover-data.jpg" },
+    // MERGED 2026-11-16 (W46) — Samsung Intelligent Eyewear added. Cited from "Controls sit along
+    // the arm" (an outward LED signals image capture, stated as Samsung's spec) and "Bold frames
+    // expose hardware" (the form shows the equipment instead of disguising it as a wire frame).
+    // Not a new entry: this is the same mechanism the trend already names.
+    { keyword: "Visible Sensing State, Physical Not Just Software", statement: "Sensing and recording state must be unmistakable, confirmed by a physical cue, not software.", application: "Give mute, listening and capture states the same physical, bystander-legible treatment — a lens cover, mechanical indicator or hardware cue — on any Zebra wearable or camera-equipped device with a mic or camera, so capture state reads without opening an app.", evidence: ["Ray-Ban Meta Audio", "Ray-Ban Meta (Gen 3)", "Ring 2026 Camera Family", "Samsung Intelligent Eyewear"],
+      // HERO REPLACED 2026-11-17 — reported as showing no product at all, correctly. The filename is
+      // why it was never caught: the old URL was Ray-Ban's own
+      // `rbm-pdp-ho26-aperol-features-capture-cover-data.jpg`, which reads like a feature shot of the
+      // capture cover and is in fact a fashion campaign frame — airport stairs, 1934×1000, the glasses
+      // small and inside the top ~8% of the frame. Trend-card heroes are `object-fit:cover` into a wide
+      // band, so the centre crop cut the head off and left a coat and a handbag illustrating a claim
+      // about capture indicators. Replacement comes from this trend's OWN evidence (Ray-Ban Meta Gen 3
+      // report, alt "Hand-held Aviator front corner camera and indicator"): the product fills the frame,
+      // the camera and its indicator ARE the subject, and it survives a centre crop.
+      // RULE: check a hero by rendering it at the card's real aspect and crop. Never trust the filename,
+      // and never judge it from the full frame — the full frame is not what ships.
+      // SECOND PASS, same day: the Ray-Ban Gen 3 close-up that first replaced the campaign frame was
+      // itself wrong — the card two rows below ("One Head Shape Can't Be the Default") uses that same
+      // product's report hero, so the ai page carried two large Ray-Ban banners, and ray-ban.com images
+      // already appear 8× on that page. Fixing "no product visible" by reaching for the nearest product
+      // shot created a duplicate instead. Now Ring 2026 Camera Family, Outdoor Cam 4K Plus on its wall
+      // mount: the lens is the subject at banner size, the grey wall is in-context rather than a cutout,
+      // and it is the only non-eyewear evidence this trend has — which is also the strongest case for the
+      // claim, since Ring's boundary is moulded into the housing and cannot be switched off in software.
+      // CHECK BOTH: the product must survive the 3.10 crop AND must not repeat a product already shown
+      // on the same page.
+      heroOverride: "https://images.ctfassets.net/a3peezndovsu/21WlG9DNAbYfaaTLorPWx1/c701abeeba83fefa062dc81d45916903/ring_outdoor_cam_4k_plus_battery_white_atf_1500x1500.jpg?w=1100&q=80" },
     { keyword: "Fit, Hinge & Service Parts", statement: "Fit and contact surfaces are being redesigned as a serviceable, swappable system rather than one fixed shape.", application: "Design swappable straps, pads and hinge adjustments as first-class service parts.", evidence: ["Meta VR Glasses", "Ray-Ban Meta (Gen 3)", "Ray-Ban Meta Audio"], heroOverride: "https://cdn.mos.cms.futurecdn.net/Si53kYKWYKYQfks8AVsZNA-1200-80.jpg" },
     { keyword: "Compute Moves Off the Primary Surface", statement: "Power and compute budgets are becoming an explicit, designed workflow state instead of a background spec.", application: "Offload battery and processing to a belt pack or cradle rather than the head- or hand-worn unit, and measure neck and wrist load across a full shift against a self-contained unit rather than at first fitting.", // EVIDENCE FIX 2026-11-04 (V5) — Sony ELF-MN1 removed. This trend is about moving compute off a
     // head- or hand-worn unit onto a tether. The ELF-MN1 is a fixed desk display whose own report
@@ -1471,19 +1919,27 @@ const DOMAIN_TRENDS = {
     // remains correctly cited under "The Tether Is Part of the Product", which is about the cable
     // being designed rather than hidden — a claim its single routed USB-C cord does support.
     evidence: ["Meta VR Glasses", "XREAL AURA"], heroOverride: "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/ManinOffice_V2.width-1300.png" },
-    { keyword: "The Tether Is Specified, Not Hidden", statement: "The cable left behind when compute moves off the device is being designed as a named, replaceable part rather than treated as an embarrassment to conceal.", application: "Make the most-flexed cable on any worn or tethered Zebra system a standard, user-replaceable stock line rather than a captive assembly, and publish the routing — then track replacements instead of warranty returns.", evidence: ["XREAL AURA", "Sony ELF-MN1", "Meta VR Glasses"], heroOverride: "https://sony.scene7.com/is/image/sonyglobalsolutions/original_ELF-MN1_005?$jpMediumStaticMainImage$" },
-    { keyword: "One Head Shape Can't Be the Default", statement: "Fit variation is being treated as a product-line requirement rather than an accessory size chart — one platform ships in several head-matched silhouettes.", application: "Ship head- and hand-worn Zebra devices as genuine fit variants off one platform, instead of one average size corrected with padding.", evidence: ["Ray-Ban Meta (Gen 3)", "Ray-Ban Meta Audio", "XREAL 1 Pro+"] },
+    // HEADLINE SHORTENED 2026-11-16 — was 32 combined words against a 27-word ceiling (§7.7).
+    { keyword: "The Tether Is Specified, Not Hidden", statement: "The cable left when compute moves off the device is designed as a named, replaceable part rather than hidden.", application: "Make the most-flexed cable on any worn or tethered Zebra system a standard, user-replaceable stock line rather than a captive assembly, and publish the routing — then track replacements instead of warranty returns.", evidence: ["XREAL AURA", "Sony ELF-MN1", "Meta VR Glasses"], heroOverride: "https://sony.scene7.com/is/image/sonyglobalsolutions/original_ELF-MN1_005?$jpMediumStaticMainImage$" },
+    // HEADLINE SHORTENED 2026-11-16 — was 30 combined words against a 27-word ceiling (§7.7).
+    { keyword: "One Head Shape Can't Be the Default", statement: "Fit variation is a product-line requirement, not an accessory size chart: one platform ships in several head-matched silhouettes.", application: "Ship head- and hand-worn Zebra devices as genuine fit variants off one platform, instead of one average size corrected with padding.", evidence: ["Ray-Ban Meta (Gen 3)", "Ray-Ban Meta Audio", "XREAL 1 Pro+"] },
     { keyword: "Fit Is Part of Display Performance", statement: "For a worn display, fit adjustments are a calibration step, not a cosmetic afterthought.", application: "Document nose pad, temple and IPD-style fit adjustments as part of a wearable display's setup and validation process, and test text recognition after a full-shift wear trial, not just at first fitting.", evidence: ["XREAL 1 Pro+"], heroOverride: "https://resource.xreal.com/www-xreal-com/images/hebe/hebe-scene-work-bg-desktop.webp" },
+    // ===== W46 2026-11-16. Arlo alone, kept as a single-report entry rather than paired with
+    // SwitchBot's removable battery: SwitchBot's power story is about upkeep after installation,
+    // Arlo's is about capability decided at installation. Different claims, so not merged.
+    { keyword: "The Power Path Decides What Gets Recorded", statement: "Which power architecture is chosen at installation, not which model is bought, decides what the device is able to capture afterwards.", application: "Where a Zebra device can be powered more than one way — vehicle-wired, cradled or on battery — state plainly which capabilities each path actually enables, and branch the setup flow at the first screen rather than after the mount is on the wall.", evidence: ["Arlo Video Doorbell (3rd Gen)"], heroOverride: "https://us.arlo.com/cdn/shop/files/Wired_Video_Doorbell_3rd_Gen_DTC_Desktop_easy_setup_2_2760x2684_ea691f76-6771-4734-85c8-a54ce03b9632_700x700.png?v=1790956857" },
     { keyword: "Redundant Capture Needs a Visible Confirmation", statement: "A backup recording path only earns trust when its state — present, charged, recording — is visible at the point where the operator is already holding the kit.", application: "Pair any Zebra field-audio or evidence-capture accessory with a local backup path and a small, glanceable display showing pairing, recording and remaining capacity at the component the worker is handling.", evidence: ["Sony ECM-W5"], heroOverride: "https://d1ncau8tqf99kp.cloudfront.net/PDP/DI/Accessories/ECM-W5/desktop/hero.jpg" }
   ],
   wearables: [
     // ===== W45 2026-11-10, rewritten to the replacement Aina report. The earlier wording ("the
     // worn unit proposes and waits") used approve/dismiss language that report does not use; what
     // it does describe is surfacing one relevant action at a time and keeping confirmation explicit.
-    { keyword: "One Action at a Time, Confirmed Explicitly", statement: "A worn unit narrows itself to the single action that matters now and keeps the confirmation step visible rather than implied.", application: "If an agent acts through Zebra worn hardware, surface one action at a time, keep an explicit confirmation state a gloved thumb can reach, and leave a clear route back to the primary handheld.", evidence: ["Aina Ring"] },
+    // HEADLINE SHORTENED 2026-11-16 — was 28 combined words against a 27-word ceiling (§7.7).
+    { keyword: "One Action at a Time, Confirmed Explicitly", statement: "A worn unit narrows to the single action that matters now and keeps confirmation visible rather than implied.", application: "If an agent acts through Zebra worn hardware, surface one action at a time, keep an explicit confirmation state a gloved thumb can reach, and leave a clear route back to the primary handheld.", evidence: ["Aina Ring"] },
     { keyword: "Two Solar Surfaces, Two Charging Moments", statement: "Two solar collection surfaces split \"worn\" from \"set aside\" charging into two deliberately different moments.", application: "A dual-surface or dock-plus-body charging path can replace a single charging contact point.", evidence: ["Amazfit T-Rex Dual Solar"], heroOverride: "https://us.amazfit.com/cdn/shop/files/T-Rex_Dual_Solar__Lifestyle_2.jpg?v=1789715428&width=1500" },
-    { keyword: "Power Scarcity as a Named Workflow State", statement: "Running low on power becomes a named workflow state, not a failure the product tries to hide.", application: "A defined \"recoverable minimum\" mode can preserve scan confirmation and location before a device goes fully dark.", evidence: ["Amazfit T-Rex Dual Solar"], heroOverride: "https://us.amazfit.com/cdn/shop/files/T-Rex_Dual_Solar__Lifestyle_4.jpg?v=1789715427&width=3840" },
-    { keyword: "The Pairing Dongle Is a Designed Part", statement: "The receiver that establishes a connection is being designed as a first-class system part with its own state readout, not a bundled afterthought.", application: "Treat scanner and headset pairing hardware as a designed, losable, replaceable part that reports its own state, with a recovery path when pairing fails.", evidence: ["Logitech Zone Vibe Pro", "Sony ECM-W5"] },
+    { keyword: "Power Scarcity as a Named Workflow State", statement: "Running low on power becomes a named workflow state, not a failure the product tries to hide.", application: "A defined \"recoverable minimum\" mode can preserve scan confirmation and location before a device goes fully dark.", evidence: ["Amazfit T-Rex Dual Solar"], heroOverride: "https://us.amazfit.com/cdn/shop/files/T-Rex_Dual_Solar__Lifestyle_3.jpg?v=1789715427&width=3840" },
+    // HEADLINE SHORTENED 2026-11-16 — was 30 combined words against a 27-word ceiling (§7.7).
+    { keyword: "The Pairing Dongle Is a Designed Part", statement: "The receiver that establishes a connection is a first-class part with its own state readout, not a bundled afterthought.", application: "Treat scanner and headset pairing hardware as a designed, losable, replaceable part that reports its own state, with a recovery path when pairing fails.", evidence: ["Logitech Zone Vibe Pro", "Sony ECM-W5"] },
     { keyword: "Gesture Control Keeps a Hardware Fallback", statement: "Wrist- and finger-worn gesture control ships alongside a manual hardware button as backup.", application: "Keep a hardware trigger as a gesture-independent fallback on wrist and ring scanners, verified under gloves and low light rather than assumed from a clean demo.", evidence: ["Antigravity A1 Follow Me Bundle"], heroOverride: "https://cdn.dronexl.co/wp-content/uploads/2026/10/antigravity-a1-follow-me-bundle-cyclist-watch-ring-remote.webp" }
   ],
   robotics: [
@@ -1491,9 +1947,31 @@ const DOMAIN_TRENDS = {
     // flies and decides for itself, which is the same kind of subject as Skydio's F10 — filing it
     // under sensing was classifying it by its argument rather than by what it is.
     { keyword: "Evidence Has to Survive the Handoff", statement: "An autonomous machine is judged on whether another person can act on what it brought back, not on how much it captured.", application: "For Zebra, make it visible which scan or capture is current, show where confidence is low, and let a worker pass a precise observation on without the next person rebuilding the scene.", evidence: ["DJI Matrice 5T"] },
-    { keyword: "Credentialed Access Made Legible at the Threshold", statement: "Robots are gaining managed digital identity to cross existing secured infrastructure, with authorization state visible at the point of action.", application: "Give autonomous mobile robots the same managed, revocable digital identity to move through badge-controlled doors, gates and elevators, using consistent request/grant/deny/fallback states with a human-escalation path at every robot-operated threshold.", evidence: ["ANYmal Door Access"] },
+    // RETITLED AND RE-SCOPED 2026-11-18, apply-card audit. The old title and the tail of the old
+    // statement — "Made Legible at the Threshold" / "with authorization state visible at the point of
+    // action" — came from ANYmal apply card 02, "Make authorization state legible". That is a
+    // recommendation to Zebra, not an observed practice, and it had already been cut from
+    // TOP_SIGNALS in V5 for exactly this reason (see the note near line 829); the fix was applied
+    // there and never carried across to DOMAIN_TRENDS. None of the twelve analytical cards in that
+    // report says anything about authorization state being visible to anyone.
+    // What the analytical layer DOES support is the identity half: "Stairs extend inspection reach"
+    // says in its body that "secured doors still require a separate identity and actuation layer",
+    // and "A retrofit can enable passage" covers the dormakaba actuation that completes the chain.
+    // So the claim keeps the credential and the retrofit, and drops the legibility it never earned.
+    // The `application` is unchanged — asking for legible request/grant/deny states is a perfectly
+    // good recommendation TO Zebra; it just cannot be reported as something the industry already does.
+    { keyword: "Credentialed Access to Doors That Already Exist", statement: "Robots are being given a managed identity and an actuation layer so they can pass through secured doors that were already there.", application: "Give autonomous mobile robots the same managed, revocable digital identity to move through badge-controlled doors, gates and elevators, using consistent request/grant/deny/fallback states with a human-escalation path at every robot-operated threshold.", evidence: ["ANYmal Door Access"] },
     { keyword: "Zone-Matched Sensing", statement: "Contact and perceptual sensing resolution is matched to the zone, with fingertip precision only where it matters.", application: "Design scan-confirmation feedback like fingertip haptics — distinguishing a clean read, a low-confidence read and a required retry.", evidence: ["Sharpa D01 · W02 · AE01", "ANYmal Door Access"], heroOverride: "https://assets.newatlas.com/dims4/default/759d630/2147483647/strip/true/crop/6580x4387+0+0/resize/440x293!/format/webp/quality/90/?url=https%3A%2F%2Fnewatlas-brightspot.s3.ap-southeast-2.amazonaws.com%2Fed%2F34%2F5455155648f497dd65859aa60726%2Fanymal-robot-stairs-climbing.jpg" },
     { keyword: "Haptics Explain the Task", statement: "Haptic feedback is being designed to communicate a task state — success, uncertainty, retry — not just confirm contact happened.", application: "Design vibration patterns around task state, not a single undifferentiated buzz.", evidence: ["Sharpa D01 · W02 · AE01"], heroOverride: "https://assets.newatlas.com/dims4/default/268985a/2147483647/strip/true/crop/6720x4480+0+0/resize/440x293!/format/webp/quality/90/?url=https%3A%2F%2Fnewatlas-brightspot.s3.ap-southeast-2.amazonaws.com%2F10%2F18%2Ff9579f784980af62973fbece417b%2Fanymal-robot-going-to-inspection-mission.jpg" },
+    // ===== W46 2026-11-16. NOT merged into "Fleet Status Stays Visible Without a Dashboard"
+    // below. That entry is infrastructure-side — the dock or a shared light tells a worker which
+    // unit is ready to take. This one is machine-side: an individual robot already in motion
+    // beside someone says what it is doing right now. Different question, different hardware.
+    { keyword: "Status Has a Fixed Place on the Body", statement: "Task and readiness get a permanent location on the machine itself, aimed at whoever stands beside it.", application: "Put a Zebra AMR's or mobile cart's current task, readiness and pause state on the vehicle in one fixed, consistent position, readable at standing distance, instead of only in the fleet console — and keep that position the same across robot classes so a worker does not have to learn where to look per machine.", evidence: ["Apptronik Apollo 2", "Ring Robotics"], heroOverride: "https://www.automate.org/userAssets/a3/contents/industry-insights/image/Apollo%202%20Wave.jpg" },
+    // ===== W46 2026-11-16. Single report, kept as its own entry rather than folded into the
+    // industrial "Battery Swap Is a Workflow State": that one is about the swap being a legible
+    // moment in a shift, this is about which parts are declared replaceable at all.
+    { keyword: "Wear Parts Declared as Separate Objects", statement: "Batteries and joints are presented as individually serviceable parts with their own access zones, rather than sealed inside one continuous body.", application: "Name the wear parts on Zebra robotics and vehicle hardware — battery, actuator, roller, contact — give each its own access route and inspection cue, and publish the replacement interval, so maintenance is planned rather than discovered when something stops.", evidence: ["Apptronik Apollo 2"], heroOverride: "https://cdn.prod.website-files.com/6a0dd86942776facbc2f6ba4/6a2b3ec6b5e641fabed19160_image._apollo2-battery.jpg" },
     { keyword: "Fleet Status Stays Visible Without a Dashboard", statement: "A fleet's status stays visible through the dock itself or a shared status light.", application: "Treat multi-unit charging and task handoff as one inspectable system, and standardize a status-light and label-zone language across every handoff point, so a worker can identify the ready unit and the correct scan point without a separate dashboard, regardless of which robot class is involved.", evidence: ["Skydio F10 Lightrunner", "Signode AMR Portfolio"], heroOverride: "https://cdn.sanity.io/images/mgxz50fq/production-v3-red/23a3e22ff89164157e2656ad3caf2c7a32603779-3954x4394.png?w=1200&fit=max&fm=jpg" }
   ],
   industrial: [
@@ -1504,8 +1982,15 @@ const DOMAIN_TRENDS = {
     // ===== W45 ENTRY REMOVED 2026-11-10 — "Everything That Changed Sits on the Cable". Its only
     // evidence was the Sony MDR-3R, which is not in the replacement W45 edition. Consumer gains
     // nothing from this week rather than gaining a claim with no report behind it.
-    { keyword: "Service Access Designed Into the Mount", statement: "Fixed enterprise hardware is designed so its mount itself provides serviceable access.", application: "Give vehicle-mounted terminals and fixed scanners a controlled service swing or access panel, and measure maintenance time and reach from the actual mounting height.", evidence: ["Logitech Rally Bar 2"], heroOverride: "https://resource.logitech.com/w_1206,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/rally-bar-2/rally-bar2-video-bar-fast-setup.jpg?v=1" },
-    { keyword: "The Room Becomes a Managed Object", statement: "A physical space is being represented as one managed asset with its own readiness state, rather than as a list of the devices inside it.", application: "Model a work cell or vehicle bay as a single managed object with its own readiness state, instead of as separate device records a supervisor has to reassemble.", evidence: ["Logitech Rally System 2 Pro", "Logitech Rally Bar 2", "Skydio F10 Lightrunner"], heroOverride: "https://resource.logitech.com/w_1200,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/business/products/video-conferencing/rally-system-2-pro/rally-system-2-pro-modular-solution.jpg?v=1" },
+    // ===== W46 2026-11-16. "Fit Is Published Before the Purchase" added as its own entry; the
+    // SwitchBot service claim is MERGED into the existing mount entry directly below rather than
+    // fragmenting, because "charge without removing the motor" is the same mechanism Logitech's
+    // serviceable mount already states — the frequent maintenance action is separated from
+    // undoing the installation.
+    { keyword: "Fit Is Published Before the Purchase", statement: "A retrofit publishes the clearances it needs as numbers, so the buyer can rule it out before anything is mounted.", application: "Publish the real mounting envelope for Zebra cradles, vehicle mounts and fixed scanners — clearance, rail or surface type, and what is explicitly out of scope — as checkable figures in the buying flow, so a site rules a part out at the desk instead of on a ladder.", evidence: ["SwitchBot Curtain Track 4"] },
+    { keyword: "Service Access Designed Into the Mount", statement: "Fixed enterprise hardware is designed so its mount itself provides serviceable access.", application: "Give vehicle-mounted terminals and fixed scanners a controlled service swing or access panel, and measure maintenance time and reach from the actual mounting height. SwitchBot's battery module detaches while the motor stays on the rail, which is the same principle at domestic scale: the routine service action must not require undoing the installation.", evidence: ["Logitech Rally Bar 2", "SwitchBot Curtain Track 4"], heroOverride: "https://resource.logitech.com/w_1206,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/rally-bar-2/rally-bar2-video-bar-fast-setup.jpg?v=1" },
+    // HEADLINE SHORTENED 2026-11-16 — was 31 combined words against a 27-word ceiling (§7.7).
+    { keyword: "The Room Becomes a Managed Object", statement: "A physical space is represented as one managed asset with its own readiness state, not a list of devices.", application: "Model a work cell or vehicle bay as a single managed object with its own readiness state, instead of as separate device records a supervisor has to reassemble.", evidence: ["Logitech Rally System 2 Pro", "Logitech Rally Bar 2", "Skydio F10 Lightrunner"], heroOverride: "https://resource.logitech.com/w_1200,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/business/products/video-conferencing/rally-system-2-pro/rally-system-2-pro-modular-solution.jpg?v=1" },
     { keyword: "Threshold Status Made Public", statement: "Availability state is pushed outside the room itself, readable before someone commits to walking in and interrupting.", application: "Give shared Zebra kiosks and mounted terminals the same red/green, distance-readable availability signal instead of hiding status behind a login screen.", evidence: ["Logitech Rally System 2 Pro"], heroOverride: "https://resource.logitech.com/w_1206,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/business/products/video-conferencing/rally-system-2-pro/rally-system-2-pro-device-space-management-3.jpg?v=1" },
     { keyword: "Shared Screens Adapt to Distance and Identity", statement: "A fixed shared screen changes its information density and access based on who is approaching and from how far, not one generic state for everyone.", application: "Give shared Zebra kiosks and wall terminals a large glanceable state at a distance and a detailed, identity-confirmed control set up close, with every identity switch explicit and reversible.", evidence: ["Apple HomeView"], heroOverride: "https://www.apple.com/newsroom/images/2026/10/meet-apple-homeview-a-new-way-to-enjoy-entertainment-and-manage-the-home/article/Apple-HomeView-FaceTime-Center-Stage-261013_big.jpg.large.jpg" },
     { keyword: "A Physical Control Becomes the Primary Interface", statement: "An existing switch or grip carries the full interface, replacing menu depth.", application: "Give a Zebra handheld's major mode changes a dedicated physical switch position, and ring its carry handle or grip with the controls a worker reaches for first — so lifting the device out of a holster is already most of the setup, without a menu to navigate.", evidence: ["Sigma fp2", "Teenage Engineering EP-35"], heroOverride: "https://assets.teenage.engineering/_img/6ada1e46982c0e6e3c49faf7_4096.webp" },
@@ -1536,9 +2021,13 @@ const DOMAIN_TRENDS = {
     { keyword: "Material Tells the Hand Where to Go", statement: "Finish, camera architecture and grip are designed as one system, so the surface itself says where the hand belongs.", application: "Treat grip zones, scanner window access and task feedback on a Zebra handheld as one design problem rather than three, and check that a refined finish still tells a gloved hand where to hold and what is underway.", evidence: ["motorola signature 27"] },
     { keyword: "AI Output Stays Inspectable Beside the Source", statement: "Automated suggestions are kept reviewable by staying visually next to the material they summarize, rather than replacing it.", application: "Show source text beside generated summaries before a Zebra worker accepts a field decision, and flag uncertain content rather than presenting it as fact.", evidence: ["Galaxy Tab S12 Ultra"] },
     { keyword: "Attachment Becomes a New Wear Point", statement: "An attachment props up a held device, and its hinge becomes a new wear point.", application: "Treat dock, cover and keyboard attachments as their own tested state — covering stability, gloved handling and the contact line's resistance to debris.", evidence: ["Galaxy Tab S12 Ultra", "Kindle 2026 Family"], heroOverride: "https://www.sammobile.com/wp-content/uploads/2026/09/Samsung-Galaxy-Tab-S12-Ultra-Screen-S-Pen-Keyboard-Cover-1920x1079.jpg" },
-    { keyword: "Vulnerable Controls Move Away From the Hand", statement: "A frequently mis-pressed control is relocated away from where the support hand naturally rests, and edge controls are gathered into one reachable zone.", application: "Test power, trigger and recovery key placement against common one-handed and gloved grips before freezing a Zebra handheld's control layout.", evidence: ["Kindle 2026 Family", "Galaxy Tab S12 Ultra"], heroOverride: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/P1011578.jpg?w=800" },
-    { keyword: "Tier Colour Must Not Collide With Status Colour", statement: "Finish and colour differentiate tiers only where they cannot be mistaken for status meaning — the two colour systems are being kept deliberately separate.", application: "Keep device-tier colour and status-indicator colour on separate palettes, so a premium finish never reads as an alert and a safety signal never reads as trim.", evidence: ["Kindle 2026 Family", "Signode AMR Portfolio"] },
-    { keyword: "Mode Changes Need Obvious Hardware Cues", statement: "Products make an input-mode transition — pen, keyboard, touch — physically obvious, and this period the mechanism itself does the declaring rather than a cue beside it.", application: "Give pen, keyboard and dock connection states one consistent on-screen location so gloved operators can predict the active input mode before acting — and where a Zebra device genuinely has two input modes, prefer a physical configuration a supervisor can read across an aisle over a setting buried in a profile.", evidence: ["Amazon Alexa Tablets", "Turtle Beach Stealth Flip Wireless Controller", "Apple iPad mini and MacBook Pro"], heroOverride: "https://cdn.shopify.com/s/files/1/0556/5795/5430/files/1_Stealth_Flip_Wireless_Controller_2400x1350-DTC_LOGO_1.png?v=1790958290" },
+    { keyword: "Vulnerable Controls Move Away From the Hand", statement: "A frequently mis-pressed control is relocated away from where the support hand naturally rests, and edge controls are gathered into one reachable zone.", application: "Test power, trigger and recovery key placement against common one-handed and gloved grips before freezing a Zebra handheld's control layout.", evidence: ["Kindle 2026 Family", "Galaxy Tab S12 Ultra"], heroOverride: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/P1011561.jpg?w=800" },
+    // HEADLINE SHORTENED 2026-11-16 — was 32 combined words against a 27-word ceiling (§7.7).
+    { keyword: "Tier Colour Must Not Collide With Status Colour", statement: "The two colour systems are kept deliberately separate, so a finish never reads as an alert.", application: "Keep device-tier colour and status-indicator colour on separate palettes, so a premium finish never reads as an alert and a safety signal never reads as trim.", evidence: ["Kindle 2026 Family", "Signode AMR Portfolio"] },
+    // HEADLINE SHORTENED 2026-11-16 — was 33 combined words, the worst offender against a 27-word
+    // ceiling (§7.7). The "pen, keyboard, touch" list moved out of the headline; it survives in
+    // `application` directly below, which is where the detail belongs.
+    { keyword: "Mode Changes Need Obvious Hardware Cues", statement: "Products make an input-mode transition physically obvious, and now the mechanism itself declares it rather than a cue beside it.", application: "Give pen, keyboard and dock connection states one consistent on-screen location so gloved operators can predict the active input mode before acting — and where a Zebra device genuinely has two input modes, prefer a physical configuration a supervisor can read across an aisle over a setting buried in a profile.", evidence: ["Amazon Alexa Tablets", "Turtle Beach Stealth Flip Wireless Controller", "Apple iPad mini and MacBook Pro"], heroOverride: "https://cdn.shopify.com/s/files/1/0556/5795/5430/files/1_Stealth_Flip_Wireless_Controller_2400x1350-DTC_LOGO_1.png?v=1790958290" },
     { keyword: "One Input Model, Two Working Postures", statement: "The same direct-touch input is being designed for two different body postures — device in hand, and device on a surface — with the control set that survives differing between them.", application: "Define the hand-held and docked postures of a Zebra handheld as two separate design targets, and verify which controls stay reachable in each, instead of validating one posture and assuming the other inherits it.", evidence: ["Apple iPad mini and MacBook Pro"], heroOverride: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/268836_iPad_Mini_OLED_handson_ADiBenedetto_0012.jpg?quality=90&strip=all" },
     { keyword: "Hinge Becomes a Self-Standing Mode", statement: "A precision hinge holds the device open, turning a fold into a hands-free stand.", application: "Apply the same logic to Zebra rugged tablets and handhelds: a built-in, self-locking hinge or kickstand, validated for drop and vibration, lets a device stand at a fixed, glanceable angle without a separate mount, freeing the worker's hands for scanning or picking while keeping the screen visible.", evidence: ["iPhone Duo"], heroOverride: "https://cdn.mos.cms.futurecdn.net/BWjEcLrmjEaRDGw4enTc6P.jpg" },
     { keyword: "Factory-Official Modular Rig, Not a Third-Party Workaround", statement: "A device maker ships its own official modular rigging accessory for a specialized task, instead of leaving that modularity to third-party cases and mounts.", application: "Offer an official, factory-designed rigging accessory for specialized field tasks rather than leaving modular attachment to third parties, so fit and durability are validated by the device maker itself.", evidence: ["OPPO Find X10 Series"], heroOverride: "https://www.oppo.com/content/dam/oppo_com/oppo/product-asset-library/find-x/find-x10-series-en/find-x10-pro-max/en/white-gray/v1/assets/eye-care-en-characters-bg.jpg.avif" }

@@ -185,19 +185,68 @@
   // picking the first evidence image for each trend independently made multiple cards on the
   // same page show an identical hero. usedHeroes tracks what's already on screen and skips to
   // the next piece of evidence instead, so the 3 cards shown together stay visually distinct.
-  function trendHero(t, usedHeroes){
-    const candidates = [];
-    if (t.heroOverride) candidates.push(t.heroOverride);
-    (t.evidence||[]).forEach(title => {
-      const r = ALL_REPORTS.find(x => x.title === title);
-      if (r && r.hero) candidates.push(r.hero);
-    });
-    const fresh = candidates.find(h => !usedHeroes.has(h));
-    const chosen = fresh || candidates[0] || null;
-    if (chosen) usedHeroes.add(chosen);
+  // REWRITTEN 2026-11-18. Two faults, both reported from the page rather than found here.
+  //
+  // 1. "圖一直沒變" — the heroes never refreshed. heroOverride was pushed FIRST, so a pinned string
+  //    always won and a trend's banner stayed frozen no matter how much new evidence arrived. The
+  //    evidence candidates behind it were also in author order, which is roughly oldest-first, so
+  //    even when the override was absent the picture shown was the oldest case, not the newest.
+  //    Evidence is now sorted newest-first by report date, and a trend that took a case this week
+  //    leads with THAT case's image. heroOverride is no longer automatically first: it leads only
+  //    when the trend is `holding` (no new case — nothing newer to show, so the curated frame is
+  //    the best available), and otherwise sits at the back as the fallback it was meant to be.
+  //
+  // 2. "這兩張圖重複性太高" — two cards on the ai page both showed Ray-Ban Meta Gen 3. The old guard
+  //    de-duplicated on exact URL, so two DIFFERENT photographs of the SAME product passed it
+  //    cleanly. What a reader notices is the product, not the URL. The guard now keys on the report
+  //    a candidate belongs to and on its image host, so a second frame of the same product — or a
+  //    second shot from the same brand's press kit — is skipped in favour of the next evidence.
+  //    This is what stops sports showing two adidas Freerider frames and consumer two Logitech Rally
+  //    units; neither was reachable by URL comparison.
+  //
+  // Falling back is explicit and ordered: an unused candidate wins; failing that any candidate whose
+  // product is unused; failing that the first candidate, duplicate and all, because a card with a
+  // repeated picture still beats a card with none.
+  function heroKey(url){
+    const owner = ALL_REPORTS.find(r => r.hero === url);
+    if (owner) return "report:" + owner.title;
+    try { return "host:" + new URL(url).host; } catch (e) { return "url:" + url; }
+  }
+  // Ordering, in priority order, after one more fault surfaced from the page: with evidence simply
+  // sorted newest-first, the MOBILE page's "Tier Colour Must Not Collide With Status Colour" banner
+  // became the Signode warehouse AMR, because Signode (22 Oct) is newer than the Kindle (4 Oct) and
+  // both are genuine evidence. Valid evidence, unreadable banner — a reader on "Mobile Devices" sees
+  // a palletising robot. Cross-domain evidence is what makes this corpus worth anything, but it
+  // belongs in the evidence strip, not in the domain's own headline image. So same-domain evidence
+  // now outranks newer cross-domain evidence, and newest-first applies WITHIN each group.
+  //
+  // heroOverride leads again. It is a deliberate human choice about which frame carries the claim,
+  // and the test for a hero is suitability, not freshness — the Ring Outdoor Cam frame on the ai
+  // trend says more about "a physical cue, not software" than any newer eyewear shot does. Freshness
+  // is still served: overrides get re-curated in the weekly sync whenever a new case brings a better
+  // frame, and every trend WITHOUT an override now leads with its newest same-domain case. The
+  // product-level guard below can still push past an override whose product is already on screen,
+  // which is the safety valve that stops curation from reintroducing a duplicate.
+  function trendHero(t, usedHeroes, usedKeys, domainId){
+    const rank = r => (r.domain === domainId ? 0 : 1);
+    const evidenceHeroes = (t.evidence||[])
+      .map(title => ALL_REPORTS.find(x => x.title === title))
+      .filter(r => r && r.hero)
+      .sort((a,b) => rank(a) - rank(b) || String(b.date||"").localeCompare(String(a.date||"")))
+      .map(r => r.hero);
+    const candidates = (t.heroOverride ? [t.heroOverride] : []).concat(evidenceHeroes);
+
+    const chosen =
+      candidates.find(h => !usedHeroes.has(h) && !usedKeys.has(heroKey(h))) ||
+      candidates.find(h => !usedKeys.has(heroKey(h))) ||
+      candidates.find(h => !usedHeroes.has(h)) ||
+      candidates[0] || null;
+
+    if (chosen) { usedHeroes.add(chosen); usedKeys.add(heroKey(chosen)); }
     return chosen;
   }
   const usedTrendHeroes = new Set();
+  const usedTrendHeroKeys = new Set();
 
   // Build the capped index described above. Featured trends keep their card order at the top;
   // the rest compete for the remaining slots by momentum, then evidence count, then name.
@@ -290,7 +339,7 @@
     <div class="section-label"><span>Trend signals this period</span></div>
     <div class="signals">
       ${trends.map((t,i) => {
-        const hero = trendHero(t, usedTrendHeroes);
+        const hero = trendHero(t, usedTrendHeroes, usedTrendHeroKeys, DOMAIN_ID);
         const bgStyle = hero ? ` style="background-image:linear-gradient(180deg, rgba(7,9,9,.1) 0%, rgba(7,9,9,.62) 55%, rgba(7,9,9,.97) 100%), url('${hero}')"` : "";
         const mom = momentumTag(t);
         return `

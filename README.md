@@ -2,15 +2,20 @@
 
 A static site. No build step, no dependencies, no package manager. Open `index.html` and it runs.
 
-Covers **2026-09-21 – 2026-11-08** (W39–W45), 54 reports across 7 weekly releases,
-5 single reports and 2 launch events.
+Covers **2026-09-21 – 2026-11-15** (W39–W46), 57 reports across 8 weekly releases,
+5 single reports and 2 launch events. Figures read off the running site on 2026-11-18,
+not carried forward — the previous version of this paragraph still said W39–W45 and
+54 reports a week after W46 shipped.
 
-W45 was added on 2026-11-10: six standalone reports plus the EICMA 2026 launch event
-(3 reports), which appears as one card inside W45 rather than as a separate week.
+A launch event appears as one card inside its parent week rather than as a separate week:
+EICMA 2026 (2 reports) under W45, Stellantis · Mondial de l'Auto 2026 (6 reports) under W41.
+
 The Red Bull RB22 single report was withdrawn on 2026-11-08 as too niche. Its HTML was
 deleted from `singles/` on 2026-11-10 so the folder matches what `data.js` actually
 serves; the report itself is preserved in `Red_Bull_RB22_Trend_Report_2026-10-01.zip`
-outside this folder.
+outside this folder. **If an earlier upload of this site is already on GitHub, that file
+is still in the repo** — a web upload adds and replaces but never deletes, so it has to be
+removed there by hand.
 
 ## Running it locally
 
@@ -95,8 +100,6 @@ week codes, dates and ZIP filenames, which stay English on purpose.
 
 GitHub Pages runs Jekyll by default, and Jekyll skips files and folders whose names start
 with an underscore. This site has `domains/_shared.css` and `domains/_shared.js`. The empty
-
-
 `.nojekyll` file at the repository root turns that off. **Do not delete it** — without it
 all eight domain pages lose their styling and behaviour.
 

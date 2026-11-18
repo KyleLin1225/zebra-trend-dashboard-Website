@@ -160,8 +160,16 @@ footer{padding:50px 0 70px;color:var(--muted);font-size:12px}
     + '<h1>What does this period<br>mean for my project?</h1>'
     + '<p class="sub">Pick what you are working on. The same evidence, re-indexed by Zebra product type instead of by where it came from — so a handheld brief surfaces the camera and the car, which is where the useful answers turned out to be.</p>'
     + '<div class="picker" id="picker"></div><div id="out"></div>'
+    // FOOTER CHANGED 2026-11-18, before the GitHub upload. It used to end "Full evidence,
+    // counts, limits and non-supporting cases: V5_CHANGES.md" — a file that .gitignore marks
+    // "Kept local on purpose - NOT part of the published site". So on the published site this
+    // footer sent every reader to something that isn't there. Two ways out: publish the log, or
+    // stop pointing at it. Publishing it is wrong — it is an internal revision log that records
+    // which claims were withdrawn as unsupported, and it is not written for an outside reader.
+    // So the footer now points at what the site DOES ship: each theme block carries its own
+    // stated limit, and data.js carries the per-entry rationale as comments.
     + '<footer>Every case shown is a verified case on a research theme; this page re-points them, it does not add any. '
-    + 'Full evidence, counts, limits and non-supporting cases: <code>V5_CHANGES.md</code>.</footer>';
+    + 'Each theme states its own limit on the home page, and <code>data.js</code> carries the rationale for every entry.</footer>';
 
   const picker = $("#picker");
   picker.innerHTML = DESIGN_BRIEFS.map((b,i) =>
